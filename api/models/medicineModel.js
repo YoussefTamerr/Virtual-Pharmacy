@@ -21,16 +21,16 @@ const medicineSchema = new Schema({
   },
   details: {
     type: String,
-    required: true,  
+    required: true,
   },
   picture: {
     type: String,
     required: true,
   },
-  catagory: {
+  category: {
     type: String,
     required: true,
-  }
+  },
 });
 
 export default model("Medicine", medicineSchema);

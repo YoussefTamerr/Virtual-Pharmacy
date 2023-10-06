@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { createPharmacist, deletePharmacist, getpharmacist } from "../controllers/pharmacistController.js";
+import {
+  createPharmacist,
+  deletePharmacist,
+  getPharmacist,
+} from "../controllers/pharmacistController.js";
 
 const router = Router();
 
@@ -7,7 +11,6 @@ router.post("/", createPharmacist);
 
 router.delete("/:id", deletePharmacist);
 
-router.get("/:id" , getpharmacist);
-
+router.get("/:id", getPharmacist);
 
 export default router;

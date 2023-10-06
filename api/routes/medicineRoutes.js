@@ -2,21 +2,18 @@ import express from "express";
 import {
   getAllMedicines,
   getMedicine,
-  searchMedicine,
   createMedicine,
-  updateMedicine
+  updateMedicine,
 } from "../controllers/medicineController.js";
 
 const router = express.Router();
 
 router.get("/", getAllMedicines);
 
+router.post("/", createMedicine);
+
 router.get("/:id", getMedicine);
 
-router.post("/search", searchMedicine);
-
-router.get("/add", createMedicine);
-
-router.patch("/:id" ,updateMedicine);
+router.patch("/:id", updateMedicine);
 
 export default router;

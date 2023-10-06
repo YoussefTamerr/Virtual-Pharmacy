@@ -1,26 +1,25 @@
 import Patient from "../models/patientModel.js";
 import mongoose from "mongoose";
 
-
 const createPatient = async (req, res) => {
   try {
-    const checkExisting = await Patient.findOne({email : req.body.email})
-    if(checkExisting) {
-      return res.status(400).json({message : "email already exists"})
+    const checkExisting = await Patient.findOne({ email: req.body.email });
+    if (checkExisting) {
+      return res.status(400).json({ message: "email already exists" });
     }
     const patient = await Patient.create({
-      username : req.body.username,
+      username: req.body.username,
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
       dateOfBirth: req.body.dateOfBirth,
       gender: req.body.gender,
       mobileNumber: req.body.mobileNumber,
-      emergencyContact: req.body.emergencyContact
-    })
-    res.status(201).json({patient})
+      emergencyContact: req.body.emergencyContact,
+    });
+    res.status(201).json({ patient });
   } catch (err) {
-    res.status(400).json({message : err.message})
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -36,17 +35,15 @@ const deletePatient = async (req, res) => {
   }
 };
 
-const getpatient = async(req, res) =>{
-  try{
+const getPatient = async (req, res) => {
+  try {
     const info = await Patient.findById(req.params.id);
-    if(!info){
-      return res.status(400).json({message: "Patient not found"});
+    if (!info) {
+      return res.status(400).json({ message: "Patient not found" });
     }
-  }
-
-  catch(err){
+  } catch (err) {
     res.status(400).json({ message: err.message });
   }
-}
+};
 
-export { deletePatient, getpatient, createPatient };
+export { deletePatient, getPatient, createPatient };

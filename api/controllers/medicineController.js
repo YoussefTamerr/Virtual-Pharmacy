@@ -1,9 +1,10 @@
 import Medicine from "../models/medicineModel.js";
-import mongoose from "mongoose";
+import { queryFilter } from "../utils/queryOptions.js";
 
 const getAllMedicines = async (req, res) => {
   try {
-    const medicines = await Medicine.find();
+    const dbQuery = queryFilter(Medicine.find(), req);
+    const medicines = await dbQuery;
     res.status(200).json(medicines);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -24,59 +25,35 @@ const getMedicine = async (req, res) => {
   }
 };
 
-const searchMedicine = async(req, res) => {
+const createMedicine = async (req, res) => {
   try {
-    const medicine = await Medicine.findOne({name: req.body.name});
-    if(!medicine){
-      return res.status(400).json({message: "Medicine "+ req.body.name + " not found"});
+    const medicine = await Medicine.findOne({ name: req.body.name });
+    if (medicine) {
+      return res.status(400).json({ message: "Medicine already exists" });
     }
-    res.status(200).json(medicine);
-  }
-  catch(err){
+    const newMedicine = await Medicine.create(req.body);
+    res.status(201).json(newMedicine);
+  } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-const createMedicine = async(req, res) =>{
+const updateMedicine = async (req, res) => {
+  try {
+    const medicine = await Medicine.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
 
-  try{
-    const medicine = await Medicine.findOne({ name: req.body.name });
-    if (medicine) {
-      return res.status(400).json({ message: "Medicine already exists" });
-    }              
-    const newMedicine = await Medicine.create({
-      name: req.body.name,
-      price: req.body.price,
-      availableQuantity: req.body.availableQuantity,
-      sales: req.body.sales,
-      details: req.body.details,
-      pictures: req.body.pictures
-    });
-         res.status(201).json(newMedicine);
-  }
+    if (!medicine) {
+      return res.status(400).json({ message: "Medicine not found" });
+    }
 
-  catch(err){
-      res.status(400).json({message: err.message});
+    res.status(200).json(newMedicine);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 };
 
-const updateMedicine= async(req, res) =>{
-  try{
-    const medicine = await Medicine.findByIdAndUpdate(req.params.id ,
-        {$set: req.body},
-        {new: true});
-
-      if(!medicine){
-        return res.status(400).json({ message:"Medicine not found" });
-      }
-      
-      res.status(200).json(newMedicine);
-
-    }
-
-  catch(err){
-      res.status(400).json({message: err.message});
-  }
-}
-
-export { getAllMedicines, getMedicine ,searchMedicine ,createMedicine, updateMedicine};
+export { getAllMedicines, getMedicine, createMedicine, updateMedicine };

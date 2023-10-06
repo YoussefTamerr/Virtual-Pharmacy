@@ -1,12 +1,11 @@
 import Pharmacist from "../models/pharmacistModel.js";
 import mongoose from "mongoose";
 
-
 const createPharmacist = async (req, res) => {
   try {
-    const checkExisting = await Pharmacist.findOne({email : req.body.email})
-    if(checkExisting) {
-      return res.status(400).json({message : "email already exists"})
+    const checkExisting = await Pharmacist.findOne({ email: req.body.email });
+    if (checkExisting) {
+      return res.status(400).json({ message: "email already exists" });
     }
 
     const pharmacist = await Pharmacist.create({
@@ -18,11 +17,11 @@ const createPharmacist = async (req, res) => {
       hourlyRate: req.body.hourlyRate,
       affiliation: req.body.affiliation,
       educationalBackground: req.body.educationalBackground,
-      registrationApproval: req.body.registrationApproval
-    })
-    res.status(201).json({pharmacist})
+      registrationApproval: req.body.registrationApproval,
+    });
+    res.status(201).json({ pharmacist });
   } catch (err) {
-    res.status(400).json({message : err.message})
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -40,17 +39,15 @@ const deletePharmacist = async (req, res) => {
   }
 };
 
-const getpharmacist = async(req, res) =>{
-  try{
+const getPharmacist = async (req, res) => {
+  try {
     const info = await Pharmacist.findById(req.params.id);
-    if(!info){
-      return res.status(400).json({message: "Pharmacist not found"});
+    if (!info) {
+      return res.status(400).json({ message: "Pharmacist not found" });
     }
-  }
-
-  catch(err){
+  } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-export { deletePharmacist, getpharmacist, createPharmacist };
+export { deletePharmacist, getPharmacist, createPharmacist };

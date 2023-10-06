@@ -20,7 +20,7 @@ app.use("/pharmacist", pharmacistRouter);
 app.use("/medicine", medicineRouter);
 
 app.all("*", (req, res, next) => {
-  res.status(404).json({ message: "not found" });
+  res.status(404).json({ message: "page not found" });
 });
 
 mongoose
