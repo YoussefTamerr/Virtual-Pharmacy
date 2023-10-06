@@ -1,9 +1,8 @@
-const express = require('express')
-const router = express.Router()
+import { Router } from "express";
+import { createAdmin } from "../controllers/adminController";
 
-const adminController = require('../controllers/adminController')
+const router = Router();
 
-// calling methods from controller
+router.post("/", createAdmin);
 
-
-module.exports = router
+export default router;

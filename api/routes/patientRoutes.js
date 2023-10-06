@@ -1,9 +1,10 @@
-const express = require('express')
-const router = express.Router()
+import { Router } from "express";
 
-const patientController = require('../controllers/patientController')
+import { Router } from "express";
+import { deletePatient } from "../controllers/patientController";
 
-// calling methods from controller
+const router = Router();
 
+router.delete("/:id", deletePatient);
 
-module.exports = router
+export default router;
