@@ -20,15 +20,17 @@ const medicineSchema = new Schema({
     required: true,
   },
   details: {
-    activeIngredients: {
-      type: String,
-      required: true,
-    },
+    type: String,
+    required: true,  
   },
   picture: {
     type: String,
     required: true,
   },
+  catagory: {
+    type: String,
+    required: true,
+  }
 });
 
 export default model("Medicine", medicineSchema);

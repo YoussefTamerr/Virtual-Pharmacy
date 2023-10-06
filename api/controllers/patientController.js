@@ -13,4 +13,17 @@ const deletePatient = async (req, res) => {
   }
 };
 
-export { deletePatient };
+const getpatient = async(req, res) =>{
+  try{
+    const info = await Patient.findById(req.params.id);
+    if(!info){
+      return res.status(400).json({message: "Patient not found"});
+    }
+  }
+
+  catch(err){
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export { deletePatient, getpatient };

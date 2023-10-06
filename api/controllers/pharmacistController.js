@@ -15,4 +15,17 @@ const deletePharmacist = async (req, res) => {
   }
 };
 
-export { deletePharmacist };
+const getpharmacist = async(req, res) =>{
+  try{
+    const info = await Pharmacist.findById(req.params.id);
+    if(!info){
+      return res.status(400).json({message: "Pharmacist not found"});
+    }
+  }
+
+  catch(err){
+    res.status(400).json({ message: err.message });
+  }
+};
+
+export { deletePharmacist, getpharmacist };
