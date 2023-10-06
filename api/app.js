@@ -1,29 +1,37 @@
-require('dotenv').config()
-const express = require('express');
-const mongoose = require('mongoose')
+import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
 
-const adminRouter = require('./routes/adminRoutes')
-const patientRouter = require('./routes/patientRoutes')
-const pharmacistRouter = require('./routes/pharmacistRoutes')
+import adminRouter from "./routes/adminRoutes.js";
+import patientRouter from "./routes/patientRoutes.js";
+import pharmacistRouter from "./routes/pharmacistRoutes.js";
+import medicineRouter from "./routes/medicineRoutes.js";
+
+dotenv.config();
 
 const app = express();
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        app.listen(process.env.PORT, () => {
-            console.log('listening to port', process.env.PORT)
-        })
-    })
-    .catch((err) => {
-        console.log(err)
-    })
+app.use("/admin", adminRouter);
+app.use("/patient", patientRouter);
+app.use("/pharmacist", pharmacistRouter);
+app.use("/medicine", medicineRouter);
 
+app.all("*", (req, res, next) => {
+  res.status(404).json({ message: "not found" });
+});
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log("listening to port", process.env.PORT);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-module.exports = app;
+export default app;
