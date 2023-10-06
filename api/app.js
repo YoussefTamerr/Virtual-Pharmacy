@@ -24,14 +24,18 @@ app.all("*", (req, res, next) => {
 });
 
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    dbName: "balabizo-pharmacy",
+  })
   .then(() => {
     app.listen(process.env.PORT, () => {
       console.log(`App listening at http://localhost:${process.env.PORT}`);
     });
   })
-  .catch((err) => {
-    console.log(err);
+  .catch((error) => {
+    console.error(error);
   });
 
 export default app;

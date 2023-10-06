@@ -1,6 +1,29 @@
 import Patient from "../models/patientModel.js";
 import mongoose from "mongoose";
 
+
+const createPatient = async (req, res) => {
+  try {
+    const checkExisting = await Patient.findOne({email : req.body.email})
+    if(checkExisting) {
+      return res.status(400).json({message : "email already exists"})
+    }
+    const patient = await Patient.create({
+      username : req.body.username,
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      dateOfBirth: req.body.dateOfBirth,
+      gender: req.body.gender,
+      mobileNumber: req.body.mobileNumber,
+      emergencyContact: req.body.emergencyContact
+    })
+    res.status(201).json({patient})
+  } catch (err) {
+    res.status(400).json({message : err.message})
+  }
+};
+
 const deletePatient = async (req, res) => {
   try {
     const patient = await Patient.findByIdAndDelete(req.params.id);
@@ -26,4 +49,4 @@ const getpatient = async(req, res) =>{
   }
 }
 
-export { deletePatient, getpatient };
+export { deletePatient, getpatient, createPatient };

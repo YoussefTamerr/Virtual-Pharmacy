@@ -1,4 +1,5 @@
 import { Schema as _Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
 
 const Schema = _Schema;
 
@@ -52,5 +53,20 @@ const patientSchema = new Schema(
   },
   { timestamps: true }
 );
+
+patientSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+
+  this.password = await bcrypt.hash(this.password, 12);
+});
+
+patientSchema.methods.comparePassword = async function (
+  enteredPassword,
+  hashedPassword
+) {
+  return await bcrypt.compare(enteredPassword, hashedPassword);
+};
+
+
 
 export default model("Patient", patientSchema);

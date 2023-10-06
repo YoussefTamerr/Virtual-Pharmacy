@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { deletePatient, getpatient } from "../controllers/patientController.js";
+import { createPatient, deletePatient, getpatient } from "../controllers/patientController.js";
 
 const router = Router();
+
+router.post("/", createPatient);
 
 router.delete("/:id", deletePatient);
 

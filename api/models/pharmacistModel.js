@@ -47,4 +47,17 @@ const pharmacistSchema = new Schema(
   { timestamps: true }
 );
 
+pharmacistSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+
+  this.password = await bcrypt.hash(this.password, 12);
+});
+
+pharmacistSchema.methods.comparePassword = async function (
+  enteredPassword,
+  hashedPassword
+) {
+  return await bcrypt.compare(enteredPassword, hashedPassword);
+};
+
 export default model("Pharmacist", pharmacistSchema);
