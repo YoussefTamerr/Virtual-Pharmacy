@@ -1,4 +1,4 @@
-import Admin from "../models/adminModel";
+import Admin from "../models/adminModel.js";
 import mongoose from "mongoose";
 
 const createAdmin = async (req, res) => {
@@ -17,4 +17,4 @@ const createAdmin = async (req, res) => {
   }
 };
 
-export default { createAdmin };
+export { createAdmin };

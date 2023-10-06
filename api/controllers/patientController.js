@@ -1,4 +1,4 @@
-import Patient from "../models/patientModel";
+import Patient from "../models/patientModel.js";
 import mongoose from "mongoose";
 
 const deletePatient = async (req, res) => {
@@ -13,4 +13,4 @@ const deletePatient = async (req, res) => {
   }
 };
 
-export default { deletePatient };
+export { deletePatient };

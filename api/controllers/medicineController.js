@@ -1,4 +1,4 @@
-import Medicine from "../models/medicineModel";
+import Medicine from "../models/medicineModel.js";
 import mongoose from "mongoose";
 
 const getAllMedicines = async (req, res) => {
@@ -24,4 +24,4 @@ const getMedicine = async (req, res) => {
   }
 };
 
-export default { getAllMedicines, getMedicine };
+export { getAllMedicines, getMedicine };

@@ -27,7 +27,7 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(process.env.PORT, () => {
-      console.log("listening to port", process.env.PORT);
+      console.log(`App listening at http://localhost:${process.env.PORT}`);
     });
   })
   .catch((err) => {

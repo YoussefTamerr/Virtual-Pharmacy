@@ -1,4 +1,4 @@
-import Pharmacist from "../models/pharmacistModel";
+import Pharmacist from "../models/pharmacistModel.js";
 import mongoose from "mongoose";
 
 const deletePharmacist = async (req, res) => {
@@ -15,4 +15,4 @@ const deletePharmacist = async (req, res) => {
   }
 };
 
-export default { deletePharmacist };
+export { deletePharmacist };
