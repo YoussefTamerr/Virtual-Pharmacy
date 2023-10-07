@@ -22,6 +22,7 @@ const patientSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     dateOfBirth: {
       type: Date,
@@ -66,7 +67,5 @@ patientSchema.methods.comparePassword = async function (
 ) {
   return await bcrypt.compare(enteredPassword, hashedPassword);
 };
-
-
 
 export default model("Patient", patientSchema);

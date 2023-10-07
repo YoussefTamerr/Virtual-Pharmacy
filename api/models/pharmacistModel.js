@@ -22,6 +22,7 @@ const pharmacistSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     dateOfBirth: {
       type: Date,

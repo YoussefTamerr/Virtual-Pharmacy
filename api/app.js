@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import mongoose from "mongoose";
 
 import adminRouter from "./routes/adminRoutes.js";
@@ -13,14 +14,17 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors({ origin: "*" }));
 
 app.use("/admin", adminRouter);
 app.use("/patient", patientRouter);
 app.use("/pharmacist", pharmacistRouter);
 app.use("/medicine", medicineRouter);
 
-app.all("*", (req, res, next) => {
-  res.status(404).json({ message: "page not found" });
+app.all("*", (req, res) => {
+  res
+    .status(404)
+    .json({ message: `Cannot find ${req.originalUrl} on this server` });
 });
 
 mongoose
