@@ -50,7 +50,7 @@ const updateMedicine = async (req, res) => {
       return res.status(400).json({ message: "Medicine not found" });
     }
 
-    res.status(200).json(newMedicine);
+    res.status(200).json(medicine);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

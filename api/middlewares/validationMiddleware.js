@@ -26,7 +26,22 @@ const pharmacistSchema = joi.object({
     hourlyRate: joi.number().required(),
     affiliation: joi.string().required(),
     educationalBackground: joi.string().required(),
-    registrationApproval: joi.string().valid('pending').valid('denied').valid('approved').required(),
+    registrationApproval: joi.string().valid('pending').valid('denied').valid('approved'),
+});
+
+const adminSchema = joi.object({
+    username: joi.string().alphanum().min(3).max(30).required(),
+    password: joi.string().alphanum().min(6).required(),
+});
+
+const medicineSchema = joi.object({
+    name: joi.string().required(),
+    price: joi.number().required(),
+    availableQuantity: joi.number().required(),
+    sales: joi.number().required(),
+    details: joi.string().required(),
+    picture: joi.string().required(),
+    category: joi.string().required(),
 });
 
 const validateBody = (schema) => {
@@ -45,5 +60,7 @@ const validateBody = (schema) => {
 export {
     patientSchema,
     pharmacistSchema,
+    adminSchema,
+    medicineSchema,
     validateBody,
 };

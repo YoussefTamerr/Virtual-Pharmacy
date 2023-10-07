@@ -41,6 +41,7 @@ const getPatient = async (req, res) => {
     if (!info) {
       return res.status(400).json({ message: "Patient not found" });
     }
+    res.status(201).json({ info });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
