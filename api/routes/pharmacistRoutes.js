@@ -5,9 +5,14 @@ import {
   getPharmacist,
 } from "../controllers/pharmacistController.js";
 
+import { 
+  pharmacistSchema, 
+  validateBody, 
+} from "../middlewares/validationMiddleware.js";
+
 const router = Router();
 
-router.post("/", createPharmacist);
+router.post("/", validateBody(pharmacistSchema), createPharmacist);
 
 router.delete("/:id", deletePharmacist);
 
