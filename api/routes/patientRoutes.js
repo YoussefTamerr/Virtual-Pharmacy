@@ -3,6 +3,7 @@ import {
   createPatient,
   deletePatient,
   getPatient,
+  getAllPatients,
 } from "../controllers/patientController.js";
 
 import { 
@@ -11,6 +12,8 @@ import {
 } from "../middlewares/validationMiddleware.js";
 
 const router = Router();
+
+router.get("/", getAllPatients);
 
 router.post("/", validateBody(patientSchema), createPatient);
 

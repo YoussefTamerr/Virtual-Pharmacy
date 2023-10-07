@@ -47,4 +47,13 @@ const getPatient = async (req, res) => {
   }
 };
 
-export { deletePatient, getPatient, createPatient };
+const getAllPatients = async (req, res) => {
+  try {
+    const patients = await Patient.find();
+    res.status(200).json(patients);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+export { deletePatient, getPatient, createPatient, getAllPatients };

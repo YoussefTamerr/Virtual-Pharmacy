@@ -1,5 +1,5 @@
 import Pharmacist from "../models/pharmacistModel.js";
-import mongoose from "mongoose";
+
 
 const createPharmacist = async (req, res) => {
   try {
@@ -51,4 +51,13 @@ const getPharmacist = async (req, res) => {
   }
 };
 
-export { deletePharmacist, getPharmacist, createPharmacist };
+const getAllPharmacists = async (req, res) => {
+  try {
+    const pharmacists = await Pharmacist.find();
+    res.status(200).json(pharmacists);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+export { deletePharmacist, getPharmacist, createPharmacist, getAllPharmacists };

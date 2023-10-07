@@ -3,6 +3,7 @@ import {
   createPharmacist,
   deletePharmacist,
   getPharmacist,
+  getAllPharmacists,
 } from "../controllers/pharmacistController.js";
 
 import { 
@@ -11,6 +12,8 @@ import {
 } from "../middlewares/validationMiddleware.js";
 
 const router = Router();
+
+router.get("/", getAllPharmacists);
 
 router.post("/", validateBody(pharmacistSchema), createPharmacist);
 
