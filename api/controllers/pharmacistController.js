@@ -1,4 +1,5 @@
 import Pharmacist from "../models/pharmacistModel.js";
+import mongoose from "mongoose";
 
 
 const createPharmacist = async (req, res) => {
@@ -27,6 +28,9 @@ const createPharmacist = async (req, res) => {
 
 const deletePharmacist = async (req, res) => {
   try {
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Pharmacist ID" });
+    }
     const pharmacist = await Pharmacist.findByIdAndDelete(req.params.id);
     if (!pharmacist) {
       return res
@@ -41,6 +45,9 @@ const deletePharmacist = async (req, res) => {
 
 const getPharmacist = async (req, res) => {
   try {
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Pharmacist ID" });
+    }
     const info = await Pharmacist.findById(req.params.id);
     if (!info) {
       return res.status(400).json({ message: "Pharmacist not found" });

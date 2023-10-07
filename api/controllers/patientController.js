@@ -25,6 +25,9 @@ const createPatient = async (req, res) => {
 
 const deletePatient = async (req, res) => {
   try {
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Patient ID" });
+    }
     const patient = await Patient.findByIdAndDelete(req.params.id);
     if (!patient) {
       return res.status(400).json({ message: "No Patient found with that ID" });
@@ -37,6 +40,9 @@ const deletePatient = async (req, res) => {
 
 const getPatient = async (req, res) => {
   try {
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Patient ID" });
+    }
     const info = await Patient.findById(req.params.id);
     if (!info) {
       return res.status(400).json({ message: "Patient not found" });
