@@ -5,6 +5,9 @@ import AdminSignup from "./components/AdminSignup";
 import PharmacistSignup from "./components/PharmacistSignup";
 import PatientSignup from "./components/PatientSignup";
 
+import MedicineView from "./components/MedicineView";
+import PharmacistHome from "./components/PharmacistHome";
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +27,10 @@ function App() {
             <Route 
               path="/signup/patient" 
               element={<PatientSignup />} 
+            />
+            <Route 
+              path="/pharmacist" 
+              element={<PharmacistHome />} 
             />
         </Routes>
       </BrowserRouter>
