@@ -49,6 +49,7 @@ function PharmacistHome() {
                 picture: "placeholder",
                 category: ""
             });
+            handleClick(event);
         } else {
             setMessage(data.message);
         }
