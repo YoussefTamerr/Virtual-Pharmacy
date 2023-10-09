@@ -39,4 +39,4 @@ const PatientView = ({ patient }) => {
     )
 }
 
-export default PharmacistView;
+export default PatientView;
