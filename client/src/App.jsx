@@ -5,10 +5,9 @@ import AdminSignup from "./components/AdminSignup";
 import PharmacistSignup from "./components/PharmacistSignup";
 import PatientSignup from "./components/PatientSignup";
 
-import MedicineView from "./components/MedicineView";
 import PharmacistHome from "./components/PharmacistHome";
-import MedicineList from "./components/MedicineList";
 import PatientHome from "./components/PatientHome";
+import AdminHome from "./components/AdminHome";
 
 function App() {
   return (
@@ -20,7 +19,7 @@ function App() {
         <Route path="/signup/patient" element={<PatientSignup />} />
         <Route path="/pharmacist" element={<PharmacistHome />} />
         <Route path="/patient" element={<PatientHome />} />
-        <Route path="/medicines" element={<MedicineList />} />
+        <Route path="/admin" element={<AdminHome />} />
       </Routes>
     </BrowserRouter>
   );
