@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
-const Search = ({ onSearch }) => {
-    const [searchTerm, setSearchTerm] = useState('')
+const Search = ({searchTerm, setSearchTerm}) => {
+
     const onSearchTermChange = (e) => {
-        const searchString = e.target.value.replace(/[^a-z\s]/gi, '')
-        setSearchTerm(searchString)
-        onSearch(searchString)
-    }
+        const searchString = e.target.value.replace(/[^a-z\s]/gi, "");
+        setSearchTerm(searchString);
+      };
+    
 
     return (
         <div className='search-bar'>

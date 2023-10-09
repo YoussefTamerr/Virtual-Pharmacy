@@ -130,4 +130,5 @@ const PharmacistSignup = () => {
   );
 };
 
+
 export default PharmacistSignup;
