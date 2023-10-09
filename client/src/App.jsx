@@ -14,7 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/signup/patient" />} />
-        <Route path="/signup/admin" element={<AdminSignup />} />
+        {/* <Route path="/signup/admin" element={<AdminSignup />} /> */}
         <Route path="/signup/pharmacist" element={<PharmacistSignup />} />
         <Route path="/signup/patient" element={<PatientSignup />} />
         <Route path="/pharmacist" element={<PharmacistHome />} />

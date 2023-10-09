@@ -55,7 +55,7 @@ function AdminFunctions() {
             }
         };
         getPharmacistData();
-    }, []);
+    }, [pharmacistView]);
         
 
     return (

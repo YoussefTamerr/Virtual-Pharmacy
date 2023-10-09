@@ -6,10 +6,10 @@ const PharmacistSignup = () => {
     name: "",
     email: "",
     password: "",
-    dob: "",
+    dateOfBirth: "",
     hourlyRate: "",
     affiliation: "",
-    education: "",
+    educationalBackground: "",
   });
   const [message, setMessage] = useState(null);
 
@@ -38,10 +38,10 @@ const PharmacistSignup = () => {
         name: "",
         email: "",
         password: "",
-        dob: "",
+        dateOfBirth: "",
         hourlyRate: "",
         affiliation: "",
-        education: "",
+        educationalBackground: "",
       });
     } else {
       setMessage(data.message);
@@ -92,8 +92,8 @@ const PharmacistSignup = () => {
           Date of Birth:
           <input
             type="date"
-            name="dob"
-            value={formData.dob}
+            name="dateOfBirth"
+            value={formData.dateOfBirth}
             onChange={handleChange}
           />
         </label>
@@ -117,9 +117,10 @@ const PharmacistSignup = () => {
         </label>
         <label>
           Educational Background:
-          <textarea
-            name="education"
-            value={formData.education}
+          <input
+            type="text"
+            name="educationalBackground"
+            value={formData.educationalBackground}
             onChange={handleChange}
           />
         </label>
