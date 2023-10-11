@@ -69,7 +69,7 @@ function Signup() {
   };
 
   return (
-    <div>
+    <>
       <h1>Patient Signup</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -174,7 +174,7 @@ function Signup() {
         <button type="submit">Submit</button>
         {message && <p>{message}</p>}
       </form>
-    </div>
+    </>
   );
 }
 

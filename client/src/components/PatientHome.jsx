@@ -1,5 +1,3 @@
-import { useState } from "react";
-import MedicineView from "./MedicineView";
 import MedicineList from "./MedicineList";
 
 function PatientHome() {

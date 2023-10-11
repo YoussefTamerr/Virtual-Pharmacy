@@ -1,22 +1,24 @@
 import { Button, Modal, message } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 
-const MedicineView = ({ med }) => {
-  const [medicineDetails, setMedicineDetails] = useState(med.details);
-  const [medicinePrice, setMedicinePrice] = useState(med.price);
-  const [medicineDetailsInter, setMedicineDetailsInter] = useState(med.details);
-  const [medicinePriceInter, setMedicinePriceInter] = useState(med.price);
+const MedicineView = ({ medicine }) => {
+  const [medicineDetails, setMedicineDetails] = useState(medicine.details);
+  const [medicinePrice, setMedicinePrice] = useState(medicine.price);
+  const [medicineDetailsInter, setMedicineDetailsInter] = useState(
+    medicine.details
+  );
+  const [medicinePriceInter, setMedicinePriceInter] = useState(medicine.price);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
+
   const handleOk = () => {
     setMedicineDetails(medicineDetailsInter);
     setMedicinePrice(medicinePriceInter);
 
-    // update the database
-    fetch(`http://localhost:5000/medicine/${med._id}`, {
+    fetch(`http://localhost:5000/medicine/${medicine.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -44,52 +46,47 @@ const MedicineView = ({ med }) => {
   };
 
   return (
-    <div className="med-details">
+    <div>
       {window.location.pathname == "/pharmacist" && (
-        <>
-          <Button type="primary" onClick={showModal}>
-            Edit Medicine
-          </Button>
-          <Modal
-            title="Edit Medicine"
-            open={isModalOpen}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            okText="Save"
-          >
-            <label>
-              Details:
-              <input
-                value={medicineDetailsInter}
-                type="text"
-                onChange={(e) => {
-                  setMedicineDetailsInter(e.target.value);
-                }}
-              />
-            </label>
-            <label>
-              Price:
-              <input
-                value={medicinePriceInter}
-                type="text"
-                onChange={(e) => {
-                  setMedicinePriceInter(e.target.value);
-                }}
-              />
-            </label>
-          </Modal>
-        </>
+        <Modal
+          title="Edit Medicine"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okText="Save"
+        >
+          <label>
+            Details:
+            <input
+              value={medicineDetailsInter}
+              type="text"
+              onChange={(e) => {
+                setMedicineDetailsInter(e.target.value);
+              }}
+            />
+          </label>
+          <label>
+            Price:
+            <input
+              value={medicinePriceInter}
+              type="text"
+              onChange={(e) => {
+                setMedicinePriceInter(e.target.value);
+              }}
+            />
+          </label>
+        </Modal>
       )}
-      <h4>{med.name}</h4>
+      <h4>{medicine.name}</h4>
       {window.location.pathname == "/pharmacist" && (
         <>
           <p>
             <strong>available Quantity </strong>
-            {med.availableQuantity}
+            {medicine.availableQuantity}
           </p>
           <p>
             <strong>sales: </strong>
-            {med.sales}
+            {medicine.sales}
           </p>
         </>
       )}
@@ -101,6 +98,11 @@ const MedicineView = ({ med }) => {
         <strong>details: </strong>
         {medicineDetails}
       </p>
+      {window.location.pathname == "/pharmacist" && (
+        <Button type="primary" onClick={showModal}>
+          Edit Medicine
+        </Button>
+      )}
     </div>
   );
 };

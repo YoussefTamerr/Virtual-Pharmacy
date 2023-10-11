@@ -48,6 +48,7 @@ function PharmacistHome() {
 
   return (
     <>
+      <h1>Pharmacist Home</h1>
       <form onSubmit={handleSubmitMedicine}>
         <label>
           Name:

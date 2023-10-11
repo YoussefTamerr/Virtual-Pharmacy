@@ -4,29 +4,37 @@ import Search from "./Search";
 
 function MedicineList() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [medicine, setMedicine] = useState([]);
+  const [medicines, setMedicines] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const categories = medicine.map((med) => med.category);
+  const categories = medicines.map((medicine) => medicine.category);
 
   useEffect(() => {
     const fetchData = async () => {
-      const query = searchTerm == "" ? "" : "?name=" + searchTerm;
-      const response = await fetch(`http://localhost:5000/medicine` + query);
+      const response = await fetch(`http://localhost:5000/medicine`);
       const data = await response.json();
       if (response.ok) {
-        setMedicine(data);
+        setMedicines(data);
       }
     };
     fetchData();
-  }, [searchTerm]);
+  }, []);
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
 
-  const filteredMedicine = selectedCategory
-    ? medicine.filter((med) => med.category === selectedCategory)
-    : medicine;
+  const filteredMedicine = medicines.filter((medicine) => {
+    if (selectedCategory && medicine.category !== selectedCategory) {
+      return false;
+    }
+    if (
+      searchTerm &&
+      !medicine.name.toLowerCase().startsWith(searchTerm.toLowerCase())
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <>
@@ -46,8 +54,8 @@ function MedicineList() {
           ))}
         </select>
       </div>
-      {filteredMedicine.map((med) => (
-        <MedicineView key={med._id} med={med} />
+      {filteredMedicine.map((medicine) => (
+        <MedicineView key={medicine._id} medicine={medicine} />
       ))}
     </>
   );

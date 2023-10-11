@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { message } from "antd";
 
-function AdminSignup() {
+function AdminForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const [message, setMessage] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -15,16 +15,16 @@ function AdminSignup() {
     });
     const data = await response.json();
     if (response.ok) {
-      setMessage("Admin created successfully");
+      message.success("Admin created successfully");
       setFormData({ username: "", password: "" });
     } else {
-      setMessage(data.message);
+      message.error(data.message);
     }
   };
 
   return (
-    <>
-      <h1>Admin Signup</h1>
+    <div>
+      <h2>Add A New Admin</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Username:
@@ -47,10 +47,9 @@ function AdminSignup() {
           />
         </label>
         <button type="submit">Create Admin</button>
-        {message && <p>{message}</p>}
       </form>
-    </>
+    </div>
   );
 }
 
-export default AdminSignup;
+export default AdminForm;

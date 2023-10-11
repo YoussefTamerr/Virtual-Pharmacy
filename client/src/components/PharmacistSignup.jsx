@@ -50,7 +50,7 @@ const PharmacistSignup = () => {
 
   return (
     <>
-      <h1>Pharmacist Registration</h1>
+      <h1>Pharmacist Registration Form</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username:
@@ -130,6 +130,5 @@ const PharmacistSignup = () => {
     </>
   );
 };
-
 
 export default PharmacistSignup;
