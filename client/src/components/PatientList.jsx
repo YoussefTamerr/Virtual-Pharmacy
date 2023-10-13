@@ -13,7 +13,7 @@ function PatientList() {
       }
     };
     fetchData();
-  }, []);
+  }, [patients]);
 
   return (
     <div>

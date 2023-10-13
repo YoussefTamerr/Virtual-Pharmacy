@@ -1,6 +1,7 @@
 import AdminForm from "./AdminForm";
 import PatientList from "./PatientList";
 import PharmacistList from "./PharmacistList";
+import MedicineList from "./MedicineList";
 
 function AdminHome() {
   return (
@@ -9,6 +10,7 @@ function AdminHome() {
       <AdminForm />
       <PatientList />
       <PharmacistList />
+      <MedicineList />
     </>
   );
 }

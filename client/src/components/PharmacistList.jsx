@@ -13,7 +13,7 @@ function PharmacistList() {
       }
     };
     fetchData();
-  }, []);
+  }, [pharmacists]);
 
   const approvedPharmacists = pharmacists.filter(
     (pharmacist) => pharmacist.registrationApproval === "approved"

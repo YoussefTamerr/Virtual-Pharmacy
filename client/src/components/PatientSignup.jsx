@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -63,6 +65,9 @@ function Signup() {
           relation: "",
         },
       });
+      setTimeout(() => {
+        navigate("/patient");
+      }, 2000);
     } else {
       setMessage(data.message);
     }
@@ -174,6 +179,8 @@ function Signup() {
         <button type="submit">Submit</button>
         {message && <p>{message}</p>}
       </form>
+
+      <a href="/signup/pharmacist">Want to register as a Pharmacist ?</a>
     </>
   );
 }

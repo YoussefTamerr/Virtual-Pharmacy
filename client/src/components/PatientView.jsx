@@ -4,7 +4,7 @@ const PatientView = ({ patient }) => {
   const removePatient = async (event) => {
     event.preventDefault();
     const response = await fetch(
-      `http://localhost:5000/patient/${patient.id}`,
+      `http://localhost:5000/patient/${patient._id}`,
       {
         method: "DELETE",
         headers: {
