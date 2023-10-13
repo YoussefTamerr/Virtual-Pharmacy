@@ -5,10 +5,10 @@ const Search = ({ searchTerm, setSearchTerm }) => {
   };
 
   return (
-    <div className="search-bar">
+    <div>
       <input
         type="text"
-        placeholder="Search by name..."
+        placeholder="Search medicines by name"
         value={searchTerm}
         onChange={onSearchTermChange}
       />

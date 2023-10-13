@@ -1,4 +1,5 @@
 import { useState } from "react";
+import BackButton from "./BackButton";
 
 const PharmacistSignup = () => {
   const [formData, setFormData] = useState({
@@ -50,6 +51,7 @@ const PharmacistSignup = () => {
 
   return (
     <>
+      <BackButton />
       <h1>Pharmacist Registration Form</h1>
       <form onSubmit={handleSubmit}>
         <label>

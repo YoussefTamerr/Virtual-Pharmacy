@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import BackButton from "./BackButton";
+import { Link } from "react-router-dom";
 
 function Signup() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -48,7 +48,6 @@ function Signup() {
       body: JSON.stringify(formData),
     });
     const data = await response.json();
-    console.log(data);
     if (response.ok) {
       setMessage("Registration successful");
       setFormData({
@@ -65,9 +64,6 @@ function Signup() {
           relation: "",
         },
       });
-      setTimeout(() => {
-        navigate("/patient");
-      }, 2000);
     } else {
       setMessage(data.message);
     }
@@ -75,6 +71,7 @@ function Signup() {
 
   return (
     <>
+      <BackButton />
       <h1>Patient Signup</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -180,7 +177,7 @@ function Signup() {
         {message && <p>{message}</p>}
       </form>
 
-      <a href="/signup/pharmacist">Want to register as a Pharmacist ?</a>
+      <Link to="/signup/pharmacist">Want to register as a Pharmacist ?</Link>
     </>
   );
 }

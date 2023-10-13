@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MedicineList from "./MedicineList";
+import BackButton from "./BackButton";
 
 function PharmacistHome() {
   const [medicineData, setMedicineData] = useState({
@@ -48,6 +49,7 @@ function PharmacistHome() {
 
   return (
     <>
+      <BackButton />
       <h1>Pharmacist Home</h1>
       <form onSubmit={handleSubmitMedicine}>
         <label>

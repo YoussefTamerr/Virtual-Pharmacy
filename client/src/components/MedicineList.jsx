@@ -38,9 +38,10 @@ function MedicineList() {
 
   return (
     <>
+      <h2>Medicines</h2>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div>
-        <label htmlFor="category">Filter by category:</label>
+        <label htmlFor="category">Filter medicines by category:</label>
         <select
           id="category"
           value={selectedCategory}

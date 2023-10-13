@@ -1,6 +1,6 @@
 import { Button, message } from "antd";
 
-const PatientView = ({ patient }) => {
+const PatientView = ({ patient, onRemove }) => {
   const removePatient = async (event) => {
     event.preventDefault();
     const response = await fetch(
@@ -15,6 +15,7 @@ const PatientView = ({ patient }) => {
     const data = await response.json();
     if (response.ok) {
       message.success("Patient removed successfully");
+      onRemove(patient._id);
     } else {
       message.error(data.message);
     }

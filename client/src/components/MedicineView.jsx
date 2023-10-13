@@ -4,11 +4,17 @@ import { useState } from "react";
 const MedicineView = ({ medicine }) => {
   const [medicineDetails, setMedicineDetails] = useState(medicine.details);
   const [medicinePrice, setMedicinePrice] = useState(medicine.price);
-  const [medicineQuantity, setMedicineQuantity] = useState(medicine.availableQuantity);
+  const [medicineQuantity, setMedicineQuantity] = useState(
+    medicine.availableQuantity
+  );
 
-  const [medicineDetailsInter, setMedicineDetailsInter] = useState(medicine.details);
+  const [medicineDetailsInter, setMedicineDetailsInter] = useState(
+    medicine.details
+  );
   const [medicinePriceInter, setMedicinePriceInter] = useState(medicine.price);
-  const [medicineQuantityInter, setMedicineQuantityInter] = useState(medicine.availableQuantity);
+  const [medicineQuantityInter, setMedicineQuantityInter] = useState(
+    medicine.availableQuantity
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -16,10 +22,6 @@ const MedicineView = ({ medicine }) => {
   };
 
   const handleOk = () => {
-    // setMedicineDetails(medicineDetailsInter);
-    // setMedicinePrice(medicinePriceInter);
-    // setMedicineQuantity(medicineQuantityInter);
-
     fetch(`http://localhost:5000/medicine/${medicine._id}`, {
       method: "PATCH",
       headers: {

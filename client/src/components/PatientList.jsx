@@ -13,14 +13,20 @@ function PatientList() {
       }
     };
     fetchData();
-  }, [patients]);
+  }, []);
+
+  const onRemove = (id) => {
+    setPatients((prevState) =>
+      prevState.filter((patient) => patient._id !== id)
+    );
+  };
 
   return (
     <div>
       <h2>Patients</h2>
 
       {patients.map((patient) => (
-        <PatientView key={patient._id} patient={patient} />
+        <PatientView key={patient._id} patient={patient} onRemove={onRemove} />
       ))}
     </div>
   );
