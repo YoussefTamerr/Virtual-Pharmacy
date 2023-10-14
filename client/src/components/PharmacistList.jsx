@@ -15,6 +15,12 @@ function PharmacistList() {
     fetchData();
   }, []);
 
+  const onRemove = (id) => {
+    setPharmacists((prevState) =>
+      prevState.filter((pharmacist) => pharmacist._id !== id)
+    );
+  }
+
   const approvedPharmacists = pharmacists.filter(
     (pharmacist) => pharmacist.registrationApproval === "approved"
   );
@@ -28,7 +34,7 @@ function PharmacistList() {
       <h2>Pharmacists</h2>
       <h3>Registered Pharmacists</h3>
       {approvedPharmacists.map((pharmacist) => (
-        <PharmacistView key={pharmacist._id} pharmacist={pharmacist} />
+        <PharmacistView key={pharmacist._id} pharmacist={pharmacist} onRemove={onRemove} />
       ))}
 
       <h3>Registration Requests</h3>

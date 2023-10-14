@@ -1,6 +1,6 @@
 import { Button, message } from "antd";
 
-const PharmacistView = ({ pharmacist }) => {
+const PharmacistView = ({ pharmacist, onRemove }) => {
   const removePharmacist = async (event) => {
     event.preventDefault();
     const response = await fetch(
@@ -15,6 +15,7 @@ const PharmacistView = ({ pharmacist }) => {
     const data = await response.json();
     if (response.ok) {
       message.success("Pharmacist removed successfully");
+      onRemove(pharmacist._id);
     } else {
       message.error(data.message);
     }
