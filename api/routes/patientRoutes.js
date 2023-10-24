@@ -6,9 +6,9 @@ import {
   getAllPatients,
 } from "../controllers/patientController.js";
 
-import { 
-  patientSchema, 
-  validateBody, 
+import {
+  patientSchema,
+  validateBody,
 } from "../middlewares/validationMiddleware.js";
 
 const router = Router();

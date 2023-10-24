@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 
 import PharmacistSignup from "./components/PharmacistSignup";
 import PatientSignup from "./components/PatientSignup";
