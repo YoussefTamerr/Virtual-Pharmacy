@@ -67,4 +67,36 @@ const getAllPharmacists = async (req, res) => {
   }
 };
 
-export { deletePharmacist, getPharmacist, createPharmacist, getAllPharmacists };
+const acceptPharmacist = async(req, res) => {
+  try{
+    const ziko = await Pharmacist.findOne({username: req.body.username});
+    if(ziko.registrationApproval==='pending'){
+      ziko.registrationApproval= 'approved';
+      res.status(201).json(pharmacist);
+    }
+    else{  
+      return res.status(400).json({ message: "Pharmacist has been answered" });
+    }
+  }
+  catch(err){
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const rejectPharmacist = async(req, res) => {
+  try{
+    const ziko = await Pharmacist.findOne({username: req.body.username});
+    if(ziko.registrationApproval==='pending'){
+      ziko.registrationApproval= 'denied';
+      res.status(201).json(pharmacist);
+    }
+    else{  
+      return res.status(400).json({ message: "Pharmacist has been answered" });
+    }
+  }
+  catch(err){
+    res.status(400).json({ message: err.message });
+  }
+};
+
+export { deletePharmacist, getPharmacist, createPharmacist, getAllPharmacists, acceptPharmacist, rejectPharmacist};

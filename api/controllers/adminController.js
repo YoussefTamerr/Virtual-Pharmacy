@@ -1,5 +1,4 @@
 import Admin from "../models/adminModel.js";
-import Pharmacist from "../models/pharmacistModel.js";
 import jwt from "jsonwebtoken";
 
 const createAdmin = async (req, res) => {
@@ -40,24 +39,5 @@ const loginAdmin = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
-const acceptPharmacist = async(req, res) => {
-  try{
-    const pharmacist = await Pharmacist.findOne({username: req.body.username});
-    res.status(201).json(pharmacist);
-  }
-  catch(err){
-    res.status(400).json({ message: err.message });
-  }
-};
 
-const rejectPharmacist = async(req, res) => {
-  try{
-    const pharmacist = await Pharmacist.findOne({username: req.body.username});
-    res.status(201).json(pharmacist);
-  }
-  catch(err){
-    res.status(400).json({ message: err.message });
-  }
-};
-
-export { createAdmin, loginAdmin, acceptPharmacist,rejectPharmacist};
+export { createAdmin, loginAdmin};

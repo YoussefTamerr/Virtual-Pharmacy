@@ -4,6 +4,8 @@ import {
   deletePharmacist,
   getPharmacist,
   getAllPharmacists,
+  acceptPharmacist,
+  rejectPharmacist,
 } from "../controllers/pharmacistController.js";
 
 import { 
@@ -20,5 +22,10 @@ router.post("/", validateBody(pharmacistSchema), createPharmacist);
 router.delete("/:id", deletePharmacist);
 
 router.get("/:id", getPharmacist);
+
+//router.post(,acceptPharmacist); //lel accept
+
+
+//router.post(,rejectPharmacist); //lel reject
 
 export default router;
