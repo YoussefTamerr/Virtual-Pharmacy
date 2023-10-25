@@ -69,9 +69,10 @@ const getAllPharmacists = async (req, res) => {
 
 const acceptPharmacist = async(req, res) => {
   try{
-    const ziko = await Pharmacist.findOne({username: req.body.username});
-    if(ziko.registrationApproval==='pending'){
-      ziko.registrationApproval= 'approved';
+    const Pharmacist = await Pharmacist.findOne({username: req.body.username});
+    if(Pharmacist.registrationApproval==='pending'){
+      Pharmacist.registrationApproval= 'approved';
+      await Pharmacist.save();
       res.status(201).json(pharmacist);
     }
     else{  
@@ -85,9 +86,10 @@ const acceptPharmacist = async(req, res) => {
 
 const rejectPharmacist = async(req, res) => {
   try{
-    const ziko = await Pharmacist.findOne({username: req.body.username});
-    if(ziko.registrationApproval==='pending'){
-      ziko.registrationApproval= 'denied';
+    const Pharmacist = await Pharmacist.findOne({username: req.body.username});
+    if(Pharmacist.registrationApproval==='pending'){
+      Pharmacist.registrationApproval= 'denied';
+      await Pharmacist.save();
       res.status(201).json(pharmacist);
     }
     else{  
