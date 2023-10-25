@@ -23,9 +23,8 @@ router.delete("/:id", deletePharmacist);
 
 router.get("/:id", getPharmacist);
 
-//router.post(,acceptPharmacist); //lel accept
+router.post("/:id",acceptPharmacist); //lel accept
 
-
-//router.post(,rejectPharmacist); //lel reject
+router.post("/:id",rejectPharmacist); //lel reject
 
 export default router;
