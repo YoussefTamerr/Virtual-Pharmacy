@@ -7,6 +7,7 @@ import adminRouter from "./routes/adminRoutes.js";
 import patientRouter from "./routes/patientRoutes.js";
 import pharmacistRouter from "./routes/pharmacistRoutes.js";
 import medicineRouter from "./routes/medicineRoutes.js";
+import cartRouter from "./routes/cartRoutes";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use("/admin", adminRouter);
 app.use("/patient", patientRouter);
 app.use("/pharmacist", pharmacistRouter);
 app.use("/medicine", medicineRouter);
+app.use("/cart", cartRouter);
 
 app.all("*", (req, res) => {
   res
