@@ -60,9 +60,13 @@ const removeFromCart = async (req, res) => {
       if (itemIndex === -1) {
         return res.status(404).json({ message: 'Item not found in the cart' });
       }
-  
-      cart.list.splice(itemIndex, 1);
 
+      if (cart.list[itemIndex].quantity > 1) {
+        cart.list[itemIndex].quantity -= 1;
+       } 
+      else {
+        cart.list.splice(itemIndex, 1);
+           }
       await cart.save();
   
       res.send('Item removed from the cart');
