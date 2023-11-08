@@ -65,10 +65,16 @@ const validateBody = (schema) => {
   };
 };
 
+const loginSchema = joi.object({
+  username: joi.string().alphanum().min(3).max(30).required(),
+  password: joi.string().alphanum().min(6).required(),
+});
+
 export {
   patientSchema,
   pharmacistSchema,
   adminSchema,
   medicineSchema,
+  loginSchema,
   validateBody,
 };

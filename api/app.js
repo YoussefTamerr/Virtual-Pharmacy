@@ -7,6 +7,8 @@ import adminRouter from "./routes/adminRoutes.js";
 import patientRouter from "./routes/patientRoutes.js";
 import pharmacistRouter from "./routes/pharmacistRoutes.js";
 import medicineRouter from "./routes/medicineRoutes.js";
+import { verifyToken } from "./middlewares/authMiddleware.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -15,11 +17,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));
+app.use(cookieParser());
 
 app.use("/admin", adminRouter);
 app.use("/patient", patientRouter);
 app.use("/pharmacist", pharmacistRouter);
 app.use("/medicine", medicineRouter);
+app.post("/logout", verifyToken, (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
+});
 
 app.all("*", (req, res) => {
   res

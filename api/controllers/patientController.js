@@ -1,5 +1,6 @@
 import Patient from "../models/patientModel.js";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 const createPatient = async (req, res) => {
   try {
@@ -23,9 +24,32 @@ const createPatient = async (req, res) => {
   }
 };
 
+const loginPatient = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const patient = await Patient.findOne({ username }).select("+password");
+    if (!patient) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+    const isMatch = await patient.comparePassword(password, patient.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    const token = jwt.sign({ id: patient._id }, process.env.JWT_SECRET, {
+      expiresIn: "10m",
+    });
+    res.cookie("token", token, { httpOnly: true, maxAge: 10 * 60 * 1000 });
+    patient.password = undefined;
+    return res.status(200).json({ token, data: patient });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 const deletePatient = async (req, res) => {
   try {
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid Patient ID" });
     }
     const patient = await Patient.findByIdAndDelete(req.params.id);
@@ -40,7 +64,7 @@ const deletePatient = async (req, res) => {
 
 const getPatient = async (req, res) => {
   try {
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid Patient ID" });
     }
     const info = await Patient.findById(req.params.id);
@@ -62,4 +86,10 @@ const getAllPatients = async (req, res) => {
   }
 };
 
-export { deletePatient, getPatient, createPatient, getAllPatients };
+export {
+  deletePatient,
+  getPatient,
+  createPatient,
+  getAllPatients,
+  loginPatient,
+};

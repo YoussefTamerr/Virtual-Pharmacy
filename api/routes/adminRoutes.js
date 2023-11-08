@@ -2,13 +2,14 @@ import { Router } from "express";
 import { createAdmin, loginAdmin } from "../controllers/adminController.js";
 import {
   adminSchema,
+  loginSchema,
   validateBody,
 } from "../middlewares/validationMiddleware.js";
 import { restrictTo, verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-router.post("/login", validateBody(adminSchema), loginAdmin);
+router.post("/login", validateBody(loginSchema), loginAdmin);
 
 router.use(verifyToken);
 

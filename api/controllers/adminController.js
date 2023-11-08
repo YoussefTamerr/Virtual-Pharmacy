@@ -32,7 +32,7 @@ const loginAdmin = async (req, res) => {
     const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
       expiresIn: "10m",
     });
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, { httpOnly: true, maxAge: 10 * 60 * 1000 });
     admin.password = undefined;
     return res.status(200).json({ token, data: admin });
   } catch (err) {
@@ -40,4 +40,4 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-export { createAdmin, loginAdmin};
+export { createAdmin, loginAdmin };
