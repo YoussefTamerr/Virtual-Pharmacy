@@ -68,4 +68,10 @@ patientSchema.methods.comparePassword = async function (
   return await bcrypt.compare(enteredPassword, hashedPassword);
 };
 
+patientSchema.virtual("cart", {
+  ref: "Cart",
+  foreignField: "patient_id",
+  localField: "_id",
+});
+
 export default model("Patient", patientSchema);

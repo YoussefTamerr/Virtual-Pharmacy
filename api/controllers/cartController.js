@@ -1,57 +1,54 @@
-import Patient from "../models/patientModel.js";
-import Medicine from "../models/medicineModel.js";
 import Cart from "../models/cartModel.js";
 
 const addToCart = async (req, res) => {
-  const { patientId, category, quantity } = req.body;
+  const patientId = req.params.id;
+  const { medicine_id, quantity } = req.body;
 
   try {
     let cart = await Cart.findOne({ patient_id: patientId });
 
     if (!cart) {
-      cart = new Cart({ patient_id: patientId, list: [] });
+      cart = new Cart({ patient_id: patientId, items: [] });
     }
 
-    const existingItem = cart.list.find(
-      (item) => item.category.toString() === category
+    const existingItem = cart.items.find(
+      (item) => item.medicine_id.toString() === medicine_id
     );
 
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
-      cart.list.push({ category: category, quantity: quantity });
+      cart.items.push({ medicine_id: medicine_id, quantity: quantity });
     }
 
     await cart.save();
 
-    res.send("Item added to the cart");
+    res.status(200).json({ message: "Item added to the cart" });
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).json({ message: error.message });
   }
 };
 
 const getCart = async (req, res) => {
-  const { patientId } = req.body;
+  const patientId = req.params.id;
 
   try {
     const cart = await Cart.findOne({ patient_id: patientId }).populate(
-      "list.category"
+      "items.medicine_id"
     );
 
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    res.json(cart.list);
+    res.status(200).json(cart.items);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).json({ message: error.message });
   }
 };
 
 const removeFromCart = async (req, res) => {
-  const { patientId, category } = req.body;
+  const { patientId, medicine_id } = req.body;
 
   try {
     const cart = await Cart.findOne({ patient_id: patientId });
@@ -60,25 +57,26 @@ const removeFromCart = async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    const itemIndex = cart.list.findIndex(
-      (item) => item.category.toString() === category
+    const itemIndex = cart.items.findIndex(
+      (item) => item.medicine_id.toString() === medicine_id
     );
 
     if (itemIndex === -1) {
       return res.status(404).json({ message: "Item not found in the cart" });
     } else {
-      cart.list.splice(itemIndex, 1);
+      cart.items.splice(itemIndex, 1);
     }
     await cart.save();
 
-    res.send("Item removed from the cart");
+    res.status(200).json("Item removed from the cart");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).json({ message: error.message });
   }
 };
+
 const updateCartItem = async (req, res) => {
-  const { patientId, category, quantity } = req.body;
+  const { patientId, medicine_id, quantity } = req.body;
 
   try {
     const cart = await Cart.findOne({ patient_id: patientId });
@@ -87,8 +85,8 @@ const updateCartItem = async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    const item = cart.list.find(
-      (item) => item.category.toString() === category
+    const item = cart.items.find(
+      (item) => item.medicine_id.toString() === medicine_id
     );
 
     if (!item) {
@@ -98,9 +96,9 @@ const updateCartItem = async (req, res) => {
     item.quantity = quantity;
 
     await cart.save();
-    res.send("Item quantity updated in the cart");
+    res.status(200).json("Item quantity updated in the cart");
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ message: error.message });
   }
 };
 

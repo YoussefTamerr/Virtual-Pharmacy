@@ -12,10 +12,13 @@ import {
   patientSchema,
   validateBody,
 } from "../middlewares/validationMiddleware.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
 router.post("/login", validateBody(loginSchema), loginPatient);
+
+router.use(verifyToken);
 
 router.get("/", getAllPatients);
 

@@ -6,15 +6,18 @@ import {
   removeFromCart,
   updateCartItem,
 } from "../controllers/cartController.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/:add", addToCart);
+router.use(verifyToken);
 
-router.get("/:patientId", getCart);
+router.post("/:id", addToCart);
 
-router.delete("/:id/delete", removeFromCart);
+router.get("/:id", getCart);
 
-router.patch("/:id/update", updateCartItem);
+router.delete("/:id", removeFromCart);
+
+router.patch("/:id", updateCartItem);
 
 export default router;
