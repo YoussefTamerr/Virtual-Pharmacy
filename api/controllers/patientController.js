@@ -86,10 +86,49 @@ const getAllPatients = async (req, res) => {
   }
 };
 
+const addDeliveryAddress = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) {
+      return res.status(400).json({ message: "Patient not found" });
+    }
+    if(patient.deliveryAddress.length === 0){
+      req.body.is_default = true;
+    }
+    patient.deliveryAddress.push(req.body);
+    await patient.save();
+    res.status(201).json({ patient });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+const chooseDefaultAddress = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) {
+      return res.status(400).json({ message: "Patient not found" });
+    }
+    patient.deliveryAddress.forEach((address) => {
+      if (address._id == req.body._id) {
+        address.is_default = true;
+      } else {
+        address.is_default = false;
+      }
+    });
+    await patient.save();
+    res.status(201).json({ patient });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
 export {
   deletePatient,
   getPatient,
   createPatient,
   getAllPatients,
   loginPatient,
+  addDeliveryAddress,
+  chooseDefaultAddress,
 };

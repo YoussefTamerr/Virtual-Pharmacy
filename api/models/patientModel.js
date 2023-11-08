@@ -51,6 +51,14 @@ const patientSchema = new Schema(
         required: true,
       },
     },
+    deliveryAddress: [
+      {
+        street_address: { type: String, required: true },
+        city: { type: String, required: true },
+        governate: { type: String, required: true },
+        is_default: { type: Boolean, default: false },
+      },
+    ],
   },
   { timestamps: true }
 );

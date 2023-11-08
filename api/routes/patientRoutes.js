@@ -5,6 +5,8 @@ import {
   getPatient,
   getAllPatients,
   loginPatient,
+  addDeliveryAddress,
+  chooseDefaultAddress,
 } from "../controllers/patientController.js";
 
 import {
@@ -16,16 +18,20 @@ import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
+router.post("/", validateBody(patientSchema), createPatient);
+
 router.post("/login", validateBody(loginSchema), loginPatient);
 
 router.use(verifyToken);
 
 router.get("/", getAllPatients);
 
-router.post("/", validateBody(patientSchema), createPatient);
-
 router.delete("/:id", deletePatient);
 
 router.get("/:id", getPatient);
+
+router.post("/delivery-address/:id", addDeliveryAddress);
+
+router.patch("/delivery-address/:id", chooseDefaultAddress);
 
 export default router;
