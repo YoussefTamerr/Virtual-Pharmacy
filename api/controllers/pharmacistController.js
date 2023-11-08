@@ -1,6 +1,6 @@
 import Pharmacist from "../models/pharmacistModel.js";
 import mongoose from "mongoose";
-
+import jwt from "jsonwebtoken";
 
 const createPharmacist = async (req, res) => {
   try {
@@ -26,9 +26,42 @@ const createPharmacist = async (req, res) => {
   }
 };
 
+const loginPharmacist = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const pharmacist = await Pharmacist.findOne({ username }).select(
+      "+password"
+    );
+    if (!pharmacist) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    const isMatch = await pharmacist.comparePassword(
+      password,
+      pharmacist.password
+    );
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    if (pharmacist.registrationApproval !== "approved") {
+      return res.status(401).json({ message: "Account not approved yet" });
+    }
+
+    const token = jwt.sign({ id: pharmacist._id }, process.env.JWT_SECRET, {
+      expiresIn: "10m",
+    });
+    res.cookie("token", token, { httpOnly: true, maxAge: 10 * 60 * 1000 });
+    pharmacist.password = undefined;
+    return res.status(200).json({ token, data: pharmacist });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 const deletePharmacist = async (req, res) => {
   try {
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid Pharmacist ID" });
     }
     const pharmacist = await Pharmacist.findByIdAndDelete(req.params.id);
@@ -45,7 +78,7 @@ const deletePharmacist = async (req, res) => {
 
 const getPharmacist = async (req, res) => {
   try {
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid Pharmacist ID" });
     }
     const info = await Pharmacist.findById(req.params.id);
@@ -67,38 +100,50 @@ const getAllPharmacists = async (req, res) => {
   }
 };
 
-const acceptPharmacist = async(req, res) => {
-  try{
-    const Pharmacist = await Pharmacist.findOne({username: req.body.username});
-    if(Pharmacist.registrationApproval==='pending'){
-      Pharmacist.registrationApproval= 'approved';
+const acceptPharmacist = async (req, res) => {
+  try {
+    const Pharmacist = await Pharmacist.findOne({
+      username: req.body.username,
+    });
+    if (Pharmacist.registrationApproval === "pending") {
+      Pharmacist.registrationApproval = "approved";
       await Pharmacist.save();
-      res.status(201).json(pharmacist);
+      res.status(201).json(Pharmacist);
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Request already approved/denied" });
     }
-    else{  
-      return res.status(400).json({ message: "Pharmacist has been answered" });
-    }
-  }
-  catch(err){
+  } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-const rejectPharmacist = async(req, res) => {
-  try{
-    const Pharmacist = await Pharmacist.findOne({username: req.body.username});
-    if(Pharmacist.registrationApproval==='pending'){
-      Pharmacist.registrationApproval= 'denied';
+const rejectPharmacist = async (req, res) => {
+  try {
+    const Pharmacist = await Pharmacist.findOne({
+      username: req.body.username,
+    });
+    if (Pharmacist.registrationApproval === "pending") {
+      Pharmacist.registrationApproval = "denied";
       await Pharmacist.save();
-      res.status(201).json(pharmacist);
+      res.status(201).json(Pharmacist);
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Request already approved/denied" });
     }
-    else{  
-      return res.status(400).json({ message: "Pharmacist has been answered" });
-    }
-  }
-  catch(err){
+  } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-export { deletePharmacist, getPharmacist, createPharmacist, getAllPharmacists, acceptPharmacist, rejectPharmacist};
+export {
+  deletePharmacist,
+  getPharmacist,
+  createPharmacist,
+  loginPharmacist,
+  getAllPharmacists,
+  acceptPharmacist,
+  rejectPharmacist,
+};

@@ -14,7 +14,7 @@ const getAllMedicines = async (req, res) => {
 
 const getMedicine = async (req, res) => {
   try {
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid Medicine ID" });
     }
     const medicine = await Medicine.findById(req.params.id);
@@ -44,7 +44,7 @@ const createMedicine = async (req, res) => {
 
 const updateMedicine = async (req, res) => {
   try {
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid Medicine ID" });
     }
     const medicine = await Medicine.findByIdAndUpdate(

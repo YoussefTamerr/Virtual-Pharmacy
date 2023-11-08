@@ -15,6 +15,6 @@ router.get("/:patientId", getCart);
 
 router.delete("/:id/delete", removeFromCart);
 
-router.batch("/:id/update", updateCartItem);
+router.patch("/:id/update", updateCartItem);
 
 export default router;
