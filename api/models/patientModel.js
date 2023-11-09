@@ -24,6 +24,10 @@ const patientSchema = new Schema(
       required: true,
       select: false,
     },
+    wallet: {
+      type: Number,
+      default: 0,
+    },
     dateOfBirth: {
       type: Date,
       required: true,
