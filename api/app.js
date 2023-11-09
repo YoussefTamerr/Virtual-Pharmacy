@@ -9,7 +9,7 @@ import pharmacistRouter from "./routes/pharmacistRoutes.js";
 import medicineRouter from "./routes/medicineRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
-import { verifyToken } from "./middlewares/authMiddleware.js";
+import authRouter from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -27,10 +27,7 @@ app.use("/pharmacist", pharmacistRouter);
 app.use("/medicine", medicineRouter);
 app.use("/cart", cartRouter);
 app.use("/order", orderRouter);
-app.post("/logout", verifyToken, (req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logged out successfully" });
-});
+app.use("/auth", authRouter);
 
 app.all("*", (req, res) => {
   res

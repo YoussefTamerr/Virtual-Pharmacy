@@ -3,12 +3,17 @@ import jwt from "jsonwebtoken";
 
 const createAdmin = async (req, res) => {
   try {
-    const existingAdmin = await Admin.findOne({ username: req.body.username });
+    let existingAdmin = await Admin.findOne({ username: req.body.username });
     if (existingAdmin) {
       return res.status(400).json({ message: "username already exists" });
     }
+    existingAdmin = await Admin.findOne({ email: req.body.email });
+    if (existingAdmin) {
+      return res.status(400).json({ message: "email already exists" });
+    }
     const newAdmin = await Admin.create({
       username: req.body.username,
+      email: req.body.email,
       password: req.body.password,
     });
     res.status(201).json(newAdmin);

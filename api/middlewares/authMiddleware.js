@@ -19,13 +19,13 @@ const verifyToken = async (req, res, next) => {
       return res.status(401).json("Please login to access this resource");
     }
 
-    let currentUser = await Patient.findById(decoded.id);
+    let currentUser = await Patient.findById(decoded.id).select("+password");
     currentUser ? (currentUser.role = "Patient") : null;
     if (!currentUser) {
-      currentUser = await Pharmacist.findById(decoded.id);
+      currentUser = await Pharmacist.findById(decoded.id).select("+password");
       currentUser ? (currentUser.role = "Pharmacist") : null;
       if (!currentUser) {
-        currentUser = await Admin.findById(decoded.id);
+        currentUser = await Admin.findById(decoded.id).select("+password");
         currentUser ? (currentUser.role = "Admin") : null;
         if (!currentUser) {
           return res
