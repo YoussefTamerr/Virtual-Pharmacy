@@ -55,7 +55,7 @@ const MedicineView = ({ medicine }) => {
   };
 
   const addToCart = () => {
-    fetch(`http://localhost:10000/cart/652e540b987ea0b6be1c7c77`, {
+    fetch(`http://localhost:5000/cart/${patient._id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
