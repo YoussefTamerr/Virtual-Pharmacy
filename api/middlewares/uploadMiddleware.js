@@ -8,7 +8,7 @@ const uploadMedicineImage = multer({
     },
     filename: function (req, file, cb) {
       const ext = path.extname(file.originalname);
-      cb(null, "medicine-" + req.body.name + ext);
+      cb(null, req.body.name + ext);
     },
   }),
   fileFilter: (req, file, cb) => {
@@ -54,8 +54,7 @@ const uploadPharmacistDocs = multer({
     },
     filename: function (req, file, cb) {
       const ext = path.extname(file.originalname);
-      const pharmacistName = req.body.name.split(" ").join("-");
-      cb(null, `${pharmacistName}${ext}`);
+      cb(null, `${req.body.username}${ext}`);
     },
   }),
   fileFilter: (req, file, cb) => {
