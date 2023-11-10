@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import AuthLayout from "./components/AuthLayout";
 import PatientSignup from "./components/PatientSignup";
 import PharmacistSignup from "./components/PharmacistSignup";
+import CartView from "./components/CartView";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/signup" element={<Navigate to={"/signup/patient"} />} />
           <Route path="/signup/patient" element={<PatientSignup />} />
           <Route path="/signup/pharmacist" element={<PharmacistSignup />} />
+          <Route path="/cart" element={<CartView />} />
         </Route>
       </Routes>
     </BrowserRouter>

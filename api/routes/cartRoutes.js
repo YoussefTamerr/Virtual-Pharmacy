@@ -12,9 +12,9 @@ const router = express.Router();
 
 router.use(verifyToken);
 
-router.post("/:id", addToCart);
+router.post("/", addToCart);
 
-router.get("/:id", getCart);
+router.get("/", getCart);
 
 router.delete("/:id", removeFromCart);
 

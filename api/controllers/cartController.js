@@ -1,7 +1,7 @@
 import Cart from "../models/cartModel.js";
 
 const addToCart = async (req, res) => {
-  const patientId = req.params.id;
+  const patientId = req.user._id;
   const { medicine_id, quantity } = req.body;
 
   try {
@@ -30,7 +30,7 @@ const addToCart = async (req, res) => {
 };
 
 const getCart = async (req, res) => {
-  const patientId = req.params.id;
+  const patientId = req.user._id;
 
   try {
     const cart = await Cart.findOne({ patient_id: patientId }).populate(
