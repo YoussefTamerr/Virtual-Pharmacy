@@ -7,7 +7,7 @@ const MedicineView = ({ medicine }) => {
   const [medicineQuantity, setMedicineQuantity] = useState(
     medicine.availableQuantity
   );
-
+  
   const [medicineDetailsInter, setMedicineDetailsInter] = useState(
     medicine.details
   );
@@ -15,6 +15,7 @@ const MedicineView = ({ medicine }) => {
   const [medicineQuantityInter, setMedicineQuantityInter] = useState(
     medicine.availableQuantity
   );
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -51,6 +52,29 @@ const MedicineView = ({ medicine }) => {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const addToCart = () => {
+    fetch(`http://localhost:10000/cart/652e540b987ea0b6be1c7c77`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        medicine_id: medicine._id,
+        quantity: 1,
+      }),
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to add medicine to cart");
+      }
+        message.success("Successfully added medicine");
+    })
+    .catch((error) => {
+      console.error(error);
+        message.error("Failed to add medicine");
+    });
   };
 
   return (
@@ -119,6 +143,11 @@ const MedicineView = ({ medicine }) => {
       {window.location.pathname == "/pharmacist" && (
         <Button type="primary" onClick={showModal}>
           Edit Medicine
+        </Button>
+      )}
+      {window.location.pathname == "/patient" && (
+        <Button type="primary" onClick={addToCart}>
+          Add to cart
         </Button>
       )}
     </div>
