@@ -40,6 +40,18 @@ const pharmacistSchema = new Schema(
       type: String,
       required: true,
     },
+    pharmacyDegree: {
+      type: String,
+      required: true,
+    },
+    workingLicense: {
+      type: String,
+      required: true,
+    },
+    nationalId: {
+      type: String,
+      required: true,
+    },
     registrationApproval: {
       type: String,
       enum: ["pending", "denied", "approved"],

@@ -19,6 +19,9 @@ const createPharmacist = async (req, res) => {
       affiliation: req.body.affiliation,
       educationalBackground: req.body.educationalBackground,
       registrationApproval: req.body.registrationApproval,
+      pharmacyDegree: req.body.pharmacyDegree,
+      workingLicense: req.body.workingLicense,
+      nationalId: req.body.nationalId,
     });
     res.status(201).json({ pharmacist });
   } catch (err) {

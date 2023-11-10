@@ -35,6 +35,9 @@ const pharmacistSchema = joi.object({
     .valid("pending")
     .valid("denied")
     .valid("approved"),
+  pharmacyDegree: joi.string().required(),
+  workingLicense: joi.string().required(),
+  nationalId: joi.string().required(),
 });
 
 const adminSchema = joi.object({
