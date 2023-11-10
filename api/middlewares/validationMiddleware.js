@@ -49,7 +49,7 @@ const medicineSchema = joi.object({
   availableQuantity: joi.number().required(),
   sales: joi.number().required(),
   details: joi.string().required(),
-  picture: joi.string().required(),
+  image: joi.string().required(),
   category: joi.string().required(),
 });
 

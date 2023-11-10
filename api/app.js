@@ -2,7 +2,8 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-
+import path from "path";
+import { fileURLToPath } from "url";
 import adminRouter from "./routes/adminRoutes.js";
 import patientRouter from "./routes/patientRoutes.js";
 import pharmacistRouter from "./routes/pharmacistRoutes.js";
@@ -16,10 +17,14 @@ dotenv.config();
 
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/admin", adminRouter);
 app.use("/patient", patientRouter);
