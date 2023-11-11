@@ -52,9 +52,9 @@ const loginPharmacist = async (req, res) => {
     }
 
     const token = jwt.sign({ id: pharmacist._id }, process.env.JWT_SECRET, {
-      expiresIn: "10m",
+      expiresIn: "1h",
     });
-    res.cookie("token", token, { httpOnly: true, maxAge: 10 * 60 * 1000 });
+    res.cookie("token", token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
     pharmacist.password = undefined;
     return res.status(200).json({ token, data: pharmacist });
   } catch (err) {

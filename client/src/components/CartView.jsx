@@ -11,7 +11,7 @@ const CartView = () => {
   const [cartState, setCartState] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:10000/cart`, {
+      const response = await fetch(`http://localhost:5000/cart`, {
         credentials: "include",
       });
       const data = await response.json();

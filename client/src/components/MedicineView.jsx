@@ -60,6 +60,7 @@ const MedicineView = ({ medicine }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         medicine_id: medicine._id,
         quantity: 1,

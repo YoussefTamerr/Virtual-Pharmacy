@@ -5,12 +5,14 @@ import AuthLayout from "./components/AuthLayout";
 import PatientSignup from "./components/PatientSignup";
 import PharmacistSignup from "./components/PharmacistSignup";
 import CartView from "./components/CartView";
-import AdminForm from "./components/AdminForm";
+import PatientHome from "./components/PatientHome";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+      <Route path="/patient" element={<PatientHome />} />
+
         <Route path="/" element={<AuthLayout />}>
           <Route index element={<Navigate to={"/login"} />} />
           <Route path="/login" element={<Login />} />
@@ -18,8 +20,6 @@ function App() {
           <Route path="/signup/patient" element={<PatientSignup />} />
           <Route path="/signup/pharmacist" element={<PharmacistSignup />} />
         </Route>
-        <Route path="/home" element={<h1>HOME</h1>} />
-        <Route path="/admin" element={<AdminForm />} />
         <Route path="/cart" element={<CartView />} />
       </Routes>
     </BrowserRouter>

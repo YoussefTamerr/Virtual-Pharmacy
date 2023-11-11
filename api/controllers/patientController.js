@@ -37,9 +37,9 @@ const loginPatient = async (req, res) => {
     }
 
     const token = jwt.sign({ id: patient._id }, process.env.JWT_SECRET, {
-      expiresIn: "10m",
+      expiresIn: "1h",
     });
-    res.cookie("token", token, { httpOnly: true, maxAge: 10 * 60 * 1000 });
+    res.cookie("token", token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
     patient.password = undefined;
     return res.status(200).json({ token, data: patient });
   } catch (err) {
@@ -64,6 +64,7 @@ const deletePatient = async (req, res) => {
 
 const getPatient = async (req, res) => {
   try {
+    console.log(req.params.id);
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid Patient ID" });
     }
@@ -88,7 +89,7 @@ const getAllPatients = async (req, res) => {
 
 const addDeliveryAddress = async (req, res) => {
   try {
-    const patient = await Patient.findById(req.params.id);
+    const patient = await Patient.findById(req.user._id);
     if (!patient) {
       return res.status(400).json({ message: "Patient not found" });
     }
@@ -105,18 +106,45 @@ const addDeliveryAddress = async (req, res) => {
 
 const chooseDefaultAddress = async (req, res) => {
   try {
-    const patient = await Patient.findById(req.params.id);
+    const patient = await Patient.findById(req.user._id);
     if (!patient) {
       return res.status(400).json({ message: "Patient not found" });
     }
+
+    // const addressIndex = req.body.index;
+    // if (addressIndex < 0 || addressIndex >= patient.deliveryAddress.length) {
+    //   return res.status(400).json({ message: "Invalid address index" });
+    // }
+
+    // patient.deliveryAddress.forEach((address, index) => {
+    //   if (index === addressIndex) {
+    //     address.is_default = true;
+    //   } else {
+    //     address.is_default = false;
+    //   }
+    // });
+    
     patient.deliveryAddress.forEach((address) => {
-      if (address._id == req.body._id) {
+      if (address.street_address+', '+address.city+', '+ address.governate === req.body.address) {
         address.is_default = true;
       } else {
         address.is_default = false;
       }
     });
     await patient.save();
+    res.status(201).json({ patient });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+const getDeliveryAddress = async (req, res) => {
+  try {
+    console.log(req.user._id);
+    const patient = await Patient.findById(req.user._id);
+    if (!patient) {
+      return res.status(400).json({ message: "Patient not found" });
+    }
     res.status(201).json({ patient });
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -131,4 +159,5 @@ export {
   loginPatient,
   addDeliveryAddress,
   chooseDefaultAddress,
+  getDeliveryAddress,
 };
