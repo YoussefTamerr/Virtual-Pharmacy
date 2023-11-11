@@ -7,6 +7,7 @@ const PharmacistView = ({ pharmacist, onRemove }) => {
       `http://localhost:5000/pharmacist/${pharmacist._id}`,
       {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

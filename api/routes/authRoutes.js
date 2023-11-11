@@ -14,6 +14,10 @@ router.post("/change-password/:id/:token", changePassword);
 
 router.use(verifyToken);
 
+router.get("/me", (req, res) => {
+  res.json({ user: req.user });
+});
+
 router.post("/change-password", changePassword);
 
 router.post("/logout", logout);

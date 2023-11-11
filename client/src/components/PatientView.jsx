@@ -7,6 +7,7 @@ const PatientView = ({ patient, onRemove }) => {
       `http://localhost:5000/patient/${patient._id}`,
       {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

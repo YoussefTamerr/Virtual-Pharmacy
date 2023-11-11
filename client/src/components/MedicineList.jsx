@@ -10,7 +10,9 @@ function MedicineList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:5000/medicine`);
+      const response = await fetch(`http://localhost:5000/medicine`, {
+        credentials: "include",
+      });
       const data = await response.json();
       if (response.ok) {
         setMedicines(data);

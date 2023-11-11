@@ -7,7 +7,7 @@ const MedicineView = ({ medicine }) => {
   const [medicineQuantity, setMedicineQuantity] = useState(
     medicine.availableQuantity
   );
-  
+
   const [medicineDetailsInter, setMedicineDetailsInter] = useState(
     medicine.details
   );
@@ -15,7 +15,6 @@ const MedicineView = ({ medicine }) => {
   const [medicineQuantityInter, setMedicineQuantityInter] = useState(
     medicine.availableQuantity
   );
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -28,6 +27,7 @@ const MedicineView = ({ medicine }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         details: medicineDetailsInter,
         price: medicinePriceInter,
@@ -55,7 +55,7 @@ const MedicineView = ({ medicine }) => {
   };
 
   const addToCart = () => {
-    fetch(`http://localhost:5000/cart/${patient._id}`, {
+    fetch(`http://localhost:5000/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,16 +65,16 @@ const MedicineView = ({ medicine }) => {
         quantity: 1,
       }),
     })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to add medicine to cart");
-      }
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add medicine to cart");
+        }
         message.success("Successfully added medicine");
-    })
-    .catch((error) => {
-      console.error(error);
+      })
+      .catch((error) => {
+        console.error(error);
         message.error("Failed to add medicine");
-    });
+      });
   };
 
   return (

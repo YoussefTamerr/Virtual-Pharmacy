@@ -6,7 +6,9 @@ function PatientList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:5000/patient`);
+      const response = await fetch(`http://localhost:5000/patient`, {
+        credentials: "include",
+      });
       const data = await response.json();
       if (response.ok) {
         setPatients(data);

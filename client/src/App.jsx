@@ -5,6 +5,7 @@ import AuthLayout from "./components/AuthLayout";
 import PatientSignup from "./components/PatientSignup";
 import PharmacistSignup from "./components/PharmacistSignup";
 import CartView from "./components/CartView";
+import AdminForm from "./components/AdminForm";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/signup/pharmacist" element={<PharmacistSignup />} />
         </Route>
         <Route path="/home" element={<h1>HOME</h1>} />
+        <Route path="/admin" element={<AdminForm />} />
         <Route path="/cart" element={<CartView />} />
       </Routes>
     </BrowserRouter>
