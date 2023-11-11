@@ -25,7 +25,7 @@ const Login = () => {
         message.error(data.message);
       }
     } catch (error) {
-      console.error(error);
+      message.error(error.message);
     }
     setLoading(false);
   };
@@ -115,13 +115,6 @@ const Login = () => {
           Don&apos;t have an account? Sign up here.
         </Button>
       )}
-      {/* <Flex justify="center" align="center" vertical gap={2}>
-        {userRole != "patient" && <a href="/login/patient">Login as patient</a>}
-        {userRole != "admin" && <a href="/login/admin">Login as admin</a>}
-        {userRole != "pharmacist" && (
-          <a href="/login/pharmacist">Login as pharmacist</a>
-        )}
-      </Flex> */}
     </>
   );
 };

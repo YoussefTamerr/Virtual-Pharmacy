@@ -1,185 +1,239 @@
 import { useState } from "react";
-import BackButton from "./BackButton";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Form, Input, Button, Select, DatePicker, message } from "antd";
+import {
+  UserOutlined,
+  LockOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  ContactsOutlined,
+} from "@ant-design/icons";
 
-function Signup() {
-  const [formData, setFormData] = useState({
-    username: "",
-    name: "",
-    email: "",
-    password: "",
-    dateOfBirth: "",
-    gender: "",
-    mobileNumber: "",
-    emergencyContact: {
-      fullName: "",
-      mobileNumber: "",
-      relation: "",
-    },
-  });
-  const [message, setMessage] = useState(null);
+const { Option } = Select;
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+const PatientSignup = () => {
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
 
-  const handleEmergencyContactChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      emergencyContact: {
-        ...prevState.emergencyContact,
-        [name]: value,
-      },
-    }));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const response = await fetch(`http://localhost:5000/patient`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      setMessage("Registration successful");
-      setFormData({
-        username: "",
-        name: "",
-        email: "",
-        password: "",
-        dateOfBirth: "",
-        gender: "",
-        mobileNumber: "",
-        emergencyContact: {
-          fullName: "",
-          mobileNumber: "",
-          relation: "",
+  const onFinish = async (formData) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:5000/patient/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify(formData),
       });
-    } else {
-      setMessage(data.message);
+      if (response.ok) {
+        navigate("/login");
+      } else {
+        const data = await response.json();
+        message.error(data.message);
+      }
+    } catch (error) {
+      message.error(error.message);
     }
+    setLoading(false);
   };
 
   return (
     <>
-      <BackButton />
       <h1>Patient Signup</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Date of Birth:
-          <input
-            type="date"
-            name="dateOfBirth"
-            value={formData.dateOfBirth}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Gender:
-          <select name="gender" value={formData.gender} onChange={handleChange}>
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </label>
-        <br />
-        <label>
-          Mobile Number:
-          <input
-            type="tel"
-            name="mobileNumber"
-            value={formData.mobileNumber}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Emergency Contact Full Name:
-          <input
-            type="text"
-            name="fullName"
-            value={formData.emergencyContact.fullName}
-            onChange={handleEmergencyContactChange}
-          />
-        </label>
-        <br />
-        <label>
-          Emergency Contact Mobile Number:
-          <input
-            type="tel"
-            name="mobileNumber"
-            value={formData.emergencyContact.mobileNumber}
-            onChange={handleEmergencyContactChange}
-          />
-        </label>
-        <br />
-        <label>
-          Emergency Contact Relation:
-          <input
-            type="text"
-            name="relation"
-            value={formData.emergencyContact.relation}
-            onChange={handleEmergencyContactChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Submit</button>
-        {message && <p>{message}</p>}
-      </form>
+      <Form
+        form={form}
+        name="signup"
+        onFinish={onFinish}
+        scrollToFirstError
+        style={{
+          width: "40%",
+        }}
+      >
+        <Form.Item
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: "Please input your username!",
+            },
+            { min: 3, message: "Username must be at least 3 characters." },
+            { max: 20, message: "Username must be at most 30 characters." },
+            {
+              pattern: /^[a-zA-Z0-9_]+$/,
+              message: "Username must contain only letters & numbers.",
+            },
+          ]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Username" />
+        </Form.Item>
 
-      <Link to="/signup/pharmacist">Want to register as a Pharmacist ?</Link>
+        <Form.Item
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Please input your name!",
+            },
+          ]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Name" />
+        </Form.Item>
+
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              type: "email",
+              message: "The input is not a valid email!",
+            },
+            {
+              required: true,
+              message: "Please input your email!",
+            },
+          ]}
+        >
+          <Input prefix={<MailOutlined />} placeholder="Email" />
+        </Form.Item>
+
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+            { min: 6, message: "Password must be at least 6 characters." },
+            {
+              pattern:
+                /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{6,}$/,
+              message:
+                "Password must contain only letters and at least one number.",
+            },
+          ]}
+          hasFeedback
+        >
+          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+        </Form.Item>
+
+        <Form.Item
+          name="dateOfBirth"
+          rules={[
+            {
+              required: true,
+              message: "Please select your date of birth!",
+            },
+          ]}
+        >
+          <DatePicker placeholder="Date of Birth" />
+        </Form.Item>
+
+        <Form.Item
+          name="gender"
+          rules={[
+            {
+              required: true,
+              message: "Please select your gender!",
+            },
+          ]}
+        >
+          <Select placeholder="Select Gender">
+            <Option value="male">Male</Option>
+            <Option value="female">Female</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          name="mobileNumber"
+          rules={[
+            {
+              required: true,
+              message: "Please input your mobile number!",
+            },
+          ]}
+        >
+          <Input prefix={<PhoneOutlined />} placeholder="Mobile Number" />
+        </Form.Item>
+
+        <Form.Item
+          name={["emergencyContact", "fullName"]}
+          rules={[
+            {
+              required: true,
+              message: "Please input the emergency contact's full name!",
+            },
+          ]}
+        >
+          <Input
+            prefix={<ContactsOutlined />}
+            placeholder="Emergency Contact Full Name"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name={["emergencyContact", "mobileNumber"]}
+          rules={[
+            {
+              required: true,
+              message: "Please input the emergency contact's mobile number!",
+            },
+          ]}
+        >
+          <Input
+            prefix={<PhoneOutlined />}
+            placeholder="Emergency Contact Mobile Number"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name={["emergencyContact", "relation"]}
+          rules={[
+            {
+              required: true,
+              message: "Please input the emergency contact's relation to you!",
+            },
+          ]}
+        >
+          <Input
+            prefix={<ContactsOutlined />}
+            placeholder="Emergency Contact Relation"
+          />
+        </Form.Item>
+
+        <Form.Item
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+            loading={loading}
+          >
+            Sign Up
+          </Button>
+        </Form.Item>
+      </Form>
+      <Button
+        type="link"
+        onClick={() => {
+          navigate("/login");
+        }}
+      >
+        Already have an account? Log in here.
+      </Button>
+      <Button
+        type="link"
+        onClick={() => {
+          navigate("/signup/pharmacist");
+        }}
+      >
+        Want to register as a Pharmacist? Click Here.
+      </Button>
     </>
   );
-}
+};
 
-export default Signup;
+export default PatientSignup;

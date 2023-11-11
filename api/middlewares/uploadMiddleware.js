@@ -88,8 +88,6 @@ const savePharmacistDocs = async (req, res, next) => {
       req.body.pharmacyDegree = `docs/pharmacy-degrees/${pharmacyDegree[0].filename}`;
     }
 
-    console.log(req.body);
-
     next();
   } catch (error) {
     return res.status(500).json({ message: error.message });
