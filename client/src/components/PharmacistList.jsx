@@ -23,12 +23,27 @@ function PharmacistList() {
     );
   };
 
+  const onUpdatePharmacist = (id, registrationApproval) => {
+    setPharmacists((prevState) =>
+      prevState.map((pharmacist) => {
+        if (pharmacist._id === id) {
+          pharmacist.registrationApproval = registrationApproval;
+        }
+        return pharmacist;
+      })
+    );
+  };
+
   const approvedPharmacists = pharmacists.filter(
     (pharmacist) => pharmacist.registrationApproval === "approved"
   );
 
   const pendingPharmacists = pharmacists.filter(
     (pharmacist) => pharmacist.registrationApproval === "pending"
+  );
+
+  const rejectedPharmacists = pharmacists.filter(
+    (pharmacist) => pharmacist.registrationApproval === "denied"
   );
 
   return (
@@ -40,12 +55,28 @@ function PharmacistList() {
           key={pharmacist._id}
           pharmacist={pharmacist}
           onRemove={onRemove}
+          onUpdatePharmacist={onUpdatePharmacist}
         />
       ))}
 
       <h3>Registration Requests</h3>
       {pendingPharmacists.map((pharmacist) => (
-        <PharmacistView key={pharmacist._id} pharmacist={pharmacist} />
+        <PharmacistView
+          key={pharmacist._id}
+          pharmacist={pharmacist}
+          onRemove={onRemove}
+          onUpdatePharmacist={onUpdatePharmacist}
+        />
+      ))}
+
+      <h3>Rejected Pharmacists</h3>
+      {rejectedPharmacists.map((pharmacist) => (
+        <PharmacistView
+          key={pharmacist._id}
+          pharmacist={pharmacist}
+          onRemove={onRemove}
+          onUpdatePharmacist={onUpdatePharmacist}
+        />
       ))}
     </div>
   );

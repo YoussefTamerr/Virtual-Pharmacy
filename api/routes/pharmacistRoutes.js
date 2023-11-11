@@ -4,8 +4,7 @@ import {
   deletePharmacist,
   getPharmacist,
   getAllPharmacists,
-  acceptPharmacist,
-  rejectPharmacist,
+  updatePharmacistApproval,
   loginPharmacist,
 } from "../controllers/pharmacistController.js";
 
@@ -38,8 +37,6 @@ router.get("/:id", getPharmacist);
 
 router.use(restrictTo(["Admin"]));
 
-router.post("/:id", acceptPharmacist);
-
-router.post("/:id", rejectPharmacist);
+router.patch("/:id", updatePharmacistApproval);
 
 export default router;
