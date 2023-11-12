@@ -16,8 +16,8 @@ router.post("/", addToCart);
 
 router.get("/", getCart);
 
-router.delete("/:id", removeFromCart);
+router.delete("/:medicine_id", removeFromCart);
 
-router.patch("/:id", updateCartItem);
+router.patch("/", updateCartItem);
 
 export default router;

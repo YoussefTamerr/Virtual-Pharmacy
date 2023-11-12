@@ -48,7 +48,8 @@ const getCart = async (req, res) => {
 };
 
 const removeFromCart = async (req, res) => {
-  const { patientId, medicine_id } = req.body;
+  const patientId = req.user._id;
+  const { medicine_id } = req.params;
 
   try {
     const cart = await Cart.findOne({ patient_id: patientId });
@@ -76,8 +77,8 @@ const removeFromCart = async (req, res) => {
 };
 
 const updateCartItem = async (req, res) => {
-  const { patientId, medicine_id, quantity } = req.body;
-
+  const patientId = req.user._id;
+  const { medicine_id, quantity } = req.body;
   try {
     const cart = await Cart.findOne({ patient_id: patientId });
 
