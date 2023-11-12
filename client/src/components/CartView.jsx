@@ -1,35 +1,27 @@
-//first use useefect to fetch cart
-// add 3 buttons +, - , remove
-//track quantity with a state
-//send the quantity tot eh update cart with quantity-1
-// update quantity state when quiantity changes
-//update cart state when remove or quantity changes
-//const [state, setState]
+import MedicineView from "./MedicineView";
 import { useEffect, useState } from "react";
 import { Button, Radio, message, Card } from "antd";
 import axios from "axios";
 
 const CartView = () => {
-
   const [cartState, setCartState] = useState(null);
   const [methodState, setMethodState] = useState("");
   const [loadingState, setLoadingState] = useState(false);
 
   const paymentOptions = [
     {
-      label: 'Cash',
-      value: 'cod',
+      label: "Cash",
+      value: "cod",
     },
     {
-      label: 'Credit Card',
-      value: 'cc',
+      label: "Credit Card",
+      value: "cc",
     },
     {
-      label: 'Wallet',
-      value: 'wallet',
+      label: "Wallet",
+      value: "wallet",
     },
   ];
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +41,6 @@ const CartView = () => {
   const handleIncrement = (index, currentCounter) => {
     const updatedCart = [...cartState];
     updatedCart[index].quantity += 1;
-    console.log(currentCounter + 1);
     fetch(`http://localhost:5000/cart`, {
       method: "PATCH",
       headers: {
@@ -110,7 +101,7 @@ const CartView = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include"
+      credentials: "include",
     })
       .then((response) => {
         if (!response.ok) {
@@ -126,41 +117,39 @@ const CartView = () => {
       });
   };
 
-
   const handleCheckout = async () => {
     setLoadingState(true);
     try {
-        if(methodState !== "cc") {
-          const response = await fetch(`http://localhost:5000/order/`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              paymentMethod: methodState,
-            }),
-            credentials: "include",
-          });
-          const data = await response.json();
-          if (response.ok) {
-            setCartState(null);
-            message.success("Order placed successfully");
-          }
-          else {
-            message.error(data.message);
-          }
+      if (methodState !== "cc") {
+        const response = await fetch(`http://localhost:5000/order/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            paymentMethod: methodState,
+          }),
+          credentials: "include",
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setCartState(null);
+          message.success("Order placed successfully");
+        } else {
+          message.error(data.message);
         }
-        else{
-          const res = await axios.post(`http://localhost:5000/order/cc`,
-                 
-                {paymentMethod: methodState},
-                { withCredentials: true }
-            )
-            window.location = res.data.url
-            if(res.data.status === "success"){
-              setCartState(null);
-              message.success("Order placed successfully");
-            }
+      } else {
+        const res = await axios.post(
+          `http://localhost:5000/order/cc`,
+
+          { paymentMethod: methodState },
+          { withCredentials: true }
+        );
+        window.location = res.data.url;
+        if (res.data.status === "success") {
+          setCartState(null);
+          message.success("Order placed successfully");
+        }
       }
     } catch (error) {
       console.error(error.message);
@@ -169,28 +158,26 @@ const CartView = () => {
   };
 
   const handlePaymentMethod = (e) => {
-    console.log(e.target.value);
     setMethodState(e.target.value);
-  }
-
+  };
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      gap: "small",
-    
-    }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: "small",
+      }}
+    >
       {cartState?.map((medicine, index) => {
-        console.log(medicine);
         return (
           <div key={medicine.medicine_id._id}>
             <Card
-              headStyle={{ 
+              headStyle={{
                 border: "2px solid grey",
               }}
-              bodyStyle={{ 
+              bodyStyle={{
                 border: "2px solid grey",
               }}
               style={{
@@ -204,42 +191,58 @@ const CartView = () => {
               title={medicine.medicine_id.name}
             >
               <div>
-                <strong>Price: {medicine.medicine_id.price+" $"}</strong> <br />
+                <strong>Price: {medicine.medicine_id.price + " $"}</strong>{" "}
+                <br />
                 <strong>Details: {medicine.medicine_id.details}</strong> <br />
                 <strong>Quantity: {medicine.quantity} </strong> <br />
               </div>
-            
-            <br />
-            <div style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            
-            }}>
-              <Button type="primary" onClick={() => handleIncrement(index, medicine.quantity)}>
-                +
-              </Button>
-              <Button type="primary" onClick={() => handleDecrement(index, medicine.quantity)}>
-                -
-              </Button>
-              <Button type="primary" danger onClick={() => handleRemove(index)}>Remove</Button>
-            </div>
+
+              <br />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Button
+                  type="primary"
+                  onClick={() => handleIncrement(index, medicine.quantity)}
+                >
+                  +
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => handleDecrement(index, medicine.quantity)}
+                >
+                  -
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  onClick={() => handleRemove(index)}
+                >
+                  Remove
+                </Button>
+              </div>
             </Card>
           </div>
         );
       })}
-      <br />
-       <Radio.Group
-        gap="large"
+      <Radio.Group
         options={paymentOptions}
         onChange={handlePaymentMethod}
         value={methodState}
         optionType="button"
         buttonStyle="solid"
       />
-      <br />
-      <br />
-      <Button style={{width: "150px"}} disabled={methodState === ""} loading={loadingState} onClick={handleCheckout}>Checkout</Button>
+      <Button
+        disabled={methodState === ""}
+        loading={loadingState}
+        onClick={handleCheckout}
+      >
+        Checkout
+      </Button>
     </div>
   );
 };

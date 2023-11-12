@@ -13,6 +13,8 @@ import AuthLayout from "./components/AuthLayout";
 import MedicineList from "./components/MedicineList";
 import PharmacistHome from "./components/PharmacistHome";
 import OrderList from "./components/OrderList";
+import ChangePassword from "./components/ChangePassword";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   return (
@@ -24,6 +26,11 @@ function App() {
           <Route path="/signup" element={<Navigate to={"/signup/patient"} />} />
           <Route path="/signup/patient" element={<PatientSignup />} />
           <Route path="/signup/pharmacist" element={<PharmacistSignup />} />
+          <Route
+            path="/change-password/:userId/:resetToken"
+            element={<ChangePassword />}
+          />
+          <Route path="/forgot-password/*" element={<ForgotPassword />} />
         </Route>
 
         <Route element={<AppLayout />}>
@@ -32,10 +39,12 @@ function App() {
             <Route path="home" element={<PatientHome />} />
             <Route path="cart" element={<CartView />} />
             <Route path="orders" element={<OrderList />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </Route>
           <Route path="/pharmacist">
             <Route index element={<Navigate to={"/pharmacist/home"} />} />
             <Route path="home" element={<PharmacistHome />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </Route>
           <Route path="/admin">
             <Route index element={<Navigate to={"/admin/home"} />} />
@@ -43,6 +52,7 @@ function App() {
             <Route path="patients" element={<PatientList />} />
             <Route path="pharmacists" element={<PharmacistList />} />
             <Route path="medicines" element={<MedicineList />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </Route>
         </Route>
       </Routes>

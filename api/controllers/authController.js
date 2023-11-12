@@ -24,11 +24,12 @@ const changePassword = async (req, res) => {
         req.params.token,
         process.env.JWT_SECRET + userId
       );
-      if (decoded.role == "Admin") {
+
+      if (decoded.role == "admin") {
         user = await Admin.findById(decoded.id).select("+password");
-      } else if (decoded.role == "Patient") {
+      } else if (decoded.role == "patient") {
         user = await Patient.findById(decoded.id).select("+password");
-      } else if (decoded.role == "Pharmacist") {
+      } else if (decoded.role == "pharmacist") {
         user = await Pharmacist.findById(decoded.id).select("+password");
       }
     }
@@ -45,16 +46,16 @@ const requestResetPassword = async (req, res) => {
     const { email, role } = req.body;
     let user;
 
-    if (role === "Admin") {
+    if (role === "admin") {
       user = await Admin.findOne({ email }).select("+password");
-    } else if (role === "Patient") {
+    } else if (role === "patient") {
       user = await Patient.findOne({ email }).select("+password");
-    } else if (role === "Pharmacist") {
+    } else if (role === "pharmacist") {
       user = await Pharmacist.findOne({ email }).select("+password");
     }
 
     if (!user) {
-      return res.status(404).json({ message: "Email is not registered" });
+      return res.status(400).json({ message: "Email is not registered" });
     }
 
     const resetToken = jwt.sign(
@@ -65,7 +66,7 @@ const requestResetPassword = async (req, res) => {
       }
     );
 
-    const resetURL = `${process.env.CLIENT_URL}/reset-password/${user._id}/${resetToken}`;
+    const resetURL = `${process.env.CLIENT_URL}/change-password/${user._id}/${resetToken}/`;
 
     await new Email(user, resetURL).sendPasswordReset();
 

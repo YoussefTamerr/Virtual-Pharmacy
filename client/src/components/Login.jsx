@@ -84,7 +84,7 @@ const Login = () => {
             },
           ]}
         >
-          <Input
+          <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             placeholder="Password"
@@ -116,6 +116,14 @@ const Login = () => {
           Don&apos;t have an account? Sign up here.
         </Button>
       )}
+      <Button
+        type="link"
+        onClick={() => {
+          navigate("/forgot-password/" + userRole);
+        }}
+      >
+        Forgot Password? Click here.
+      </Button>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   UserOutlined,
   PlusCircleOutlined,
@@ -12,6 +12,17 @@ import {
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const response = await fetch("http://localhost:5000/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    if (response.ok) {
+      navigate("/login");
+    }
+  };
 
   let items;
 
@@ -68,12 +79,16 @@ const Navbar = () => {
 
   items = items.concat([
     {
-      label: <NavLink to="/password">Change Password</NavLink>,
+      label: (
+        <NavLink to={location.pathname.split("/")[1] + "/change-password"}>
+          Change Password
+        </NavLink>
+      ),
       icon: <KeyOutlined />,
       key: "reset",
     },
     {
-      label: <NavLink to="/logout">Logout</NavLink>,
+      label: <NavLink onClick={handleLogout}>Logout</NavLink>,
       icon: <LogoutOutlined />,
       key: "logout",
     },

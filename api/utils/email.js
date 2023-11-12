@@ -38,7 +38,8 @@ class Email {
               <p style="margin-bottom: 40px;">Hi ${this.user.username},</p>
               <p style="margin-bottom: 40px;">We received a request to reset your password. If you didn't make the request, just ignore this email. Otherwise, you can reset your password using the following link:</p>
               <p style="text-align: center; margin-bottom: 40px; word-wrap: break-word;"><a href="${this.url}">${this.url}</a></p>
-            </div>
+              <p style="margin-bottom: 40px;">The link will automatically expire in 10 minutes</p>
+              </div>
           </div>
         </body>
       </html>
