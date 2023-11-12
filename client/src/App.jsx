@@ -12,6 +12,7 @@ import AppLayout from "./components/AppLayout";
 import AuthLayout from "./components/AuthLayout";
 import MedicineList from "./components/MedicineList";
 import PharmacistHome from "./components/PharmacistHome";
+import OrderList from "./components/OrderList";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route index element={<Navigate to={"/patient/home"} />} />
             <Route path="home" element={<PatientHome />} />
             <Route path="cart" element={<CartView />} />
+            <Route path="orders" element={<OrderList />} />
           </Route>
           <Route path="/pharmacist">
             <Route index element={<Navigate to={"/pharmacist/home"} />} />

@@ -1,9 +1,8 @@
-
-import { useState, useEffect } from 'react';
-import OrderView from './OrderView';
+import { useState, useEffect } from "react";
+import OrderView from "./OrderView";
+import { Collapse } from "antd";
 
 function OrderList() {
-
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -19,12 +18,19 @@ function OrderList() {
     fetchData();
   }, []);
 
+  const items =
+    orders == null
+      ? []
+      : orders.map((order) => ({
+          key: order._id,
+          label: "Order " + order._id,
+          children: <OrderView key={order._id} order={order} />,
+        }));
+
   return (
     <div>
       <h2>Orders</h2>
-      {orders.map((order) => (
-        <OrderView key={order._id} order={order} />
-      ))}
+      <Collapse items={items} />
     </div>
   );
 }
