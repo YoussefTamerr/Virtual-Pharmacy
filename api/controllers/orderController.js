@@ -217,7 +217,7 @@ async function stripeWebhook(request, response) {
 const getMyOrders = async (req, res) => {
     try {
         const patient = await Patient.findById(req.user._id);
-        const orders = await Order.find({ patient_id: patient._id });
+        const orders = await Order.find({ patient_id: patient._id }).populate("items.medicine_id");
         res.status(200).json(orders);
     } catch (err) {
         res.status(400).json({ message: err.message });
@@ -230,13 +230,13 @@ const cancelOrder = async (req, res) => {
         if (!order) {
             return res.status(400).json({ message: "Order not found" });
         }
-        if(order.status == "canceled"){
+        if(order.status == "Cancelled"){
             return res.status(400).json({ message: "Order already canceled" });
         }
-        if(order.status == "delivered"){
+        if(order.status == "Delivered"){
             return res.status(400).json({ message: "Order already delivered" });
         }
-        order.status = "canceled";
+        order.status = "Cancelled";
         await order.save();
         if(order.paymentMethod == "wallet" || order.paymentMethod == "cc"){
             const patient = await Patient.findById(req.user._id);
