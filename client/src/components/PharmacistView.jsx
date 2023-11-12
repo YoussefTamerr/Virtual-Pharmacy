@@ -1,6 +1,7 @@
-import { Button, message } from "antd";
+import { Button, Flex, message } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 
-const PharmacistView = ({ pharmacist, onRemove }) => {
+const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
   const removePharmacist = async (event) => {
     event.preventDefault();
     const response = await fetch(
@@ -22,39 +23,106 @@ const PharmacistView = ({ pharmacist, onRemove }) => {
     }
   };
 
+  const updatePharmacistApproval = async (event, registrationApproval) => {
+    event.preventDefault();
+    const response = await fetch(
+      `http://localhost:5000/pharmacist/${pharmacist._id}`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ registrationApproval }),
+      }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      onUpdatePharmacist(pharmacist._id, registrationApproval);
+      message.success("Pharmacist request " + data.registrationApproval);
+    } else {
+      message.error(data.message);
+    }
+  };
+
   return (
-    <div>
+    <Flex vertical gap={4} align="start">
       <h4>{pharmacist.name}</h4>
-      <p>
+      <div>
         <strong>Username: </strong>
         {pharmacist.username}
-      </p>
-      <p>
-        <strong>email: </strong>
+      </div>
+      <div>
+        <strong>Email: </strong>
         {pharmacist.email}
-      </p>
-      <p>
-        <strong>dateOfBirth: </strong>
+      </div>
+      <div>
+        <strong>Date of Birth: </strong>
         {pharmacist.dateOfBirth}
-      </p>
-      <p>
-        <strong>hourlyRate: </strong>
+      </div>
+      <div>
+        <strong>Hourly Rate: </strong>
         {pharmacist.hourlyRate}
-      </p>
-      <p>
-        <strong>affiliation: </strong>
+      </div>
+      <div>
+        <strong>Affiliation: </strong>
         {pharmacist.affiliation}
-      </p>
-      <p>
-        <strong>educationalBackground: </strong>
+      </div>
+      <div>
+        <strong>Educational Background: </strong>
         {pharmacist.educationalBackground}
-      </p>
-      {pharmacist.registrationApproval === "approved" && (
+      </div>
+      <Button
+        type="default"
+        icon={<DownloadOutlined />}
+        href={`http://localhost:5000/${pharmacist.pharmacyDegree}`}
+        size="small"
+        download
+      >
+        Pharmacy Degree
+      </Button>
+      <Button
+        type="default"
+        icon={<DownloadOutlined />}
+        href={`http://localhost:5000/${pharmacist.workingLicense}`}
+        size="small"
+        download
+      >
+        Working License
+      </Button>
+      <Button
+        type="default"
+        icon={<DownloadOutlined />}
+        href={`http://localhost:5000/${pharmacist.nationalId}`}
+        size="small"
+        download
+      >
+        National ID
+      </Button>
+      {pharmacist.registrationApproval !== "pending" && (
         <Button type="primary" onClick={removePharmacist}>
           Remove Pharmacist
         </Button>
       )}
-    </div>
+      {pharmacist.registrationApproval === "pending" && (
+        <Flex gap={5}>
+          <Button
+            type="primary"
+            onClick={(event) => updatePharmacistApproval(event, "approved")}
+            block
+          >
+            Accept Request
+          </Button>
+          <Button
+            type="primary"
+            onClick={(event) => updatePharmacistApproval(event, "denied")}
+            block
+          >
+            Reject Request
+          </Button>
+        </Flex>
+      )}
+    </Flex>
   );
 };
 

@@ -103,39 +103,25 @@ const getAllPharmacists = async (req, res) => {
   }
 };
 
-const acceptPharmacist = async (req, res) => {
+const updatePharmacistApproval = async (req, res) => {
   try {
-    const Pharmacist = await Pharmacist.findOne({
-      username: req.body.username,
-    });
-    if (Pharmacist.registrationApproval === "pending") {
-      Pharmacist.registrationApproval = "approved";
-      await Pharmacist.save();
-      res.status(201).json(Pharmacist);
-    } else {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Pharmacist ID" });
+    }
+    const pharmacist = await Pharmacist.findById(req.params.id);
+    if (!pharmacist) {
+      return res
+        .status(400)
+        .json({ message: "No Pharmacist found with that ID" });
+    }
+    if (pharmacist.registrationApproval !== "pending") {
       return res
         .status(400)
         .json({ message: "Request already approved/denied" });
     }
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-const rejectPharmacist = async (req, res) => {
-  try {
-    const Pharmacist = await Pharmacist.findOne({
-      username: req.body.username,
-    });
-    if (Pharmacist.registrationApproval === "pending") {
-      Pharmacist.registrationApproval = "denied";
-      await Pharmacist.save();
-      res.status(201).json(Pharmacist);
-    } else {
-      return res
-        .status(400)
-        .json({ message: "Request already approved/denied" });
-    }
+    pharmacist.registrationApproval = req.body.registrationApproval;
+    await pharmacist.save();
+    res.status(201).json(pharmacist);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -147,6 +133,5 @@ export {
   createPharmacist,
   loginPharmacist,
   getAllPharmacists,
-  acceptPharmacist,
-  rejectPharmacist,
+  updatePharmacistApproval,
 };

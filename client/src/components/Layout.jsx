@@ -1,7 +1,7 @@
 import { Flex } from "antd";
 import { Outlet } from "react-router-dom";
 
-const AuthLayout = () => {
+const Layout = () => {
   return (
     <Flex
       style={{ minHeight: "100vh" }}
@@ -14,4 +14,4 @@ const AuthLayout = () => {
   );
 };
 
-export default AuthLayout;
+export default Layout;
