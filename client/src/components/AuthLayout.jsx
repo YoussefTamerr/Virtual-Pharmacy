@@ -1,17 +1,17 @@
 import { Flex } from "antd";
 import { Outlet } from "react-router-dom";
 
-const Layout = () => {
+const AuthLayout = () => {
   return (
     <Flex
-      style={{ minHeight: "100vh" }}
+      vertical
       justify="center"
       align="center"
-      vertical
+      style={{ minHeight: "100vh" }}
     >
       <Outlet />
     </Flex>
   );
 };
 
-export default Layout;
+export default AuthLayout;
