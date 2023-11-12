@@ -5,11 +5,9 @@
 // update quantity state when quiantity changes
 //update cart state when remove or quantity changes
 //const [state, setState]
-import MedicineView from "./MedicineView";
 import { useEffect, useState } from "react";
-import { Button, Radio, message } from "antd";
+import { Button, Radio, message, Card } from "antd";
 import axios from "axios";
-
 
 const CartView = () => {
 
@@ -43,7 +41,9 @@ const CartView = () => {
         setCartState(data);
       }
     };
+    setLoadingState(true);
     fetchData();
+    setLoadingState(false);
   }, []);
 
   const handleIncrement = (index, currentCounter) => {
@@ -175,33 +175,71 @@ const CartView = () => {
 
 
   return (
-    <div>
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      gap: "small",
+    
+    }}>
       {cartState?.map((medicine, index) => {
         console.log(medicine);
         return (
           <div key={medicine.medicine_id._id}>
-            <MedicineView medicine={medicine.medicine_id} />
-            <div>
-              Quantity: {medicine.quantity}
-              <button onClick={() => handleIncrement(index, medicine.quantity)}>
+            <Card
+              headStyle={{ 
+                border: "2px solid grey",
+              }}
+              bodyStyle={{ 
+                border: "2px solid grey",
+              }}
+              style={{
+                width: 300,
+                marginTop: 16,
+                gap: "small",
+                display: "flex",
+                flexDirection: "column",
+              }}
+              loading={loadingState}
+              title={medicine.medicine_id.name}
+            >
+              <div>
+                <strong>Price: {medicine.medicine_id.price+" $"}</strong> <br />
+                <strong>Details: {medicine.medicine_id.details}</strong> <br />
+                <strong>Quantity: {medicine.quantity} </strong> <br />
+              </div>
+            
+            <br />
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            
+            }}>
+              <Button type="primary" onClick={() => handleIncrement(index, medicine.quantity)}>
                 +
-              </button>
-              <button onClick={() => handleDecrement(index, medicine.quantity)}>
+              </Button>
+              <Button type="primary" onClick={() => handleDecrement(index, medicine.quantity)}>
                 -
-              </button>
-              <button onClick={() => handleRemove(index)}>Remove</button>
+              </Button>
+              <Button type="primary" danger onClick={() => handleRemove(index)}>Remove</Button>
             </div>
+            </Card>
           </div>
         );
       })}
+      <br />
        <Radio.Group
+        gap="large"
         options={paymentOptions}
         onChange={handlePaymentMethod}
         value={methodState}
         optionType="button"
         buttonStyle="solid"
       />
-      <Button disabled={methodState === ""} loading={loadingState} onClick={handleCheckout}>Checkout</Button>
+      <br />
+      <br />
+      <Button style={{width: "150px"}} disabled={methodState === ""} loading={loadingState} onClick={handleCheckout}>Checkout</Button>
     </div>
   );
 };
