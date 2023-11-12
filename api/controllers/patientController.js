@@ -64,7 +64,6 @@ const deletePatient = async (req, res) => {
 
 const getPatient = async (req, res) => {
   try {
-    console.log(req.params.id);
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid Patient ID" });
     }
@@ -140,7 +139,6 @@ const chooseDefaultAddress = async (req, res) => {
 
 const getDeliveryAddress = async (req, res) => {
   try {
-    console.log(req.user._id);
     const patient = await Patient.findById(req.user._id);
     if (!patient) {
       return res.status(400).json({ message: "Patient not found" });

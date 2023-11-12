@@ -12,6 +12,7 @@ import cartRouter from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
+import { stripeWebhook } from "./controllers/orderController.js";
 
 dotenv.config();
 
@@ -25,6 +26,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.post('/webhook', express.json({ type: 'application/json' }), stripeWebhook);
 
 app.use("/admin", adminRouter);
 app.use("/patient", patientRouter);

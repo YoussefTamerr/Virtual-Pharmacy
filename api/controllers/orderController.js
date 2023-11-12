@@ -145,13 +145,25 @@ const createOrderCreditCard = async (req, res) => {
                     quantity: item.singleQuantity,
                 }
             }),
+            // line_items: [{
+            //     price_data: {
+            //         currency: "usd",
+            //         product_data: {
+            //             name: "medicines[0].name",
+            //             description: "medicines[0].details"
+            //         },
+            //         unit_amount: 4 * 100,
+            //     },
+            //     quantity: 2,
+            // }],
+
             success_url: `${process.env.CLIENT_URL}/cart`,
             cancel_url: `${process.env.CLIENT_URL}/cart`,
             metadata: {
-                patient_id: patient._id,
                 total_price: price,
                 address: req.body.address.street_address + ", " + req.body.address.city + ", " + req.body.address.governate,
                 paymentMethod: "cc",
+                patient_id: req.user._id.toString(),
             }
         })
             
@@ -162,13 +174,10 @@ const createOrderCreditCard = async (req, res) => {
 };
 
 async function stripeWebhook(request, response) {
-    console.log("webhook called");
     const event = request.body;
     
     const metadata = event.data.object.metadata;
-    console.log(metadata);
     if (event.type == 'checkout.session.completed'){
-        console.log(metadata);
         try {
             const cart = await Cart.findOne({ patient_id: metadata.patient_id });
             for (let i = 0; i < cart.items.length; i++) {
@@ -178,13 +187,18 @@ async function stripeWebhook(request, response) {
                 medicine.sales += medicine.price * item.quantity;
                 await medicine.save();
             }
+            const add = metadata.address.split(", ");
             const order = new Order(
                 {
                     patient_id: metadata.patient_id,
                     items: cart.items,
                     total_price: metadata.total_price,
                     status: "Confirmed",
-                    address: metadata.address,
+                    address: {
+                        street_address: add[0],
+                        city: add[1],
+                        governate: add[2],
+                    },
                     paymentMethod: metadata.paymentMethod,
                 }
             );

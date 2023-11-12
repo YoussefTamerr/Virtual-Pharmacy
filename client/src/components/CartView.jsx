@@ -8,7 +8,9 @@
 import MedicineView from "./MedicineView";
 import { useEffect, useState } from "react";
 import { Button, Radio, message } from "antd";
-import { message } from "antd";
+import axios from "axios";
+
+
 const CartView = () => {
 
   const [cartState, setCartState] = useState(null);
@@ -33,7 +35,7 @@ const CartView = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:10000/cart`, {
+      const response = await fetch(`http://localhost:5000/cart`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -48,7 +50,7 @@ const CartView = () => {
     const updatedCart = [...cartState];
     updatedCart[index].quantity += 1;
     console.log(currentCounter + 1);
-    fetch(`http://localhost:10000/cart`, {
+    fetch(`http://localhost:5000/cart`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +78,7 @@ const CartView = () => {
     const updatedCart = [...cartState];
     if (updatedCart[index].quantity > 1) {
       updatedCart[index].quantity -= 1;
-      fetch(`http://localhost:10000/cart`, {
+      fetch(`http://localhost:5000/cart`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +105,7 @@ const CartView = () => {
 
   const handleRemove = (index) => {
     const updatedCart = [...cartState];
-    fetch(`http://localhost:10000/cart/${updatedCart[index].medicine_id._id}`, {
+    fetch(`http://localhost:5000/cart/${updatedCart[index].medicine_id._id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -141,7 +143,7 @@ const CartView = () => {
           });
           const data = await response.json();
           if (response.ok) {
-            console.log(data);
+            setCartState(null);
             message.success("Order placed successfully");
           }
           else {
@@ -149,26 +151,16 @@ const CartView = () => {
           }
         }
         else{
-          await fetch(`http://localhost:5000/order/cc`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              paymentMethod: methodState,
-            }),
-            credentials: "include",
-          })
-          .then(res => {
-            if (res.ok) return res.json()
-            return res.json().then(json => Promise.reject(json))
-          })
-          .then(({ url }) => {
-            window.location = url
-          })
-          .catch(e => {
-            console.error(e.message)
-          })
+          const res = await axios.post(`http://localhost:5000/order/cc`,
+                 
+                {paymentMethod: methodState},
+                { withCredentials: true }
+            )
+            window.location = res.data.url
+            if(res.data.status === "success"){
+              setCartState(null);
+              message.success("Order placed successfully");
+            }
       }
     } catch (error) {
       console.error(error.message);
