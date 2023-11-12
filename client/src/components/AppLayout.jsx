@@ -1,34 +1,27 @@
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Flex, Layout, Menu } from "antd";
+import { Flex, Layout, Space } from "antd";
 import { Outlet } from "react-router-dom";
-import { createElement } from "react";
+import Navbar from "./Navbar";
 
 const { Sider, Content } = Layout;
+
+import { MedicineBoxOutlined } from "@ant-design/icons";
 
 const AppLayout = () => {
   return (
     <Layout style={{ minHeight: "100vh", background: "white" }}>
-      <Sider breakpoint="lg" collapsedWidth="0">
-        <Menu
-          mode="inline"
-          theme="dark"
-          defaultSelectedKeys={["4"]}
-          items={[
-            UserOutlined,
-            VideoCameraOutlined,
-            UploadOutlined,
-            UserOutlined,
-          ].map((icon, index) => ({
-            key: String(index + 1),
-            icon: createElement(icon),
-            label: `nav ${index + 1}`,
-          }))}
-          style={{ border: "none" }}
-        />
+      <Sider breakpoint="lg" collapsedWidth="0" style={{ padding: "5px" }}>
+        <Space
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+          }}
+        >
+          <MedicineBoxOutlined />
+          <h1>Pharmacy</h1>
+        </Space>
+        <Navbar />
       </Sider>
       <Content>
         <Flex
