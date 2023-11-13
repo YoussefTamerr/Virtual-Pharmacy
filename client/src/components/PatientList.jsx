@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import PatientView from "./PatientView";
+import Spinner from "./Spinner";
 
 function PatientList() {
   const [patients, setPatients] = useState([]);
@@ -30,6 +31,8 @@ function PatientList() {
       {patients.map((patient) => (
         <PatientView key={patient._id} patient={patient} onRemove={onRemove} />
       ))}
+
+      {patients.length === 0 && <Spinner />}
     </div>
   );
 }

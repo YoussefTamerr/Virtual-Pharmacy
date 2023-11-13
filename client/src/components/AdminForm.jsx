@@ -1,9 +1,12 @@
 import { Form, Input, Button, message } from "antd";
+import { useState } from "react";
 
 function AdminForm() {
   const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (values) => {
+    setIsLoading(true);
     const response = await fetch(`http://localhost:5000/admin`, {
       method: "POST",
       headers: {
@@ -19,6 +22,7 @@ function AdminForm() {
     } else {
       message.error(data.message);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -92,7 +96,7 @@ function AdminForm() {
             justifyContent: "center",
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isLoading}>
             Create Admin
           </Button>
         </Form.Item>

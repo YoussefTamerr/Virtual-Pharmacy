@@ -1,7 +1,7 @@
-import MedicineView from "./MedicineView";
 import { useEffect, useState } from "react";
 import { Button, Radio, message, Card } from "antd";
 import axios from "axios";
+import DeliveryAddress from "./DeliveryAddress";
 
 const CartView = () => {
   const [cartState, setCartState] = useState(null);
@@ -229,6 +229,7 @@ const CartView = () => {
           </div>
         );
       })}
+      <DeliveryAddress />
       <Radio.Group
         options={paymentOptions}
         onChange={handlePaymentMethod}

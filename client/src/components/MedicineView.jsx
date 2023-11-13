@@ -1,9 +1,12 @@
 import { Button, Modal, message, Card } from "antd";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 const { Meta } = Card;
 
+import { useLocation } from "react-router-dom";
 
 const MedicineView = ({ medicine }) => {
+  const [isLoading, setIsLoading] = useState();
+  const location = useLocation();
   const [medicineDetails, setMedicineDetails] = useState(medicine.details);
   const [medicinePrice, setMedicinePrice] = useState(medicine.price);
   const [medicineQuantity, setMedicineQuantity] = useState(
@@ -18,37 +21,10 @@ const MedicineView = ({ medicine }) => {
     medicine.availableQuantity
   );
 
-  const [imageSrc, setImageSrc] = useState('');
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/images/medicines/${medicine.name}.png`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-        if (!response.ok) {
-          setImageSrc('');
-        }else{
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          setImageSrc(url);
-        }
-        
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchImages();
-  }, []);
 
   const handleOk = () => {
     fetch(`http://localhost:5000/medicine/${medicine._id}`, {
@@ -83,33 +59,34 @@ const MedicineView = ({ medicine }) => {
     setIsModalOpen(false);
   };
 
-  const addToCart = () => {
-    fetch(`http://localhost:5000/cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        medicine_id: medicine._id,
-        quantity: 1,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to add medicine to cart");
-        }
-        message.success("Successfully added medicine");
-      })
-      .catch((error) => {
-        console.error(error);
-        message.error("Failed to add medicine");
+  const addToCart = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`http://localhost:5000/cart`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          medicine_id: medicine._id,
+          quantity: 1,
+        }),
       });
+      if (!response.ok) {
+        message.error("Failed to add medicine to cart");
+      }
+      message.success("Successfully added medicine");
+    } catch (error) {
+      console.error(error);
+      message.error("Failed to add medicine");
+    }
+    setIsLoading(false);
   };
 
   return (
     <div>
-      {window.location.pathname == "/pharmacist" && (
+      {location.pathname.startsWith("/pharmacist") && (
         <Modal
           title="Edit Medicine"
           open={isModalOpen}
@@ -149,68 +126,77 @@ const MedicineView = ({ medicine }) => {
           </label>
         </Modal>
       )}
-      <div style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Card
           style={{
-            width: 300,
             marginTop: 16,
             gap: "small",
             display: "flex",
             flexDirection: "column",
             border: "2px solid grey",
           }}
-          cover={imageSrc && <img style={{width: 295}} alt="example" src={imageSrc} />}
+          cover={
+            <img
+              alt="example"
+              src={`http://localhost:5000/${medicine.image}`}
+            />
+          }
         >
-          <Meta title={medicine.name} description={
-            <>
-              {window.location.pathname == "/pharmacist" && (
-                <>
-                  <p>
-                    <strong>available Quantity </strong>
-                    {medicineQuantity}
-                  </p>
-                  <p>
-                    <strong>sales: </strong>
-                    {medicine.sales}
-                  </p>
-                </>
-              )}
-              <p>
-                <strong>price: </strong>
-                {medicinePrice}
-              </p>
-              <p>
-                <strong>details: </strong>
-                {medicineDetails}
-              </p>
-            </>
-          }/>
-          
+          <Meta
+            title={medicine.name}
+            description={
+              <>
+                {location.pathname.startsWith("/pharmacist") && (
+                  <>
+                    <p>
+                      <strong>available Quantity </strong>
+                      {medicineQuantity}
+                    </p>
+                    <p>
+                      <strong>sales: </strong>
+                      {medicine.sales}
+                    </p>
+                  </>
+                )}
+                <p>
+                  <strong>price: </strong>
+                  {medicinePrice}
+                </p>
+                <p>
+                  <strong>details: </strong>
+                  {medicineDetails}
+                </p>
+              </>
+            }
+          />
         </Card>
         <br />
-        <div style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        
-        }}>
-          {window.location.pathname == "/pharmacist" && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          {location.pathname.startsWith("/pharmacist") && (
             <Button type="primary" onClick={showModal}>
               Edit Medicine
             </Button>
           )}
-          {window.location.pathname == "/patient" && (
-            <Button type="primary" onClick={addToCart}>
+          {location.pathname.startsWith("/patient") && (
+            <Button type="primary" onClick={addToCart} loading={isLoading}>
               Add to cart
             </Button>
           )}
         </div>
-      </div>      
+      </div>
     </div>
   );
 };

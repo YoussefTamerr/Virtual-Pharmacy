@@ -4,14 +4,13 @@ import Login from "./components/Login";
 import PatientSignup from "./components/PatientSignup";
 import PharmacistSignup from "./components/PharmacistSignup";
 import CartView from "./components/CartView";
-import PatientHome from "./components/PatientHome";
+import MedicineForm from "./components/MedicineForm";
 import AdminForm from "./components/AdminForm";
 import PatientList from "./components/PatientList";
 import PharmacistList from "./components/PharmacistList";
 import AppLayout from "./components/AppLayout";
 import AuthLayout from "./components/AuthLayout";
 import MedicineList from "./components/MedicineList";
-import PharmacistHome from "./components/PharmacistHome";
 import OrderList from "./components/OrderList";
 import ChangePassword from "./components/ChangePassword";
 import ForgotPassword from "./components/ForgotPassword";
@@ -35,20 +34,21 @@ function App() {
 
         <Route element={<AppLayout />}>
           <Route path="/patient">
-            <Route index element={<Navigate to={"/patient/home"} />} />
-            <Route path="home" element={<PatientHome />} />
+            <Route index element={<Navigate to={"/patient/medicines"} />} />
             <Route path="cart" element={<CartView />} />
             <Route path="orders" element={<OrderList />} />
+            <Route path="medicines" element={<MedicineList />} />
             <Route path="change-password" element={<ChangePassword />} />
           </Route>
           <Route path="/pharmacist">
-            <Route index element={<Navigate to={"/pharmacist/home"} />} />
-            <Route path="home" element={<PharmacistHome />} />
+            <Route index element={<Navigate to={"/pharmacist/add"} />} />
+            <Route path="add" element={<MedicineForm />} />
+            <Route path="medicines" element={<MedicineList />} />
             <Route path="change-password" element={<ChangePassword />} />
           </Route>
           <Route path="/admin">
-            <Route index element={<Navigate to={"/admin/home"} />} />
-            <Route path="home" element={<AdminForm />} />
+            <Route index element={<Navigate to={"/admin/add"} />} />
+            <Route path="add" element={<AdminForm />} />
             <Route path="patients" element={<PatientList />} />
             <Route path="pharmacists" element={<PharmacistList />} />
             <Route path="medicines" element={<MedicineList />} />

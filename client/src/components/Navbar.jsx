@@ -8,6 +8,7 @@ import {
   SolutionOutlined,
   LogoutOutlined,
   KeyOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 
 const Navbar = () => {
@@ -31,7 +32,7 @@ const Navbar = () => {
       {
         label: <NavLink to="/admin/add">Add Admin</NavLink>,
         icon: <UserAddOutlined />,
-        key: "home",
+        key: "add",
       },
       {
         label: <NavLink to="/admin/patients">View Patients</NavLink>,
@@ -43,14 +44,14 @@ const Navbar = () => {
         icon: <UserOutlined />,
         key: "pharmacists",
       },
+      {
+        label: <NavLink to="/admin/medicines">View Medicines</NavLink>,
+        icon: <MedicineBoxOutlined />,
+        key: "medicines",
+      },
     ];
   } else if (location.pathname.startsWith("/patient")) {
     items = [
-      {
-        label: <NavLink to="/patient/home">Home</NavLink>,
-        icon: <SolutionOutlined />,
-        key: "home",
-      },
       {
         label: <NavLink to="/patient/medicines">Medicines</NavLink>,
         icon: <MedicineBoxOutlined />,
@@ -61,13 +62,18 @@ const Navbar = () => {
         icon: <SolutionOutlined />,
         key: "orders",
       },
+      {
+        label: <NavLink to="/patient/cart">Cart</NavLink>,
+        icon: <ShoppingCartOutlined />,
+        key: "cart",
+      },
     ];
   } else if (location.pathname.startsWith("/pharmacist")) {
     items = [
       {
-        label: <NavLink to="/pharmacist/add">Home</NavLink>,
+        label: <NavLink to="/pharmacist/add">Add Medicine</NavLink>,
         icon: <PlusCircleOutlined />,
-        key: "home",
+        key: "add",
       },
       {
         label: <NavLink to="/pharmacist/medicines">Medicines</NavLink>,
@@ -100,7 +106,7 @@ const Navbar = () => {
       theme="dark"
       style={{ border: "none" }}
       items={items}
-      defaultSelectedKeys={["home"]}
+      defaultSelectedKeys={["" + location.pathname.split("/")[2]]}
     />
   );
 };

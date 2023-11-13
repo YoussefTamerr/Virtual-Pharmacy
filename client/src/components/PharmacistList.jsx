@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import PharmacistView from "./PharmacistView";
+import Spinner from "./Spinner";
 
 function PharmacistList() {
   const [pharmacists, setPharmacists] = useState([]);
@@ -49,35 +50,41 @@ function PharmacistList() {
   return (
     <div>
       <h2>Pharmacists</h2>
-      <h3>Registered Pharmacists</h3>
-      {approvedPharmacists.map((pharmacist) => (
-        <PharmacistView
-          key={pharmacist._id}
-          pharmacist={pharmacist}
-          onRemove={onRemove}
-          onUpdatePharmacist={onUpdatePharmacist}
-        />
-      ))}
+      {pharmacists.length == 0 ? (
+        <Spinner />
+      ) : (
+        <>
+          <h3>Registered Pharmacists</h3>
+          {approvedPharmacists.map((pharmacist) => (
+            <PharmacistView
+              key={pharmacist._id}
+              pharmacist={pharmacist}
+              onRemove={onRemove}
+              onUpdatePharmacist={onUpdatePharmacist}
+            />
+          ))}
 
-      <h3>Registration Requests</h3>
-      {pendingPharmacists.map((pharmacist) => (
-        <PharmacistView
-          key={pharmacist._id}
-          pharmacist={pharmacist}
-          onRemove={onRemove}
-          onUpdatePharmacist={onUpdatePharmacist}
-        />
-      ))}
+          <h3>Registration Requests</h3>
+          {pendingPharmacists.map((pharmacist) => (
+            <PharmacistView
+              key={pharmacist._id}
+              pharmacist={pharmacist}
+              onRemove={onRemove}
+              onUpdatePharmacist={onUpdatePharmacist}
+            />
+          ))}
 
-      <h3>Rejected Pharmacists</h3>
-      {rejectedPharmacists.map((pharmacist) => (
-        <PharmacistView
-          key={pharmacist._id}
-          pharmacist={pharmacist}
-          onRemove={onRemove}
-          onUpdatePharmacist={onUpdatePharmacist}
-        />
-      ))}
+          <h3>Rejected Pharmacists</h3>
+          {rejectedPharmacists.map((pharmacist) => (
+            <PharmacistView
+              key={pharmacist._id}
+              pharmacist={pharmacist}
+              onRemove={onRemove}
+              onUpdatePharmacist={onUpdatePharmacist}
+            />
+          ))}
+        </>
+      )}
     </div>
   );
 }

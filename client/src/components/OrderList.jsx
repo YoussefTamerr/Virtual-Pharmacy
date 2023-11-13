@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import OrderView from "./OrderView";
 import { Collapse } from "antd";
+import Spinner from "./Spinner";
 
 function OrderList() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +31,7 @@ function OrderList() {
   return (
     <div>
       <h2>Orders</h2>
-      <Collapse items={items} />
+      {orders == null ? <Spinner /> : <Collapse items={items} />}
     </div>
   );
 }

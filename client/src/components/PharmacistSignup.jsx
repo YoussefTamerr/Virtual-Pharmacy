@@ -157,9 +157,18 @@ const PharmacistSignup = () => {
           name="hourlyRate"
           rules={[
             { required: true, message: "Please input your hourly rate!" },
+            {
+              type: "number",
+              min: 0,
+              message: "Hourly rate must be positive.",
+            },
           ]}
         >
-          <InputNumber prefix={<DollarOutlined />} placeholder="Hourly Rate" />
+          <InputNumber
+            prefix={<DollarOutlined />}
+            placeholder="Hourly Rate"
+            style={{ width: "50%" }}
+          />
         </Form.Item>
         <Form.Item
           name="affiliation"

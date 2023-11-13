@@ -20,7 +20,7 @@ const Login = () => {
         body: JSON.stringify(values),
       });
       if (response.ok) {
-        navigate("/home");
+        navigate("/" + userRole);
       } else {
         const data = await response.json();
         message.error(data.message);

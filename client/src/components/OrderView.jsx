@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 
 function OrderView({ order }) {
   const [status, setStatus] = useState(order.status);
+  const [isLoading, setIsLoading] = useState(false);
 
   let paymentMethodText = "";
   if (order.paymentMethod === "cod") {
@@ -16,15 +17,19 @@ function OrderView({ order }) {
   }
 
   const handleCancel = async () => {
+    setIsLoading(true);
     const response = await fetch(`http://localhost:5000/order/${order._id}`, {
       method: "PATCH",
       credentials: "include",
     });
     const data = await response.json();
-    console.log(data);
     if (response.ok) {
       setStatus("Cancelled");
+      message.success("Order cancelled successfully");
+    } else {
+      message.error(data);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -48,8 +53,13 @@ function OrderView({ order }) {
       <br />
       Payment method: {paymentMethodText} <br />
       <br />
-      {order.status === "Confirmed" && (
-        <Button type="primary" danger onClick={handleCancel}>
+      {status === "Confirmed" && (
+        <Button
+          type="primary"
+          danger
+          onClick={handleCancel}
+          loading={isLoading}
+        >
           Cancel Order
         </Button>
       )}

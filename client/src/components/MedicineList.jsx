@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import MedicineView from "./MedicineView";
 import Search from "./Search";
+import Spinner from "./Spinner";
+import { Flex } from "antd";
 
 function MedicineList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,6 +40,10 @@ function MedicineList() {
     return true;
   });
 
+  if (medicines.length === 0) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <h2>Medicines</h2>
@@ -57,9 +63,11 @@ function MedicineList() {
           ))}
         </select>
       </div>
-      {filteredMedicine.map((medicine) => (
-        <MedicineView key={medicine._id} medicine={medicine} />
-      ))}
+      <Flex wrap="wrap" justify="center" align="end" gap={10}>
+        {filteredMedicine.map((medicine) => (
+          <MedicineView key={medicine._id} medicine={medicine} />
+        ))}
+      </Flex>
     </>
   );
 }
