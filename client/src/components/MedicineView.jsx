@@ -1,5 +1,7 @@
-import { Button, Modal, message } from "antd";
-import { useState } from "react";
+import { Button, Modal, message, Card } from "antd";
+import { useState, useEffect } from "react";
+const { Meta } = Card;
+
 
 const MedicineView = ({ medicine }) => {
   const [medicineDetails, setMedicineDetails] = useState(medicine.details);
@@ -16,10 +18,37 @@ const MedicineView = ({ medicine }) => {
     medicine.availableQuantity
   );
 
+  const [imageSrc, setImageSrc] = useState('');
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/images/medicines/${medicine.name}.png`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        if (!response.ok) {
+          setImageSrc('');
+        }else{
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          setImageSrc(url);
+        }
+        
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchImages();
+  }, []);
 
   const handleOk = () => {
     fetch(`http://localhost:5000/medicine/${medicine._id}`, {
@@ -120,37 +149,68 @@ const MedicineView = ({ medicine }) => {
           </label>
         </Modal>
       )}
-      <h4>{medicine.name}</h4>
-      {window.location.pathname == "/pharmacist" && (
-        <>
-          <p>
-            <strong>available Quantity </strong>
-            {medicineQuantity}
-          </p>
-          <p>
-            <strong>sales: </strong>
-            {medicine.sales}
-          </p>
-        </>
-      )}
-      <p>
-        <strong>price: </strong>
-        {medicinePrice}
-      </p>
-      <p>
-        <strong>details: </strong>
-        {medicineDetails}
-      </p>
-      {window.location.pathname == "/pharmacist" && (
-        <Button type="primary" onClick={showModal}>
-          Edit Medicine
-        </Button>
-      )}
-      {window.location.pathname == "/patient" && (
-        <Button type="primary" onClick={addToCart}>
-          Add to cart
-        </Button>
-      )}
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        <Card
+          style={{
+            width: 300,
+            marginTop: 16,
+            gap: "small",
+            display: "flex",
+            flexDirection: "column",
+            border: "2px solid grey",
+          }}
+          cover={imageSrc && <img style={{width: 295}} alt="example" src={imageSrc} />}
+        >
+          <Meta title={medicine.name} description={
+            <>
+              {window.location.pathname == "/pharmacist" && (
+                <>
+                  <p>
+                    <strong>available Quantity </strong>
+                    {medicineQuantity}
+                  </p>
+                  <p>
+                    <strong>sales: </strong>
+                    {medicine.sales}
+                  </p>
+                </>
+              )}
+              <p>
+                <strong>price: </strong>
+                {medicinePrice}
+              </p>
+              <p>
+                <strong>details: </strong>
+                {medicineDetails}
+              </p>
+            </>
+          }/>
+          
+        </Card>
+        <br />
+        <div style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        
+        }}>
+          {window.location.pathname == "/pharmacist" && (
+            <Button type="primary" onClick={showModal}>
+              Edit Medicine
+            </Button>
+          )}
+          {window.location.pathname == "/patient" && (
+            <Button type="primary" onClick={addToCart}>
+              Add to cart
+            </Button>
+          )}
+        </div>
+      </div>      
     </div>
   );
 };
