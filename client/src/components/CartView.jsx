@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Radio, message, Card } from "antd";
 import axios from "axios";
 import DeliveryAddress from "./DeliveryAddress";
+import Spinner from "./Spinner";
 
 const CartView = () => {
   const [cartState, setCartState] = useState(null);
@@ -96,6 +97,7 @@ const CartView = () => {
 
   const handleRemove = (index) => {
     const updatedCart = [...cartState];
+    setLoadingState(true);
     fetch(`http://localhost:5000/cart/${updatedCart[index].medicine_id._id}`, {
       method: "DELETE",
       headers: {
@@ -105,7 +107,7 @@ const CartView = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to add medicine to cart");
+          throw new Error("Failed to remove medicine to cart");
         }
         updatedCart.splice(index, 1);
         setCartState(updatedCart);
@@ -114,6 +116,9 @@ const CartView = () => {
       .catch((error) => {
         console.error(error);
         message.error("Failed to remove medicine");
+      })
+      .finally(() => {
+        setLoadingState(false);
       });
   };
 
@@ -133,7 +138,7 @@ const CartView = () => {
         });
         const data = await response.json();
         if (response.ok) {
-          setCartState(null);
+          setCartState([]);
           message.success("Order placed successfully");
         } else {
           message.error(data.message);
@@ -147,7 +152,7 @@ const CartView = () => {
         );
         window.location = res.data.url;
         if (res.data.status === "success") {
-          setCartState(null);
+          setCartState([]);
           message.success("Order placed successfully");
         }
       }
@@ -170,7 +175,7 @@ const CartView = () => {
         gap: "small",
       }}
     >
-      {cartState?.map((medicine, index) => {
+      {cartState == null ? <Spinner /> : cartState?.map((medicine, index) => {
         return (
           <div key={medicine.medicine_id._id}>
             <Card
@@ -219,6 +224,7 @@ const CartView = () => {
                 </Button>
                 <Button
                   type="primary"
+                  loading={loadingState}
                   danger
                   onClick={() => handleRemove(index)}
                 >

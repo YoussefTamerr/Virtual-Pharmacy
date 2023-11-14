@@ -156,8 +156,8 @@ const createOrderCreditCard = async (req, res) => {
       //     quantity: 2,
       // }],
 
-      success_url: `${process.env.CLIENT_URL}/cart`,
-      cancel_url: `${process.env.CLIENT_URL}/cart`,
+      success_url: `${process.env.CLIENT_URL}/patient/cart`,
+      cancel_url: `${process.env.CLIENT_URL}/patient/cart`,
       metadata: {
         total_price: price,
         address:
