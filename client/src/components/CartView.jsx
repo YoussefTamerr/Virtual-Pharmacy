@@ -26,17 +26,25 @@ const CartView = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:5000/cart`, {
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setCartState(data);
+      try {
+        setLoadingState(true);
+        const response = await fetch(`http://localhost:5000/cart`, {
+          credentials: "include",
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setCartState(data);
+        } else {
+          setCartState([]);
+        }
+      } catch (error) {
+        console.error(error);
+        setCartState([]);
+      } finally {
+        setLoadingState(false);
       }
     };
-    setLoadingState(true);
     fetchData();
-    setLoadingState(false);
   }, []);
 
   const handleIncrement = (index, currentCounter) => {
