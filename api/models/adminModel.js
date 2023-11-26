@@ -37,4 +37,4 @@ adminSchema.methods.comparePassword = async function (
   return await bcrypt.compare(enteredPassword, hashedPassword);
 };
 
-export default model("Admin", adminSchema);
+export default model("PharmacyAdmin", adminSchema);

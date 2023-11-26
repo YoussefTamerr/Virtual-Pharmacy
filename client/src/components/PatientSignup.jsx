@@ -117,7 +117,7 @@ const PatientSignup = () => {
         </Form.Item>
 
         <Form.Item
-          name="dateOfBirth"
+          name="birthdate"
           rules={[
             {
               required: true,
@@ -156,7 +156,7 @@ const PatientSignup = () => {
         </Form.Item>
 
         <Form.Item
-          name={["emergencyContact", "fullName"]}
+          name={"emergencyName"}
           rules={[
             {
               required: true,
@@ -171,7 +171,7 @@ const PatientSignup = () => {
         </Form.Item>
 
         <Form.Item
-          name={["emergencyContact", "mobileNumber"]}
+          name={"emergencyPhoneNumber"}
           rules={[
             {
               required: true,
@@ -186,7 +186,7 @@ const PatientSignup = () => {
         </Form.Item>
 
         <Form.Item
-          name={["emergencyContact", "relation"]}
+          name={"emergencyRelation"}
           rules={[
             {
               required: true,

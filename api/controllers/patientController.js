@@ -13,10 +13,12 @@ const createPatient = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      dateOfBirth: req.body.dateOfBirth,
+      birthdate: req.body.birthdate,
       gender: req.body.gender,
-      mobileNumber: req.body.mobileNumber,
-      emergencyContact: req.body.emergencyContact,
+      phoneNumber: req.body.phoneNumber,
+      emergencyName: req.body.emergencyName,
+      emergencyPhoneNumber: req.body.emergencyPhoneNumber,
+      emergencyRelation: req.body.emergencyRelation,
     });
     res.status(201).json({ patient });
   } catch (err) {

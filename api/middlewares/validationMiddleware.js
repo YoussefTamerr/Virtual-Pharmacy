@@ -5,20 +5,18 @@ const patientSchema = joi.object({
   name: joi.string().required(),
   email: joi.string().email().required(),
   password: joi.string().alphanum().min(6).required(),
-  dateOfBirth: joi.date().required(),
+  birthdate: joi.date().required(),
   gender: joi.string().valid("male").valid("female").required(),
-  mobileNumber: joi
+  phoneNumber: joi
     .string()
     .pattern(/^[0-9\s()+-]+$/)
     .required(),
-  emergencyContact: {
-    fullName: joi.string().required(),
-    mobileNumber: joi
+  emergencyName: joi.string().required(),
+  emergencyPhoneNumber: joi
       .string()
       .pattern(/^[0-9\s()+-]+$/)
       .required(),
-    relation: joi.string().required(),
-  },
+  emergencyRelation: joi.string().required(),
 });
 
 const pharmacistSchema = joi.object({

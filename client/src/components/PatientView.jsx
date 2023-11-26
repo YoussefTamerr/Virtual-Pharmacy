@@ -38,7 +38,7 @@ const PatientView = ({ patient, onRemove }) => {
       </p>
       <p>
         <strong>Date of Birth: </strong>
-        {patient.dateOfBirth}
+        {patient.birthdate}
       </p>
       <p>
         <strong>Gender: </strong>
@@ -50,15 +50,15 @@ const PatientView = ({ patient, onRemove }) => {
       </p>
       <p>
         <strong>Emergency Contact - Full Name: </strong>
-        {patient.emergencyContact.fullName}
+        {patient.emergencyName}
       </p>
       <p>
         <strong>Emergency Contact - Mobile Number: </strong>
-        {patient.emergencyContact.mobileNumber}
+        {patient.emergencyPhoneNumber}
       </p>
       <p>
         <strong>Emergency Contact - Relation: </strong>
-        {patient.emergencyContact.relation}
+        {patient.emergencyRelation}
       </p>
       <Button type="primary" onClick={removePatient}>
         Remove Patient

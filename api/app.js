@@ -47,7 +47,7 @@ mongoose
   .connect(process.env.MONGO_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    dbName: "balabizo-pharmacy",
+    dbName: "virtual-clinic",
   })
   .then(() => {
     app.listen(process.env.PORT, () => {
