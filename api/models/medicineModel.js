@@ -31,6 +31,16 @@ const medicineSchema = new Schema({
     type: String,
     required: true,
   },
+  medType: {
+    type: String,
+    enum: ["countertop", "prescription"],
+    default: "countertop",
+    required: true,
+  },
+  archived: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default model("Medicine", medicineSchema);

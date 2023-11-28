@@ -63,4 +63,32 @@ const updateMedicine = async (req, res) => {
   }
 };
 
-export { getAllMedicines, getMedicine, createMedicine, updateMedicine };
+const archiveMedicine = async (req, res) => {
+  try {
+    const medicine = await Medicine.findById(req.params.id);
+    if (!medicine) {
+      return res.status(400).json({ message: "Medicine not found" });
+    }
+    medicine.archived = true;
+    await medicine.save();
+    res.status(200).json(medicine);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const unarchiveMedicine = async (req, res) => {
+  try {
+    const medicine = await Medicine.findById(req.params.id);
+    if (!medicine) {
+      return res.status(400).json({ message: "Medicine not found" });
+    }
+    medicine.archived = false;
+    await medicine.save();
+    res.status(200).json(medicine);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export { getAllMedicines, getMedicine, createMedicine, updateMedicine, archiveMedicine, unarchiveMedicine };

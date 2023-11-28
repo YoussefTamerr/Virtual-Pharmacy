@@ -4,6 +4,8 @@ import {
   getMedicine,
   createMedicine,
   updateMedicine,
+  archiveMedicine,
+  unarchiveMedicine,
 } from "../controllers/medicineController.js";
 import {
   medicineSchema,
@@ -28,5 +30,9 @@ router.post(
 router.get("/:id", getMedicine);
 
 router.patch("/:id", updateMedicine);
+
+router.patch("/archive/:id", archiveMedicine);
+
+router.patch("/unarchive/:id", unarchiveMedicine);
 
 export default router;

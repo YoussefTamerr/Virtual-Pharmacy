@@ -28,6 +28,9 @@ function MedicineList() {
   };
 
   const filteredMedicine = medicines.filter((medicine) => {
+    if (medicine.archived && location.pathname.startsWith("/patient")) {
+      return false;
+    }
     if (selectedCategory && medicine.category !== selectedCategory) {
       return false;
     }

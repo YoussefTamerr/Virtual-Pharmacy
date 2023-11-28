@@ -52,6 +52,7 @@ const medicineSchema = joi.object({
   details: joi.string().required(),
   image: joi.string().required(),
   category: joi.string().required(),
+  medType: joi.string().valid("countertop").valid("prescription").required(),
 });
 
 const validateBody = (schema) => {

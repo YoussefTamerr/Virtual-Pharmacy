@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Form, Input, Button, message, Upload } from "antd";
+import { Form, Input, Button, message, Upload, Checkbox } from "antd";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 
 function MedicineForm() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const onFinish = async (formData) => {
     setLoading(true);
@@ -16,6 +17,7 @@ function MedicineForm() {
     formDataToSend.append("category", formData.category);
     formDataToSend.append("sales", 0);
     formDataToSend.append("image", formData.image[0].originFileObj);
+    formDataToSend.append("medType", isChecked ? "prescription" : "countertop");
     try {
       const response = await fetch(`http://localhost:5000/medicine`, {
         method: "POST",
@@ -58,6 +60,10 @@ function MedicineForm() {
     }
     return false;
   };
+
+  const handleCheckboxChange = (e) => {
+    setIsChecked(e.target.checked);
+  }
 
   return (
     <>
@@ -122,6 +128,14 @@ function MedicineForm() {
           ]}
         >
           <Input placeholder="Category" />
+        </Form.Item>
+        <Form.Item name="medType">
+          <Checkbox 
+            checked={isChecked} 
+            onChange={handleCheckboxChange}
+          >
+            Prescription Medicine
+          </Checkbox>
         </Form.Item>
         <Form.Item
           name="image"

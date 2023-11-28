@@ -103,7 +103,7 @@ const PatientSignup = () => {
               required: true,
               message: "Please input your password!",
             },
-            { min: 6, message: "Password must be at least 6 characters." },
+            { min: 8, message: "Password must be at least 8 characters." },
             {
               pattern:
                 /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{6,}$/,
@@ -144,7 +144,7 @@ const PatientSignup = () => {
         </Form.Item>
 
         <Form.Item
-          name="mobileNumber"
+          name="phoneNumber"
           rules={[
             {
               required: true,

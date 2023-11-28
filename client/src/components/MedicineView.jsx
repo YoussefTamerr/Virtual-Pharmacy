@@ -21,6 +21,8 @@ const MedicineView = ({ medicine }) => {
     medicine.availableQuantity
   );
 
+  const [medicineArchived, setMedicineArchived] = useState(medicine.archived);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -83,6 +85,40 @@ const MedicineView = ({ medicine }) => {
     }
     setIsLoading(false);
   };
+
+  const archiveMed = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/medicine/archive/${medicine._id}`, {
+        method: "PATCH",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        message.error("Failed to archive medicine");
+      }
+      message.success("Successfully archived medicine");
+      setMedicineArchived(true);
+    } catch (error) {
+      console.error(error);
+      message.error("Failed to archive medicine");
+    }
+  }
+
+  const unarchiveMed = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/medicine/unarchive/${medicine._id}`, {
+        method: "PATCH",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        message.error("Failed to unarchive medicine");
+      }
+      message.success("Successfully unarchived medicine");
+      setMedicineArchived(false);
+    } catch (error) {
+      console.error(error);
+      message.error("Failed to archive medicine");
+    }
+  }
 
   return (
     <div>
@@ -186,11 +222,22 @@ const MedicineView = ({ medicine }) => {
           }}
         >
           {location.pathname.startsWith("/pharmacist") && (
-            <Button type="primary" onClick={showModal}>
-              Edit Medicine
-            </Button>
+            <>
+              <Button type="primary" onClick={showModal}>
+                Edit Medicine
+              </Button>
+              {medicineArchived ? (
+                <Button type="primary" onClick={unarchiveMed}>
+                  Unarchive Medicine
+                </Button>
+              ) : (
+                <Button type="primary" onClick={archiveMed}>
+                  Archive Medicine
+                </Button>
+              )}
+            </>
           )}
-          {location.pathname.startsWith("/patient") && (
+          {location.pathname.startsWith("/patient") && medicine.type ==="countertop" && (
             <Button type="primary" onClick={addToCart} loading={isLoading}>
               Add to cart
             </Button>
