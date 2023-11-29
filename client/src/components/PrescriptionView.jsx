@@ -1,5 +1,6 @@
 import { Flex, Card } from "antd";
 import { useState } from "react";
+import moment from "moment";
 const { Meta } = Card;
 
 import { useLocation } from "react-router-dom";
@@ -33,6 +34,7 @@ const PrescriptionView = ({ prescription }) => {
           <div>
             <strong>Status: {prescription.status}</strong> <br />
             <strong>Notes: {prescription.notes} </strong> <br />
+            <strong>Date: {moment(prescription.date).format('YYYY-MM-DD')}</strong> <br />
           </div>
           <div style={
             {
