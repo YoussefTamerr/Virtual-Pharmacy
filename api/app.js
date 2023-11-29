@@ -11,6 +11,7 @@ import medicineRouter from "./routes/medicineRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import authRouter from "./routes/authRoutes.js";
+import prescriptionRouter from "./routes/prescriptionsRoutes.js";
 import cookieParser from "cookie-parser";
 import { stripeWebhook } from "./controllers/orderController.js";
 
@@ -36,6 +37,7 @@ app.use("/medicine", medicineRouter);
 app.use("/cart", cartRouter);
 app.use("/order", orderRouter);
 app.use("/auth", authRouter);
+app.use("/prescription", prescriptionRouter);
 
 app.all("*", (req, res) => {
   res

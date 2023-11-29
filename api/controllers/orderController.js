@@ -58,10 +58,14 @@ const createOrder = async (req, res) => {
       await patient.save();
     }
     //////////////////
+    let outOfStockMedicines = [];
     for (let i = 0; i < cart.items.length; i++) {
       const item = cart.items[i];
       const medicine = await Medicine.findById(item.medicine_id);
       medicine.availableQuantity -= item.quantity;
+      if (medicine.availableQuantity <= 0) {
+        outOfStockMedicines.push(medicine);
+      }
       medicine.sales += medicine.price * item.quantity;
       await medicine.save();
     }
@@ -76,7 +80,7 @@ const createOrder = async (req, res) => {
     cart.items = [];
     await cart.save();
     await order.save();
-    res.status(201).json({ order });
+    res.status(201).json({ order, outOfStockMedicines });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

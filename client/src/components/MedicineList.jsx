@@ -3,12 +3,15 @@ import MedicineView from "./MedicineView";
 import Search from "./Search";
 import Spinner from "./Spinner";
 import { Flex } from "antd";
+import { useLocation } from "react-router-dom";
+
 
 function MedicineList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [medicines, setMedicines] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const categories = medicines.map((medicine) => medicine.category);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {

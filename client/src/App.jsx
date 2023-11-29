@@ -12,6 +12,7 @@ import AppLayout from "./components/AppLayout";
 import AuthLayout from "./components/AuthLayout";
 import MedicineList from "./components/MedicineList";
 import OrderList from "./components/OrderList";
+import PrescriptionList from "./components/PrescriptionList";
 import ChangePassword from "./components/ChangePassword";
 import ForgotPassword from "./components/ForgotPassword";
 
@@ -39,6 +40,7 @@ function App() {
             <Route path="orders" element={<OrderList />} />
             <Route path="medicines" element={<MedicineList />} />
             <Route path="change-password" element={<ChangePassword />} />
+            <Route path="prescriptions" element={<PrescriptionList />} />
           </Route>
           <Route path="/pharmacist">
             <Route index element={<Navigate to={"/pharmacist/add"} />} />

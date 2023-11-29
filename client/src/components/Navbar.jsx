@@ -9,6 +9,7 @@ import {
   LogoutOutlined,
   KeyOutlined,
   ShoppingCartOutlined,
+  ExperimentOutlined,
 } from "@ant-design/icons";
 
 const Navbar = () => {
@@ -66,6 +67,11 @@ const Navbar = () => {
         label: <NavLink to="/patient/cart">Cart</NavLink>,
         icon: <ShoppingCartOutlined />,
         key: "cart",
+      },
+      {
+        label: <NavLink to="/patient/prescriptions">Prescriptions</NavLink>,
+        icon: <ExperimentOutlined />,
+        key: "prescriptions",
       },
     ];
   } else if (location.pathname.startsWith("/pharmacist")) {

@@ -237,7 +237,10 @@ const MedicineView = ({ medicine }) => {
               )}
             </>
           )}
-          {location.pathname.startsWith("/patient") && medicine.type ==="countertop" && (
+          {((location.pathname.startsWith("/patient") && 
+          medicine.medType ==="countertop") ||
+          (location.pathname.startsWith("/patient/prescriptions"))) && 
+          (
             <Button type="primary" onClick={addToCart} loading={isLoading}>
               Add to cart
             </Button>
