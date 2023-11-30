@@ -27,7 +27,10 @@ function PrescriptionList() {
 
   return (
     <>
-      <h2>Prescriptions</h2>
+      <h1>Prescriptions</h1>
+      {
+        prescriptions.length === 0 && <p style={{fontSize:"20px"}}>You have no prescriptions</p>
+      }
       <Flex wrap="wrap" justify="center" align="end" gap={10}>
         {prescriptions && prescriptions.map((prescription) => (
           <PrescriptionView key={prescription._id} prescription={prescription} />

@@ -8,6 +8,7 @@ const CartView = () => {
   const [cartState, setCartState] = useState(null);
   const [methodState, setMethodState] = useState("");
   const [loadingState, setLoadingState] = useState(false);
+  const numberOfColumns = cartState && cartState.length <= 1 ? '1fr' : 'repeat(2, 1fr)';
 
   const paymentOptions = [
     {
@@ -175,90 +176,111 @@ const CartView = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        gap: "small",
-      }}
-    >
-      {cartState == null ? <Spinner /> : cartState?.map((medicine, index) => {
-        return (
-          <div key={medicine.medicine_id._id}>
-            <Card
-              headStyle={{
-                border: "2px solid grey",
-              }}
-              bodyStyle={{
-                border: "2px solid grey",
-              }}
-              style={{
-                width: 300,
-                marginTop: 16,
-                gap: "small",
-                display: "flex",
-                flexDirection: "column",
-              }}
-              loading={loadingState}
-              title={medicine.medicine_id.name}
-            >
-              <div>
-                <strong>Price: {medicine.medicine_id.price + " $"}</strong>{" "}
-                <br />
-                <strong>Details: {medicine.medicine_id.details}</strong> <br />
-                <strong>Quantity: {medicine.quantity} </strong> <br />
-              </div>
-
-              <br />
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
+    <>
+    {cartState == null ? <Spinner /> : 
+      <>
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "small",
+        }}>
+          <h1>Cart</h1>
+          <DeliveryAddress />
+        </div>
+        {cartState?.length === 0 && <p style={{ fontSize: "20px" }}>Cart is empty</p>}
+        {cartState?.length !== 0 && <div style={{
+          border: "1px solid grey",
+          borderRadius: "10px",
+          height: '300px',
+          minWidth: '300px',
+          overflow: 'auto',
+          display: 'grid',
+          gridTemplateColumns: numberOfColumns,
+          gap: '10px',
+          padding: '10px',
+        }}>
+          
+          {cartState?.map((medicine, index) => {
+            return (
+              <div 
+                key={medicine.medicine_id._id}  
               >
-                <Button
-                  type="primary"
-                  onClick={() => handleIncrement(index, medicine.quantity)}
-                >
-                  +
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() => handleDecrement(index, medicine.quantity)}
-                >
-                  -
-                </Button>
-                <Button
-                  type="primary"
+                <Card
+                  headStyle={{
+                    border: "2px solid grey",
+                  }}
+                  bodyStyle={{
+                    border: "2px solid grey",
+                  }}
+                  style={{
+                    width: 300,
+                    marginTop: 16,
+                    gap: "small",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
                   loading={loadingState}
-                  danger
-                  onClick={() => handleRemove(index)}
+                  title={medicine.medicine_id.name}
                 >
-                  Remove
-                </Button>
+                  <div>
+                    <strong>Price: {medicine.medicine_id.price + " $"}</strong>{" "}
+                    <br />
+                    <strong>Details: {medicine.medicine_id.details}</strong> <br />
+                    <strong>Quantity: {medicine.quantity} </strong> <br />
+                  </div>
+
+                  <br />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Button
+                      type="primary"
+                      onClick={() => handleIncrement(index, medicine.quantity)}
+                    >
+                      +
+                    </Button>
+                    <Button
+                      type="primary"
+                      onClick={() => handleDecrement(index, medicine.quantity)}
+                    >
+                      -
+                    </Button>
+                    <Button
+                      type="primary"
+                      loading={loadingState}
+                      danger
+                      onClick={() => handleRemove(index)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                </Card>
               </div>
-            </Card>
-          </div>
-        );
-      })}
-      <DeliveryAddress />
-      <Radio.Group
-        options={paymentOptions}
-        onChange={handlePaymentMethod}
-        value={methodState}
-        optionType="button"
-        buttonStyle="solid"
-      />
-      <Button
-        disabled={methodState === ""}
-        loading={loadingState}
-        onClick={handleCheckout}
-      >
-        Checkout
-      </Button>
-    </div>
+            );
+          })}
+        </div>}
+        <Radio.Group
+          options={paymentOptions}
+          onChange={handlePaymentMethod}
+          value={methodState}
+          optionType="button"
+          buttonStyle="solid"
+        />
+        <Button
+          disabled={methodState === ""}
+          loading={loadingState}
+          onClick={handleCheckout}
+        >
+          Checkout
+        </Button>
+      </>
+    }
+    </>
   );
 };
 export default CartView;

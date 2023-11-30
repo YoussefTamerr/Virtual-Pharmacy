@@ -26,6 +26,14 @@ function DeliveryAddress() {
       );
       const data = await response.json();
       if (response.ok) {
+        data.patient.deliveryAddress.forEach((address) => {
+          if (address.is_default) {
+            console.log(address.street_address + ", " + address.city + ", " + address.governate);
+            setSelectedAddress(
+              address.street_address + ", " + address.city + ", " + address.governate
+            );
+          }
+        });
         setAddresses(data.patient.deliveryAddress);
       } else {
         console.error(data.message);
@@ -89,19 +97,28 @@ function DeliveryAddress() {
     );
     if (response.ok) {
       setSelectedAddress(event);
-      message.success("Update the default address successfully");
+      message.success("Updated the default address successfully");
     } else {
       message.error("Failed to update the default address");
     }
   };
 
   return (
-    <>
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      width: "100%",
+      height: "100%",
+      padding: "20px",
+      gap: "20px",
+    }}>
       {addresses && (
         <Select
           value={selectedAddress}
           onChange={handleCategoryChange}
-          style={{ width: 200 }}
+          style={{ width: 300 }}
         >
           <Option value="" disabled hidden>
             Choose Delivery Address
@@ -160,7 +177,7 @@ function DeliveryAddress() {
           />
         </label>
       </Modal>
-    </>
+    </div>
   );
 }
 

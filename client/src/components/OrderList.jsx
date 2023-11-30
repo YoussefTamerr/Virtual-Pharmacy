@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import OrderView from "./OrderView";
 import { Collapse } from "antd";
 import Spinner from "./Spinner";
+import moment from "moment";
 
 function OrderList() {
   const [orders, setOrders] = useState(null);
@@ -24,15 +25,28 @@ function OrderList() {
       ? []
       : orders.map((order) => ({
           key: order._id,
-          label: "Order " + order._id,
+          label: (
+            <div>
+              {"Order ID: " + order._id}
+              <br />
+              {"Date: " + moment(order.createdAt).format('YYYY-MM-DD')}
+            </div>
+          ),
           children: <OrderView key={order._id} order={order} />,
         }));
 
   return (
-    <div>
-      <h2>Orders</h2>
-      {orders == null ? <Spinner /> : <Collapse items={items} />}
-    </div>
+    <>
+      
+      {orders == null ? <Spinner /> : 
+      <>
+        <h1>Orders</h1>
+        <Collapse items={items} style={{
+          marginBottom:'30px'
+        }} />
+      </>
+      }
+    </>
   );
 }
 
