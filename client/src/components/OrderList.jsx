@@ -41,6 +41,7 @@ function OrderList() {
       {orders == null ? <Spinner /> : 
       <>
         <h1>Orders</h1>
+        {orders.length === 0 && <p style={{fontSize:'20px'}}>No orders found</p>}
         <Collapse items={items} style={{
           marginBottom:'30px'
         }} />

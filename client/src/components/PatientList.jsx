@@ -3,7 +3,7 @@ import PatientView from "./PatientView";
 import Spinner from "./Spinner";
 
 function PatientList() {
-  const [patients, setPatients] = useState([]);
+  const [patients, setPatients] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,15 +25,31 @@ function PatientList() {
   };
 
   return (
-    <div>
-      <h2>Patients</h2>
-
-      {patients.map((patient) => (
-        <PatientView key={patient._id} patient={patient} onRemove={onRemove} />
-      ))}
-
-      {patients.length === 0 && <Spinner />}
-    </div>
+    <>
+      {patients ? (
+        <>
+          <h1>Patients</h1>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridGap: '1rem',
+            marginTop: '1rem',
+            marginBottom: '20px',
+          }}>
+            {patients.length === 0 && <p>No patients found</p>}
+            {patients.map((patient) => (
+              <PatientView
+                key={patient._id}
+                patient={patient}
+                onRemove={onRemove}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <Spinner />
+      )}
+    </>
   );
 }
 
