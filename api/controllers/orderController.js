@@ -3,6 +3,15 @@ import Patient from "../models/patientModel.js";
 import Cart from "../models/cartModel.js";
 import Medicine from "../models/medicineModel.js";
 import stripe from "stripe";
+import Pharmacist from "../models/pharmacistModel.js";
+import Email from "../utils/email.js";
+
+const sendNotification = async (outOfStockMedicines) => {
+  const pharmacists = await Pharmacist.find();
+  pharmacists.forEach(async (pharmacist) => {
+    await new Email( pharmacist, outOfStockMedicines).sendOutOfStockMedicines();
+  });
+}
 
 const createOrder = async (req, res) => {
   try {
@@ -80,6 +89,9 @@ const createOrder = async (req, res) => {
     cart.items = [];
     await cart.save();
     await order.save();
+    if (outOfStockMedicines.length > 0) {
+      sendNotification(outOfStockMedicines);
+    }
     res.status(201).json({ order, outOfStockMedicines });
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -188,10 +200,14 @@ async function stripeWebhook(request, response) {
   if (event.type == "checkout.session.completed") {
     try {
       const cart = await Cart.findOne({ patient_id: metadata.patient_id });
+      let outOfStockMedicines = [];
       for (let i = 0; i < cart.items.length; i++) {
         const item = cart.items[i];
         const medicine = await Medicine.findById(item.medicine_id);
         medicine.availableQuantity -= item.quantity;
+        if (medicine.availableQuantity <= 0) {
+          outOfStockMedicines.push(medicine);
+        }
         medicine.sales += medicine.price * item.quantity;
         await medicine.save();
       }
@@ -211,6 +227,9 @@ async function stripeWebhook(request, response) {
       await order.save();
       cart.items = [];
       await cart.save();
+      if (outOfStockMedicines.length > 0) {
+        sendNotification(outOfStockMedicines);
+      }
     } catch (error) {
       console.log(error);
     }

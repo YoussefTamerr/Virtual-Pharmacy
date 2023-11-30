@@ -10,11 +10,14 @@ import {
   KeyOutlined,
   ShoppingCartOutlined,
   ExperimentOutlined,
+  NotificationOutlined,
 } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [notifications, setNotifications] = useState(0);
 
   const handleLogout = async () => {
     const response = await fetch("http://localhost:5000/auth/logout", {
@@ -75,6 +78,25 @@ const Navbar = () => {
       },
     ];
   } else if (location.pathname.startsWith("/pharmacist")) {
+    useEffect(() => {
+      async function handleNotification() {
+        let count = 0;
+        const response = await fetch("http://localhost:5000/medicine", {
+          method: "GET",
+          credentials: "include",
+        })
+        const data = await response.json();
+        if (response.ok) {
+          data.forEach((medicine) => {
+            if (medicine.availableQuantity === 0) {
+              count++;
+            }
+          });
+          setNotifications(count);
+        }
+      }
+      handleNotification();
+    }, []);
     items = [
       {
         label: <NavLink to="/pharmacist/add">Add Medicine</NavLink>,
@@ -85,6 +107,11 @@ const Navbar = () => {
         label: <NavLink to="/pharmacist/medicines">Medicines</NavLink>,
         icon: <MedicineBoxOutlined />,
         key: "medicines",
+      },
+      {
+        label: <NavLink to="/pharmacist/notifications">Notifications: {notifications}</NavLink>,
+        icon: <NotificationOutlined />,
+        key: "notifications",
       },
     ];
   }

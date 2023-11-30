@@ -15,6 +15,7 @@ import OrderList from "./components/OrderList";
 import PrescriptionList from "./components/PrescriptionList";
 import ChangePassword from "./components/ChangePassword";
 import ForgotPassword from "./components/ForgotPassword";
+import Notification from "./components/Notification";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="add" element={<MedicineForm />} />
             <Route path="medicines" element={<MedicineList />} />
             <Route path="change-password" element={<ChangePassword />} />
+            <Route path="notifications" element={<Notification />} />
           </Route>
           <Route path="/admin">
             <Route index element={<Navigate to={"/admin/add"} />} />
