@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { List } from 'antd';
+import { List, Table } from 'antd';
 import Spinner from './Spinner';
 
 const Notification = () => {
@@ -31,6 +31,7 @@ const Notification = () => {
         if (response.ok) {
           data.forEach((medicine) => {
             if (medicine.availableQuantity === 0) {
+              medicine.name += " is out of stock";
               count.push(medicine);
             }
           });
@@ -40,25 +41,29 @@ const Notification = () => {
       handleNotification();
     }, []);
 
+    const columns = [
+      {
+        title: 'Out Of Stock Medicines',
+        dataIndex: 'name',
+        key: 'name',
+      },
+    ]
+
   return (
     <>
-      <h1>Notifications</h1>
+      <h1 style={{
+        marginTop: '70px',
+      }}>Notifications</h1>
       {meds ? (
-        <List
-          size="large"
-          header={<h2>Out Of Stock Medicines</h2>}
-          bordered
-          dataSource={meds}
-          renderItem={(item) => (
-            <List.Item>
-              <List.Item.Meta
-                title={<h3>{item.name} is out of stock</h3>}
-              />
-            </List.Item>
-          )}
-          locale={ {emptyText: "No Out Of Stock Medicines"} }
-          
-        />
+        <Table dataSource={meds} columns={columns} style={{
+          width: '50%',
+          marginTop: '180px',
+          marginBottom: 'auto',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+          backgroundColor: '#f5f5f5',
+        }} />
       ) : (
         <Spinner />
       )}

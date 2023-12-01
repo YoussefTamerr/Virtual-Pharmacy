@@ -120,6 +120,17 @@ const MedicineView = ({ medicine }) => {
     }
   }
 
+  const disableButton = () => {
+    if (!location.pathname.startsWith("/patient")) return 3;
+    if (medicine.medType === "prescription" && location.pathname.startsWith("/patient/medicines")) {
+      return 0;
+    }
+    if (medicine.availableQuantity === 0) {
+      return 1;
+    }
+    return 2;
+  }
+
   return (
     <div>
       {location.pathname.startsWith("/pharmacist") && (
@@ -173,6 +184,7 @@ const MedicineView = ({ medicine }) => {
         <Card
           style={{
             marginTop: 16,
+            marginBottom: 16,
             gap: "small",
             display: "flex",
             flexDirection: "column",
@@ -192,38 +204,50 @@ const MedicineView = ({ medicine }) => {
                 {location.pathname.startsWith("/pharmacist") && (
                   <>
                     <p>
-                      <strong>available Quantity </strong>
+                      <strong>Available Quantity: </strong>
                       {medicineQuantity}
                     </p>
                     <p>
-                      <strong>sales: </strong>
-                      {medicine.sales}
+                      <strong>Sales: </strong>
+                      ${medicine.sales}
                     </p>
                   </>
                 )}
                 <p>
-                  <strong>price: </strong>
-                  {medicinePrice}
+                  <strong>Price: </strong>
+                  ${medicinePrice}
                 </p>
                 <p>
-                  <strong>details: </strong>
+                  <strong>Details: </strong>
                   {medicineDetails}
                 </p>
               </>
             }
           />
-        </Card>
-        <br />
-        <div
-          style={{
+          <div style={{
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          {location.pathname.startsWith("/pharmacist") && (
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "10px",
+          }}>
+            {(disableButton() === 0) && (
+              <Button disabled type="primary" onClick={addToCart} loading={isLoading}>
+                Prescription needed
+              </Button>
+            )}
+            {(disableButton() === 2) && (
+              <Button type="primary" onClick={addToCart} loading={isLoading}>
+                Add to cart
+              </Button>
+            )}
+            {(disableButton() === 1) && (
+              <Button disabled type="primary" onClick={addToCart} loading={isLoading}>
+                Out of stock!
+              </Button>
+            )}
+            {location.pathname.startsWith("/pharmacist") && (
             <>
-              <Button type="primary" onClick={showModal}>
+              <Button style={{ width: '150px' }} type="primary" onClick={showModal}>
                 Edit Medicine
               </Button>
               {medicineArchived ? (
@@ -231,21 +255,14 @@ const MedicineView = ({ medicine }) => {
                   Unarchive Medicine
                 </Button>
               ) : (
-                <Button type="primary" onClick={archiveMed}>
+                <Button style={{ width: '150px' }} type="primary" onClick={archiveMed}>
                   Archive Medicine
                 </Button>
               )}
             </>
           )}
-          {((location.pathname.startsWith("/patient") && 
-          medicine.medType ==="countertop") ||
-          (location.pathname.startsWith("/patient/prescriptions"))) && 
-          (
-            <Button type="primary" onClick={addToCart} loading={isLoading}>
-              Add to cart
-            </Button>
-          )}
-        </div>
+          </div>
+        </Card>
       </div>
     </div>
   );

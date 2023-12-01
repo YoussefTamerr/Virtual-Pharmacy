@@ -207,24 +207,19 @@ const CartView = () => {
                 key={medicine.medicine_id._id}  
               >
                 <Card
-                  headStyle={{
-                    border: "2px solid grey",
-                  }}
-                  bodyStyle={{
-                    border: "2px solid grey",
-                  }}
                   style={{
                     width: 300,
                     marginTop: 16,
                     gap: "small",
                     display: "flex",
                     flexDirection: "column",
+                    boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
                   }}
                   loading={loadingState}
                   title={medicine.medicine_id.name}
                 >
                   <div>
-                    <strong>Price: {medicine.medicine_id.price + " $"}</strong>{" "}
+                    <strong>Price: ${medicine.medicine_id.price}</strong>{" "}
                     <br />
                     <strong>Details: {medicine.medicine_id.details}</strong> <br />
                     <strong>Quantity: {medicine.quantity} </strong> <br />

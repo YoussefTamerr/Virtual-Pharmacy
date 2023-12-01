@@ -42,8 +42,10 @@ function OrderList() {
       <>
         <h1>Orders</h1>
         {orders.length === 0 && <p style={{fontSize:'20px'}}>No orders found</p>}
-        <Collapse items={items} style={{
-          marginBottom:'30px'
+        <Collapse items={items}  style={{
+          marginBottom:'30px',
+          width: '35%',
+          textAlign: 'center',
         }} />
       </>
       }

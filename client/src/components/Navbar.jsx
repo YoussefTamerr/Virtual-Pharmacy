@@ -139,7 +139,8 @@ const Navbar = () => {
       theme="dark"
       style={{ border: "none" }}
       items={items}
-      defaultSelectedKeys={["" + location.pathname.split("/")[2]]}
+      selectedKeys={["" + location.pathname.split("/")[2]]}
+      forceSubMenuRender={true}
     />
   );
 };
