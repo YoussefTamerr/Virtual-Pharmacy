@@ -31,7 +31,7 @@ function PatientList() {
           <h1>Patients</h1>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridTemplateColumns: patients.length <= 1 ? '1fr' : 'repeat(2, 1fr)',
             gridGap: '1rem',
             marginTop: '1rem',
             marginBottom: '20px',

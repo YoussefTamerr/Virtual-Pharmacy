@@ -44,43 +44,41 @@ const PatientView = ({ patient, onRemove }) => {
       <div style={{
           display: 'flex',
           flexDirection: 'column',
+          gap: '15px',
+          minWidth: '250px',
       }}>
-        <p>
-          <strong>Username: </strong>
-          {patient.username}
-        </p>
-        <p>
+        <div>
           <strong>Name: </strong>
           {patient.name}
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>Email: </strong>
           {patient.email}
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>Date of Birth: </strong>
           {moment(patient.birthdate).format("DD/MM/YYYY")}
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>Gender: </strong>
           {patient.gender}
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>Mobile Number: </strong>
           {patient.phoneNumber}
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>Emergency Contact - Full Name: </strong>
           {patient.emergencyName}
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>Emergency Contact - Mobile Number: </strong>
           {patient.emergencyPhoneNumber}
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>Emergency Contact - Relation: </strong>
           {patient.emergencyRelation}
-        </p>
+        </div>
         <Button style={{alignSelf:'center'}} loading={isLoading} type="primary" onClick={removePatient}>
           Remove Patient
         </Button>

@@ -1,5 +1,6 @@
-import { Button, Flex, message } from "antd";
+import { Button, Flex, message, Card } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
   const removePharmacist = async (event) => {
@@ -45,84 +46,109 @@ const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
     }
   };
 
+
+
   return (
-    <Flex vertical gap={4} align="start">
-      <h4>{pharmacist.name}</h4>
-      <div>
-        <strong>Username: </strong>
-        {pharmacist.username}
-      </div>
-      <div>
-        <strong>Email: </strong>
-        {pharmacist.email}
-      </div>
-      <div>
-        <strong>Date of Birth: </strong>
-        {pharmacist.dateOfBirth}
-      </div>
-      <div>
-        <strong>Hourly Rate: </strong>
-        {pharmacist.hourlyRate}
-      </div>
-      <div>
-        <strong>Affiliation: </strong>
-        {pharmacist.affiliation}
-      </div>
-      <div>
-        <strong>Educational Background: </strong>
-        {pharmacist.educationalBackground}
-      </div>
-      <Button
-        type="default"
-        icon={<DownloadOutlined />}
-        href={`http://localhost:5000/${pharmacist.pharmacyDegree}`}
-        size="small"
-        download
-      >
-        Pharmacy Degree
-      </Button>
-      <Button
-        type="default"
-        icon={<DownloadOutlined />}
-        href={`http://localhost:5000/${pharmacist.workingLicense}`}
-        size="small"
-        download
-      >
-        Working License
-      </Button>
-      <Button
-        type="default"
-        icon={<DownloadOutlined />}
-        href={`http://localhost:5000/${pharmacist.nationalId}`}
-        size="small"
-        download
-      >
-        National ID
-      </Button>
-      {pharmacist.registrationApproval !== "pending" && (
-        <Button type="primary" onClick={removePharmacist}>
-          Remove Pharmacist
+    <Card 
+      title={pharmacist.username}
+      headStyle={{
+        fontSize: '20px',
+        textAlign: 'center',
+        backgroundColor: '#ccc'
+      }}
+      bodyStyle={{
+        backgroundColor: '#f5f5f5',
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+        minWidth: '275px',
+      }}>
+        <div>
+          <strong>Name: </strong>
+          {pharmacist.name}
+        </div>
+        <div>
+          <strong>Email: </strong>
+          {pharmacist.email}
+        </div>
+        <div>
+          <strong>Date of Birth: </strong>
+          {moment(pharmacist.dateOfBirth).format("DD/MM/YYYY")}
+        </div>
+        <div>
+          <strong>Hourly Rate: </strong>
+          {pharmacist.hourlyRate}
+        </div>
+        <div>
+          <strong>Affiliation: </strong>
+          {pharmacist.affiliation}
+        </div>
+        <div>
+          <strong>Educational Background: </strong>
+          {pharmacist.educationalBackground}
+        </div>
+        <Button
+          type="default"
+          icon={<DownloadOutlined />}
+          href={`http://localhost:5000/${pharmacist.pharmacyDegree}`}
+          size="small"
+          download
+        >
+          Pharmacy Degree
         </Button>
-      )}
-      {pharmacist.registrationApproval === "pending" && (
-        <Flex gap={5}>
-          <Button
-            type="primary"
-            onClick={(event) => updatePharmacistApproval(event, "approved")}
-            block
-          >
-            Accept Request
-          </Button>
-          <Button
-            type="primary"
-            onClick={(event) => updatePharmacistApproval(event, "denied")}
-            block
-          >
-            Reject Request
-          </Button>
-        </Flex>
-      )}
-    </Flex>
+        <Button
+          type="default"
+          icon={<DownloadOutlined />}
+          href={`http://localhost:5000/${pharmacist.workingLicense}`}
+          size="small"
+          download
+        >
+          Working License
+        </Button>
+        <Button
+          type="default"
+          icon={<DownloadOutlined />}
+          href={`http://localhost:5000/${pharmacist.nationalId}`}
+          size="small"
+          download
+        >
+          National ID
+        </Button>
+        {pharmacist.registrationApproval !== "pending" && (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}>
+            <Button style={{ width: 'fit-content' }} type="primary" danger onClick={removePharmacist}>
+              Remove Pharmacist
+            </Button>
+          </div>
+        )}
+        {pharmacist.registrationApproval === "pending" && (
+          <Flex gap={5}>
+            <Button
+              type="primary"
+              onClick={(event) => updatePharmacistApproval(event, "approved")}
+              block
+            >
+              Accept Request
+            </Button>
+            <Button
+              type="primary"
+              onClick={(event) => updatePharmacistApproval(event, "denied")}
+              block
+              danger
+            >
+              Reject Request
+            </Button>
+          </Flex>
+        )}
+      </div>
+    </Card>
   );
 };
 

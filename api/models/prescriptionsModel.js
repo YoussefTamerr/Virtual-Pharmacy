@@ -1,11 +1,16 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 
 const prescriptionSchema = new mongoose.Schema(
     {
         name: {
             type: String,
             required: [true, 'Please enter the name of the prescription.'],
+            default: 'Prescription'
+        },
+        appointment_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'Appointment',
         },
         patient_id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -28,9 +33,12 @@ const prescriptionSchema = new mongoose.Schema(
         },
         medications: [{
             medicine_id: {
-                type: Schema.Types.ObjectId,
-                ref: "Medicine",
-                required: true,
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'medicine',
+            },
+            name: {
+                type: String,
+                required: [true, 'Please enter the medicine name.'],
             },
             dosage: {
                 type: String,
