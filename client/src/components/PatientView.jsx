@@ -3,14 +3,13 @@ import moment from "moment";
 import { useState } from "react";
 
 const PatientView = ({ patient, onRemove }) => {
-
   const [isLoading, setIsLoading] = useState(false);
 
   const removePatient = async (event) => {
     setIsLoading(true);
     event.preventDefault();
     const response = await fetch(
-      `http://localhost:5000/patient/${patient._id}`,
+      `http://localhost:10000/patient/${patient._id}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -31,22 +30,24 @@ const PatientView = ({ patient, onRemove }) => {
 
   return (
     <Card
-    title={patient.username}
-    headStyle={{
-      fontSize: '20px',
-      textAlign: 'center',
-      backgroundColor: '#ccc'
-    }}
-    bodyStyle={{
-      backgroundColor: '#f5f5f5',
-    }}
+      title={patient.username}
+      headStyle={{
+        fontSize: "20px",
+        textAlign: "center",
+        backgroundColor: "#ccc",
+      }}
+      bodyStyle={{
+        backgroundColor: "#f5f5f5",
+      }}
     >
-      <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '15px',
-          minWidth: '250px',
-      }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "15px",
+          minWidth: "250px",
+        }}
+      >
         <div>
           <strong>Name: </strong>
           {patient.name}
@@ -79,7 +80,12 @@ const PatientView = ({ patient, onRemove }) => {
           <strong>Emergency Contact - Relation: </strong>
           {patient.emergencyRelation}
         </div>
-        <Button style={{alignSelf:'center'}} loading={isLoading} type="primary" onClick={removePatient}>
+        <Button
+          style={{ alignSelf: "center" }}
+          loading={isLoading}
+          type="primary"
+          onClick={removePatient}
+        >
           Remove Patient
         </Button>
       </div>

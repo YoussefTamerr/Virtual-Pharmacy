@@ -151,6 +151,20 @@ const getDeliveryAddress = async (req, res) => {
   }
 }
 
+const getLoggedInPatient = async(req, res) =>{
+  try{
+    const patient =await Patient.findById(req.user._id);
+    if (!patient) {
+      return res.status(400).json({ message: "Patient not found" });
+    }
+    res.status(201).json(patient);
+  }
+  catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+
 export {
   deletePatient,
   getPatient,
@@ -160,4 +174,5 @@ export {
   addDeliveryAddress,
   chooseDefaultAddress,
   getDeliveryAddress,
+  getLoggedInPatient,
 };

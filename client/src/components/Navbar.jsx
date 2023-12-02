@@ -20,7 +20,7 @@ const Navbar = () => {
   const [notifications, setNotifications] = useState(0);
 
   const handleLogout = async () => {
-    const response = await fetch("http://localhost:5000/auth/logout", {
+    const response = await fetch("http://localhost:10000/auth/logout", {
       method: "POST",
       credentials: "include",
     });
@@ -76,15 +76,20 @@ const Navbar = () => {
         icon: <ExperimentOutlined />,
         key: "prescriptions",
       },
+      {
+        label: <NavLink to="/patient/chat">Chat</NavLink>,
+        icon: <ExperimentOutlined />, // di antd design 3'ayrha ba3din
+        key: "chat",
+      },
     ];
   } else if (location.pathname.startsWith("/pharmacist")) {
     useEffect(() => {
       async function handleNotification() {
         let count = 0;
-        const response = await fetch("http://localhost:5000/medicine", {
+        const response = await fetch("http://localhost:10000/medicine", {
           method: "GET",
           credentials: "include",
-        })
+        });
         const data = await response.json();
         if (response.ok) {
           data.forEach((medicine) => {
@@ -109,7 +114,11 @@ const Navbar = () => {
         key: "medicines",
       },
       {
-        label: <NavLink to="/pharmacist/notifications">Notifications: {notifications}</NavLink>,
+        label: (
+          <NavLink to="/pharmacist/notifications">
+            Notifications: {notifications}
+          </NavLink>
+        ),
         icon: <NotificationOutlined />,
         key: "notifications",
       },

@@ -15,7 +15,7 @@ function DeliveryAddress() {
   useEffect(() => {
     const fetchDeliveryAddress = async () => {
       const response = await fetch(
-        `http://localhost:5000/patient/delivery/delivery-address`,
+        `http://localhost:10000/patient/delivery/delivery-address`,
         {
           method: "GET",
           headers: {
@@ -28,9 +28,19 @@ function DeliveryAddress() {
       if (response.ok) {
         data.patient.deliveryAddress.forEach((address) => {
           if (address.is_default) {
-            console.log(address.street_address + ", " + address.city + ", " + address.governate);
+            console.log(
+              address.street_address +
+                ", " +
+                address.city +
+                ", " +
+                address.governate
+            );
             setSelectedAddress(
-              address.street_address + ", " + address.city + ", " + address.governate
+              address.street_address +
+                ", " +
+                address.city +
+                ", " +
+                address.governate
             );
           }
         });
@@ -44,7 +54,7 @@ function DeliveryAddress() {
 
   const addDeliveryAddress = async () => {
     const response = await fetch(
-      `http://localhost:5000/patient/delivery/delivery-address`,
+      `http://localhost:10000/patient/delivery/delivery-address`,
       {
         method: "POST",
         headers: {
@@ -83,7 +93,7 @@ function DeliveryAddress() {
 
   const handleCategoryChange = async (event) => {
     const response = await fetch(
-      `http://localhost:5000/patient/delivery/delivery-address`,
+      `http://localhost:10000/patient/delivery/delivery-address`,
       {
         method: "PATCH",
         headers: {
@@ -104,16 +114,18 @@ function DeliveryAddress() {
   };
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      width: "100%",
-      height: "100%",
-      padding: "20px",
-      gap: "20px",
-    }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+        padding: "20px",
+        gap: "20px",
+      }}
+    >
       {addresses && (
         <Select
           value={selectedAddress}

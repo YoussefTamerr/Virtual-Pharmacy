@@ -7,7 +7,7 @@ function PatientList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:5000/patient`, {
+      const response = await fetch(`http://localhost:10000/patient`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -29,13 +29,16 @@ function PatientList() {
       {patients ? (
         <>
           <h1>Patients</h1>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: patients.length <= 1 ? '1fr' : 'repeat(2, 1fr)',
-            gridGap: '1rem',
-            marginTop: '1rem',
-            marginBottom: '20px',
-          }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns:
+                patients.length <= 1 ? "1fr" : "repeat(2, 1fr)",
+              gridGap: "1rem",
+              marginTop: "1rem",
+              marginBottom: "20px",
+            }}
+          >
             {patients.length === 0 && <p>No patients found</p>}
             {patients.map((patient) => (
               <PatientView

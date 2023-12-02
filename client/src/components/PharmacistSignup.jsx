@@ -52,7 +52,7 @@ const PharmacistSignup = () => {
       formData.pharmacyDegree[0].originFileObj
     );
     try {
-      const response = await fetch(`http://localhost:5000/pharmacist`, {
+      const response = await fetch(`http://localhost:10000/pharmacist`, {
         method: "POST",
         body: formDataToSend,
       });

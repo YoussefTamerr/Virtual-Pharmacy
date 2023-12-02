@@ -5,7 +5,6 @@ import Spinner from "./Spinner";
 import { Flex } from "antd";
 import { useLocation } from "react-router-dom";
 
-
 function MedicineList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [medicines, setMedicines] = useState([]);
@@ -15,7 +14,7 @@ function MedicineList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:5000/medicine`, {
+      const response = await fetch(`http://localhost:10000/medicine`, {
         credentials: "include",
       });
       const data = await response.json();

@@ -6,7 +6,7 @@ const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
   const removePharmacist = async (event) => {
     event.preventDefault();
     const response = await fetch(
-      `http://localhost:5000/pharmacist/${pharmacist._id}`,
+      `http://localhost:10000/pharmacist/${pharmacist._id}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -27,7 +27,7 @@ const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
   const updatePharmacistApproval = async (event, registrationApproval) => {
     event.preventDefault();
     const response = await fetch(
-      `http://localhost:5000/pharmacist/${pharmacist._id}`,
+      `http://localhost:10000/pharmacist/${pharmacist._id}`,
       {
         method: "PATCH",
         credentials: "include",
@@ -46,26 +46,26 @@ const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
     }
   };
 
-
-
   return (
-    <Card 
+    <Card
       title={pharmacist.username}
       headStyle={{
-        fontSize: '20px',
-        textAlign: 'center',
-        backgroundColor: '#ccc'
+        fontSize: "20px",
+        textAlign: "center",
+        backgroundColor: "#ccc",
       }}
       bodyStyle={{
-        backgroundColor: '#f5f5f5',
+        backgroundColor: "#f5f5f5",
       }}
     >
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        minWidth: '275px',
-      }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          minWidth: "275px",
+        }}
+      >
         <div>
           <strong>Name: </strong>
           {pharmacist.name}
@@ -93,7 +93,7 @@ const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
         <Button
           type="default"
           icon={<DownloadOutlined />}
-          href={`http://localhost:5000/${pharmacist.pharmacyDegree}`}
+          href={`http://localhost:10000/${pharmacist.pharmacyDegree}`}
           size="small"
           download
         >
@@ -102,7 +102,7 @@ const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
         <Button
           type="default"
           icon={<DownloadOutlined />}
-          href={`http://localhost:5000/${pharmacist.workingLicense}`}
+          href={`http://localhost:10000/${pharmacist.workingLicense}`}
           size="small"
           download
         >
@@ -111,19 +111,26 @@ const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
         <Button
           type="default"
           icon={<DownloadOutlined />}
-          href={`http://localhost:5000/${pharmacist.nationalId}`}
+          href={`http://localhost:10000/${pharmacist.nationalId}`}
           size="small"
           download
         >
           National ID
         </Button>
         {pharmacist.registrationApproval !== "pending" && (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-            <Button style={{ width: 'fit-content' }} type="primary" danger onClick={removePharmacist}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              style={{ width: "fit-content" }}
+              type="primary"
+              danger
+              onClick={removePharmacist}
+            >
               Remove Pharmacist
             </Button>
           </div>

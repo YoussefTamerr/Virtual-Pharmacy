@@ -10,7 +10,7 @@ function ForgotPassword() {
   const handleSubmit = async (values) => {
     setIsLoading(true);
     const body = { ...values, role: location.pathname.split("/")[2] };
-    const response = await fetch(`http://localhost:5000/auth/reset-password`, {
+    const response = await fetch(`http://localhost:10000/auth/reset-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

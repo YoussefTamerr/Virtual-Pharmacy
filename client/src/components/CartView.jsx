@@ -8,7 +8,8 @@ const CartView = () => {
   const [cartState, setCartState] = useState(null);
   const [methodState, setMethodState] = useState("");
   const [loadingState, setLoadingState] = useState(false);
-  const numberOfColumns = cartState && cartState.length <= 1 ? '1fr' : 'repeat(2, 1fr)';
+  const numberOfColumns =
+    cartState && cartState.length <= 1 ? "1fr" : "repeat(2, 1fr)";
 
   const paymentOptions = [
     {
@@ -29,7 +30,7 @@ const CartView = () => {
     const fetchData = async () => {
       try {
         setLoadingState(true);
-        const response = await fetch(`http://localhost:5000/cart`, {
+        const response = await fetch(`http://localhost:10000/cart`, {
           credentials: "include",
         });
         const data = await response.json();
@@ -51,7 +52,7 @@ const CartView = () => {
   const handleIncrement = (index, currentCounter) => {
     const updatedCart = [...cartState];
     updatedCart[index].quantity += 1;
-    fetch(`http://localhost:5000/cart`, {
+    fetch(`http://localhost:10000/cart`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -79,7 +80,7 @@ const CartView = () => {
     const updatedCart = [...cartState];
     if (updatedCart[index].quantity > 1) {
       updatedCart[index].quantity -= 1;
-      fetch(`http://localhost:5000/cart`, {
+      fetch(`http://localhost:10000/cart`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +108,7 @@ const CartView = () => {
   const handleRemove = (index) => {
     const updatedCart = [...cartState];
     setLoadingState(true);
-    fetch(`http://localhost:5000/cart/${updatedCart[index].medicine_id._id}`, {
+    fetch(`http://localhost:10000/cart/${updatedCart[index].medicine_id._id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -135,7 +136,7 @@ const CartView = () => {
     setLoadingState(true);
     try {
       if (methodState !== "cc") {
-        const response = await fetch(`http://localhost:5000/order/`, {
+        const response = await fetch(`http://localhost:10000/order/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -154,7 +155,7 @@ const CartView = () => {
         }
       } else {
         const res = await axios.post(
-          `http://localhost:5000/order/cc`,
+          `http://localhost:10000/order/cc`,
 
           { paymentMethod: methodState },
           { withCredentials: true }
@@ -177,104 +178,118 @@ const CartView = () => {
 
   return (
     <>
-    {cartState == null ? <Spinner /> : 
-      <>
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "small",
-        }}>
-          <h1>Cart</h1>
-          <DeliveryAddress />
-        </div>
-        {cartState?.length === 0 && <p style={{ fontSize: "20px" }}>Cart is empty</p>}
-        {cartState?.length !== 0 && <div style={{
-          border: "1px solid grey",
-          borderRadius: "10px",
-          height: '300px',
-          minWidth: '300px',
-          overflow: 'auto',
-          display: 'grid',
-          gridTemplateColumns: numberOfColumns,
-          gap: '10px',
-          padding: '10px',
-        }}>
-          
-          {cartState?.map((medicine, index) => {
-            return (
-              <div 
-                key={medicine.medicine_id._id}  
-              >
-                <Card
-                  style={{
-                    width: 300,
-                    marginTop: 16,
-                    gap: "small",
-                    display: "flex",
-                    flexDirection: "column",
-                    boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-                  }}
-                  loading={loadingState}
-                  title={medicine.medicine_id.name}
-                >
-                  <div>
-                    <strong>Price: ${medicine.medicine_id.price}</strong>{" "}
-                    <br />
-                    <strong>Details: {medicine.medicine_id.details}</strong> <br />
-                    <strong>Quantity: {medicine.quantity} </strong> <br />
-                  </div>
-
-                  <br />
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Button
-                      type="primary"
-                      onClick={() => handleIncrement(index, medicine.quantity)}
-                    >
-                      +
-                    </Button>
-                    <Button
-                      type="primary"
-                      onClick={() => handleDecrement(index, medicine.quantity)}
-                    >
-                      -
-                    </Button>
-                    <Button
-                      type="primary"
+      {cartState == null ? (
+        <Spinner />
+      ) : (
+        <>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "small",
+            }}
+          >
+            <h1>Cart</h1>
+            <DeliveryAddress />
+          </div>
+          {cartState?.length === 0 && (
+            <p style={{ fontSize: "20px" }}>Cart is empty</p>
+          )}
+          {cartState?.length !== 0 && (
+            <div
+              style={{
+                border: "1px solid grey",
+                borderRadius: "10px",
+                height: "300px",
+                minWidth: "300px",
+                overflow: "auto",
+                display: "grid",
+                gridTemplateColumns: numberOfColumns,
+                gap: "10px",
+                padding: "10px",
+              }}
+            >
+              {cartState?.map((medicine, index) => {
+                return (
+                  <div key={medicine.medicine_id._id}>
+                    <Card
+                      style={{
+                        width: 300,
+                        marginTop: 16,
+                        gap: "small",
+                        display: "flex",
+                        flexDirection: "column",
+                        boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+                      }}
                       loading={loadingState}
-                      danger
-                      onClick={() => handleRemove(index)}
+                      title={medicine.medicine_id.name}
                     >
-                      Remove
-                    </Button>
+                      <div>
+                        <strong>Price: ${medicine.medicine_id.price}</strong>{" "}
+                        <br />
+                        <strong>
+                          Details: {medicine.medicine_id.details}
+                        </strong>{" "}
+                        <br />
+                        <strong>Quantity: {medicine.quantity} </strong> <br />
+                      </div>
+
+                      <br />
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Button
+                          type="primary"
+                          onClick={() =>
+                            handleIncrement(index, medicine.quantity)
+                          }
+                        >
+                          +
+                        </Button>
+                        <Button
+                          type="primary"
+                          onClick={() =>
+                            handleDecrement(index, medicine.quantity)
+                          }
+                        >
+                          -
+                        </Button>
+                        <Button
+                          type="primary"
+                          loading={loadingState}
+                          danger
+                          onClick={() => handleRemove(index)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    </Card>
                   </div>
-                </Card>
-              </div>
-            );
-          })}
-        </div>}
-        <Radio.Group
-          options={paymentOptions}
-          onChange={handlePaymentMethod}
-          value={methodState}
-          optionType="button"
-          buttonStyle="solid"
-        />
-        <Button
-          disabled={methodState === ""}
-          loading={loadingState}
-          onClick={handleCheckout}
-        >
-          Checkout
-        </Button>
-      </>
-    }
+                );
+              })}
+            </div>
+          )}
+          <Radio.Group
+            options={paymentOptions}
+            onChange={handlePaymentMethod}
+            value={methodState}
+            optionType="button"
+            buttonStyle="solid"
+          />
+          <Button
+            disabled={methodState === ""}
+            loading={loadingState}
+            onClick={handleCheckout}
+          >
+            Checkout
+          </Button>
+        </>
+      )}
     </>
   );
 };

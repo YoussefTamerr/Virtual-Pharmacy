@@ -19,7 +19,7 @@ function MedicineForm() {
     formDataToSend.append("image", formData.image[0].originFileObj);
     formDataToSend.append("medType", isChecked ? "prescription" : "countertop");
     try {
-      const response = await fetch(`http://localhost:5000/medicine`, {
+      const response = await fetch(`http://localhost:10000/medicine`, {
         method: "POST",
         body: formDataToSend,
         credentials: "include",
@@ -63,7 +63,7 @@ function MedicineForm() {
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
-  }
+  };
 
   return (
     <>
@@ -130,10 +130,7 @@ function MedicineForm() {
           <Input placeholder="Category" />
         </Form.Item>
         <Form.Item name="medType">
-          <Checkbox 
-            checked={isChecked} 
-            onChange={handleCheckboxChange}
-          >
+          <Checkbox checked={isChecked} onChange={handleCheckboxChange}>
             Prescription Medicine
           </Checkbox>
         </Form.Item>

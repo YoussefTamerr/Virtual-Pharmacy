@@ -19,7 +19,7 @@ const PatientSignup = () => {
   const onFinish = async (formData) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/patient/`, {
+      const response = await fetch(`http://localhost:10000/patient/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

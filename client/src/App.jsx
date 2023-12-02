@@ -16,6 +16,7 @@ import PrescriptionList from "./components/PrescriptionList";
 import ChangePassword from "./components/ChangePassword";
 import ForgotPassword from "./components/ForgotPassword";
 import Notification from "./components/Notification";
+import ChatView from "./components/ChatView";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             <Route path="medicines" element={<MedicineList />} />
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="prescriptions" element={<PrescriptionList />} />
+            <Route path="chat" element={<ChatView />} />
           </Route>
           <Route path="/pharmacist">
             <Route index element={<Navigate to={"/pharmacist/add"} />} />

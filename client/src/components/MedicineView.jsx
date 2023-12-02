@@ -29,7 +29,7 @@ const MedicineView = ({ medicine }) => {
   };
 
   const handleOk = () => {
-    fetch(`http://localhost:5000/medicine/${medicine._id}`, {
+    fetch(`http://localhost:10000/medicine/${medicine._id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +64,7 @@ const MedicineView = ({ medicine }) => {
   const addToCart = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/cart`, {
+      const response = await fetch(`http://localhost:10000/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,10 +88,13 @@ const MedicineView = ({ medicine }) => {
 
   const archiveMed = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/medicine/archive/${medicine._id}`, {
-        method: "PATCH",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:10000/medicine/archive/${medicine._id}`,
+        {
+          method: "PATCH",
+          credentials: "include",
+        }
+      );
       if (!response.ok) {
         message.error("Failed to archive medicine");
       }
@@ -101,14 +104,17 @@ const MedicineView = ({ medicine }) => {
       console.error(error);
       message.error("Failed to archive medicine");
     }
-  }
+  };
 
   const unarchiveMed = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/medicine/unarchive/${medicine._id}`, {
-        method: "PATCH",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:10000/medicine/unarchive/${medicine._id}`,
+        {
+          method: "PATCH",
+          credentials: "include",
+        }
+      );
       if (!response.ok) {
         message.error("Failed to unarchive medicine");
       }
@@ -118,18 +124,21 @@ const MedicineView = ({ medicine }) => {
       console.error(error);
       message.error("Failed to archive medicine");
     }
-  }
+  };
 
   const disableButton = () => {
     if (!location.pathname.startsWith("/patient")) return 3;
-    if (medicine.medType === "prescription" && location.pathname.startsWith("/patient/medicines")) {
+    if (
+      medicine.medType === "prescription" &&
+      location.pathname.startsWith("/patient/medicines")
+    ) {
       return 0;
     }
     if (medicine.availableQuantity === 0) {
       return 1;
     }
     return 2;
-  }
+  };
 
   return (
     <div>
@@ -193,7 +202,7 @@ const MedicineView = ({ medicine }) => {
           cover={
             <img
               alt="example"
-              src={`http://localhost:5000/${medicine.image}`}
+              src={`http://localhost:10000/${medicine.image}`}
             />
           }
         >
@@ -208,14 +217,12 @@ const MedicineView = ({ medicine }) => {
                       {medicineQuantity}
                     </p>
                     <p>
-                      <strong>Sales: </strong>
-                      ${medicine.sales}
+                      <strong>Sales: </strong>${medicine.sales}
                     </p>
                   </>
                 )}
                 <p>
-                  <strong>Price: </strong>
-                  ${medicinePrice}
+                  <strong>Price: </strong>${medicinePrice}
                 </p>
                 <p>
                   <strong>Details: </strong>
@@ -224,43 +231,63 @@ const MedicineView = ({ medicine }) => {
               </>
             }
           />
-          <div style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "10px",
-          }}>
-            {(disableButton() === 0) && (
-              <Button disabled type="primary" onClick={addToCart} loading={isLoading}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            {disableButton() === 0 && (
+              <Button
+                disabled
+                type="primary"
+                onClick={addToCart}
+                loading={isLoading}
+              >
                 Prescription needed
               </Button>
             )}
-            {(disableButton() === 2) && (
+            {disableButton() === 2 && (
               <Button type="primary" onClick={addToCart} loading={isLoading}>
                 Add to cart
               </Button>
             )}
-            {(disableButton() === 1) && (
-              <Button disabled type="primary" onClick={addToCart} loading={isLoading}>
+            {disableButton() === 1 && (
+              <Button
+                disabled
+                type="primary"
+                onClick={addToCart}
+                loading={isLoading}
+              >
                 Out of stock!
               </Button>
             )}
             {location.pathname.startsWith("/pharmacist") && (
-            <>
-              <Button style={{ width: '150px' }} type="primary" onClick={showModal}>
-                Edit Medicine
-              </Button>
-              {medicineArchived ? (
-                <Button type="primary" onClick={unarchiveMed}>
-                  Unarchive Medicine
+              <>
+                <Button
+                  style={{ width: "150px" }}
+                  type="primary"
+                  onClick={showModal}
+                >
+                  Edit Medicine
                 </Button>
-              ) : (
-                <Button style={{ width: '150px' }} type="primary" onClick={archiveMed}>
-                  Archive Medicine
-                </Button>
-              )}
-            </>
-          )}
+                {medicineArchived ? (
+                  <Button type="primary" onClick={unarchiveMed}>
+                    Unarchive Medicine
+                  </Button>
+                ) : (
+                  <Button
+                    style={{ width: "150px" }}
+                    type="primary"
+                    onClick={archiveMed}
+                  >
+                    Archive Medicine
+                  </Button>
+                )}
+              </>
+            )}
           </div>
         </Card>
       </div>

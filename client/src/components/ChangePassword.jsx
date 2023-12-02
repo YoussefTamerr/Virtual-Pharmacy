@@ -11,7 +11,7 @@ const ChangePassword = () => {
 
     if (location.pathname.startsWith("/change-password")) {
       const response = await fetch(
-        `http://localhost:5000/auth${location.pathname}`,
+        `http://localhost:10000/auth${location.pathname}`,
         {
           method: "POST",
           headers: {
@@ -30,7 +30,7 @@ const ChangePassword = () => {
       }
     } else {
       const response = await fetch(
-        `http://localhost:5000/auth/change-password`,
+        `http://localhost:10000/auth/change-password`,
         {
           method: "POST",
           headers: {

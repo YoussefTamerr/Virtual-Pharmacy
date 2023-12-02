@@ -14,6 +14,9 @@ import authRouter from "./routes/authRoutes.js";
 import prescriptionRouter from "./routes/prescriptionsRoutes.js";
 import cookieParser from "cookie-parser";
 import { stripeWebhook } from "./controllers/orderController.js";
+import http from "http";
+import { Server } from "socket.io";
+import * as chatController from "./controllers/chatController.js";
 
 dotenv.config();
 
@@ -22,13 +25,24 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+  },
+});
+
+io.on("connection", chatController.handleConnection);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.post('/webhook', express.json({ type: 'application/json' }), stripeWebhook);
+app.post("/webhook", express.json({ type: "application/json" }), stripeWebhook);
 
 app.use("/admin", adminRouter);
 app.use("/patient", patientRouter);
@@ -52,7 +66,7 @@ mongoose
     dbName: "virtual-clinic",
   })
   .then(() => {
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log(`App listening at http://localhost:${process.env.PORT}`);
     });
   })

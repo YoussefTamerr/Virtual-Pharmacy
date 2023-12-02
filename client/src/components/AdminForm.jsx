@@ -7,7 +7,7 @@ function AdminForm() {
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
-    const response = await fetch(`http://localhost:5000/admin`, {
+    const response = await fetch(`http://localhost:10000/admin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

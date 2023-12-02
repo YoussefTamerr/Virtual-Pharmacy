@@ -3,13 +3,12 @@ import PrescriptionView from "./PrescriptionView";
 import Spinner from "./Spinner";
 import { Flex } from "antd";
 
-
 function PrescriptionList() {
   const [prescriptions, setPrescriptions] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:5000/prescription`, {
+      const response = await fetch(`http://localhost:10000/prescription`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -28,13 +27,17 @@ function PrescriptionList() {
   return (
     <>
       <h1>Prescriptions</h1>
-      {
-        prescriptions.length === 0 && <p style={{fontSize:"20px"}}>You have no prescriptions</p>
-      }
+      {prescriptions.length === 0 && (
+        <p style={{ fontSize: "20px" }}>You have no prescriptions</p>
+      )}
       <Flex wrap="wrap" justify="center" align="end" gap={10}>
-        {prescriptions && prescriptions.map((prescription) => (
-          <PrescriptionView key={prescription._id} prescription={prescription} />
-        ))}
+        {prescriptions &&
+          prescriptions.map((prescription) => (
+            <PrescriptionView
+              key={prescription._id}
+              prescription={prescription}
+            />
+          ))}
       </Flex>
     </>
   );
