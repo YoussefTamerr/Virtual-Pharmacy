@@ -1,6 +1,7 @@
 import Patient from "../models/patientModel.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 const createPatient = async (req, res) => {
   try {
@@ -8,6 +9,21 @@ const createPatient = async (req, res) => {
     if (checkExisting) {
       return res.status(400).json({ message: "email already exists" });
     }
+    const checkExistingUsername = await Patient.findOne({ username: req.body.username });
+    if (checkExistingUsername) {
+      return res.status(400).json({ message: "username already exists" });
+    }
+    const checkExistingNid = await Patient.findOne({ nid: req.body.nid });
+    if (checkExistingNid) {
+      return res.status(400).json({ message: "nid already exists" });
+    }
+
+    let linkingCode
+
+    do {
+        linkingCode = crypto.randomBytes(16).toString('hex')
+    } while (await Patient.findOne({ linkingCode }))
+
     const patient = await Patient.create({
       username: req.body.username,
       name: req.body.name,
@@ -15,10 +31,12 @@ const createPatient = async (req, res) => {
       password: req.body.password,
       birthdate: req.body.birthdate,
       gender: req.body.gender,
+      nid: req.body.nid,
       phoneNumber: req.body.phoneNumber,
       emergencyName: req.body.emergencyName,
       emergencyPhoneNumber: req.body.emergencyPhoneNumber,
       emergencyRelation: req.body.emergencyRelation,
+      linkingCode: linkingCode,
     });
     res.status(201).json({ patient });
   } catch (err) {

@@ -7,6 +7,25 @@ const { Sider, Content } = Layout;
 
 import { MedicineBoxOutlined } from "@ant-design/icons";
 
+import backIcn from "../../assets/icons/back.svg"
+
+const BackIcon = () => (
+  <img
+    src={backIcn}
+    style={{
+      width: "24px",
+      height: "24px",
+      cursor: "pointer",
+      borderRadius: "50%",
+      marginLeft: "10px",
+    }}
+    onClick={() => {
+      window.history.back();
+    }}
+  />
+)
+
+
 const AppLayout = () => {
   return (
     <Layout style={{ minHeight: "100vh", background: "white" }}>
@@ -14,12 +33,10 @@ const AppLayout = () => {
         <Space
           style={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
             color: "white",
           }}
         >
-          <MedicineBoxOutlined />
+          <BackIcon />
           <h1>Pharmacy</h1>
         </Space>
         <Navbar />

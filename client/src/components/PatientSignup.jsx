@@ -156,6 +156,26 @@ const PatientSignup = () => {
         </Form.Item>
 
         <Form.Item
+          name="nid"
+          rules={[
+            {
+              required: true,
+              message: "Please input your national ID!",
+            },
+            {
+              len: 14,
+              message: 'National ID must be 14 digits',
+            },
+            {
+              pattern: /^[0-9]*$/,
+              message: 'National ID must contain only numbers',
+            },
+          ]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="National ID" />
+        </Form.Item>
+
+        <Form.Item
           name={"emergencyName"}
           rules={[
             {

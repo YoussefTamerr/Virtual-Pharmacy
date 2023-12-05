@@ -17,6 +17,7 @@ const patientSchema = joi.object({
       .pattern(/^[0-9\s()+-]+$/)
       .required(),
   emergencyRelation: joi.string().required(),
+  nid: joi.string().required(),
 });
 
 const pharmacistSchema = joi.object({

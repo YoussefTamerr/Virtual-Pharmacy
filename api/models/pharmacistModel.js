@@ -57,6 +57,10 @@ const pharmacistSchema = new Schema(
       enum: ["pending", "denied", "approved"],
       default: "pending",
     },
+    wallet: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

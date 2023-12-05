@@ -25,7 +25,7 @@ const Wallet = () => {
       <div
         style={{ position: "fixed", top: "5%", right: "2%", fontSize: "20px" }}
       >
-        <WalletFilled /> <span>{user?.wallet?.toFixed(0)}EGP</span>
+        <WalletFilled /> <span>${user?.wallet?.toFixed(0)}</span>
       </div>
     )
   );
