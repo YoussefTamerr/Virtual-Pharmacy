@@ -1,6 +1,7 @@
 import Pharmacist from "../models/pharmacistModel.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import { getLoggedInPatient } from "./patientController.js";
 
 const createPharmacist = async (req, res) => {
   try {
@@ -127,6 +128,18 @@ const updatePharmacistApproval = async (req, res) => {
   }
 };
 
+const getLoggedInPharmacist = async (req, res) => {
+  try {
+    const patient = await Pharmacist.findById(req.user._id);
+    if (!patient) {
+      return res.status(400).json({ message: "Pharmacist not found" });
+    }
+    res.status(201).json(patient);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 export {
   deletePharmacist,
   getPharmacist,
@@ -134,4 +147,5 @@ export {
   loginPharmacist,
   getAllPharmacists,
   updatePharmacistApproval,
+  getLoggedInPharmacist,
 };

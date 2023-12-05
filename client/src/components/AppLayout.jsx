@@ -1,6 +1,7 @@
 import { Flex, Layout, Space } from "antd";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
+import Wallet from "./Wallet";
 
 const { Sider, Content } = Layout;
 
@@ -30,6 +31,7 @@ const AppLayout = () => {
           align="center"
           style={{ minHeight: "100vh" }}
         >
+          <Wallet />
           <Outlet />
         </Flex>
       </Content>

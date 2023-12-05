@@ -122,6 +122,11 @@ const Navbar = () => {
         icon: <NotificationOutlined />,
         key: "notifications",
       },
+      {
+        label: <NavLink to="/pharmacist/chat">Chat</NavLink>,
+        icon: <ExperimentOutlined />,
+        key: "chat",
+      },
     ];
   }
 
