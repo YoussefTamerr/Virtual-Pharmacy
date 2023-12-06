@@ -8,6 +8,11 @@ const Login = () => {
   const [userRole, setUserRole] = useState("patient");
 
   const [loading, setLoading] = useState(false);
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+
+
   const onFinish = async (values) => {
     setLoading(true);
     try {
@@ -20,7 +25,11 @@ const Login = () => {
         body: JSON.stringify(values),
       });
       if (response.ok) {
-        navigate("/" + userRole);
+        if(urlParams.get("redirect") != null){
+          navigate("/" + userRole + "/cart");
+        } else {
+          navigate("/" + userRole);
+        }
       } else {
         const data = await response.json();
         message.error(data.message);
