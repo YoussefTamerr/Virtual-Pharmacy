@@ -1,21 +1,23 @@
 import { useState, useEffect } from "react";
-import { List, Select, Descriptions, Table } from "antd";
+import { Select, Flex, Table, Input } from "antd";
 import Spinner from "./Spinner";
 
 const { Option } = Select;
+const { Search } = Input;
 
 function SalesReport() {
   const [medicines, setMedicines] = useState([]);
   const [month, setMonth] = useState(1);
   const [day, setDay] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const response = await fetch(
         `http://localhost:10000/order/?month=${month}` +
-          (day != 0 ? `&day=${day}` : ""),
+          (day !== 0 ? `&day=${day}` : ""),
         {
           credentials: "include",
         }
@@ -24,7 +26,7 @@ function SalesReport() {
       if (response.ok) {
         const sales = [];
         data.forEach((order) => {
-          if (order.status != "Cancelled") {
+          if (order.status !== "Cancelled") {
             order.items.forEach((item) => {
               const medicine = sales.find(
                 (medicine) => medicine.medicine_id === item.medicine_id._id
@@ -58,10 +60,24 @@ function SalesReport() {
     setDay(value);
   };
 
+  const handleSearch = (value) => {
+    setQuery(value);
+  };
+
+  const filteredMedicines = medicines.filter(
+    (medicine) => medicine.name.toLowerCase() === query.toLowerCase()
+  );
+
   return (
     <>
       <h1>Sales</h1>
-      <div>
+      <Flex gap={10}>
+        <Search
+          placeholder="Search by medicine name"
+          allowClear
+          onSearch={handleSearch}
+          style={{ width: "20%", marginBottom: "20px", flexGrow: 1 }}
+        />
         <Select
           value={month}
           style={{ width: 120, marginBottom: "20px" }}
@@ -82,7 +98,7 @@ function SalesReport() {
         </Select>
         <Select
           value={day}
-          style={{ width: 120, marginBottom: "20px" }}
+          style={{ width: 65, marginBottom: "20px" }}
           onChange={handleDayChange}
         >
           <Option value={0}>All</Option>
@@ -92,7 +108,7 @@ function SalesReport() {
             </Option>
           ))}
         </Select>
-      </div>
+      </Flex>
       {loading ? (
         <Spinner />
       ) : (
@@ -100,7 +116,7 @@ function SalesReport() {
           <Table
             pagination={false}
             overflowY="scroll"
-            dataSource={medicines}
+            dataSource={query.trim() ? filteredMedicines : medicines}
             columns={[
               {
                 title: "Name",
@@ -128,6 +144,14 @@ function SalesReport() {
             style={{
               marginBottom: "30px",
               width: "90%",
+            }}
+            footer={() => {
+              const totalSales = medicines.reduce(
+                (sum, medicine) =>
+                  sum + medicine.units_sold * medicine.price_per_unit,
+                0
+              );
+              return <div>Total Month Sales: {totalSales}</div>;
             }}
           />
         </>
