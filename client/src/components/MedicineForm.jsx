@@ -1,11 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Form, Input, Button, message, Upload, Checkbox } from "antd";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { io } from "socket.io-client";
 
 function MedicineForm() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  const [medicine, setMedicine] = useState(null);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+    }
+
+    socketRef.current = io("http://localhost:8900");
+
+    const handleOutOfStockNotification = (receivedMedicine) => {
+      console.log(receivedMedicine);
+      setMedicine(receivedMedicine);
+    };
+
+    socketRef.current.on("outOfStockNotification", handleOutOfStockNotification);
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off("outOfStockNotification", handleOutOfStockNotification);
+        socketRef.current.disconnect();
+      }
+    };
+  }, [socketRef]); 
 
   const onFinish = async (formData) => {
     setLoading(true);
@@ -166,6 +192,7 @@ function MedicineForm() {
           </Button>
         </Form.Item>
       </Form>
+      
     </>
   );
 }

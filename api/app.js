@@ -17,6 +17,8 @@ import { stripeWebhook } from "./controllers/orderController.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import currUserRoutes from "./routes/currUserRoutes.js";
 
+import Medicine from "./models/medicineModel.js";
+
 dotenv.config();
 
 const app = express();
@@ -49,6 +51,12 @@ app.all("*", (req, res) => {
     .json({ message: `Cannot find ${req.originalUrl} on this server` });
 });
 
+const checkMedicineStock = async () => {
+  console.log("Checking Medicine Stock");
+  const medicines = await Medicine.find({ availableQuantity: 0 });
+  return medicines.map(medicine => medicine.name);
+};
+
 mongoose
   .connect(process.env.MONGO_URI, {
     useUnifiedTopology: true,
@@ -63,5 +71,7 @@ mongoose
   .catch((error) => {
     console.error(error);
   });
+
+export { checkMedicineStock }
 
 export default app;

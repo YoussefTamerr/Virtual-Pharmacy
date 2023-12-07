@@ -1,4 +1,17 @@
-const io = require("socket.io")(8900, {
+import Medicine from "../api/models/medicineModel.js";
+
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import { checkMedicineStock } from "../api/app.js";
+
+dotenv.config();
+
+
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:5173",
   },
@@ -19,7 +32,7 @@ const getUser = (userId) => {
   return users.find((user) => user.userId === userId);
 };
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   //when ceonnect
   console.log("a user connected.");
 
@@ -32,12 +45,23 @@ io.on("connection", (socket) => {
   //send and get message
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
-    if(!user) return;
+    if (!user) return;
     io.to(user.socketId).emit("getMessage", {
       senderId,
       text,
     });
   });
+
+  //when out of stock
+  const checkMedicineStockInterval = setInterval(async () => {
+    let x = await checkMedicineStock();
+
+    io.emit("outOfStockNotification", {
+      medicineNames: x,
+    });
+  }, 10000); // Run every 1 minute (adjust the interval as needed)
+
+  checkMedicineStockInterval;
 
   //when disconnect
   socket.on("disconnect", () => {
@@ -46,3 +70,10 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 });
+
+const PORT = 8900;
+
+httpServer.listen(PORT, () => {
+  console.log(`Socket.io server is running on port ${PORT}`);
+});
+
