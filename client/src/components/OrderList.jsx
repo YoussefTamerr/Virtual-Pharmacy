@@ -9,7 +9,7 @@ function OrderList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:10000/order`, {
+      const response = await fetch(`http://localhost:10000/order/me`, {
         credentials: "include",
       });
       const data = await response.json();

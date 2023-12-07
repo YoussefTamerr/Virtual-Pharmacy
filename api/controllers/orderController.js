@@ -9,9 +9,9 @@ import Email from "../utils/email.js";
 const sendNotification = async (outOfStockMedicines) => {
   const pharmacists = await Pharmacist.find();
   pharmacists.forEach(async (pharmacist) => {
-    await new Email( pharmacist, outOfStockMedicines).sendOutOfStockMedicines();
+    await new Email(pharmacist, outOfStockMedicines).sendOutOfStockMedicines();
   });
-}
+};
 
 const createOrder = async (req, res) => {
   try {
@@ -275,10 +275,68 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+const getAllOrders = async (req, res) => {
+  try {
+    const { month, day } = req.query;
+    if (month) {
+      let orders;
+      if (day) {
+        const targetDate = new Date(new Date().getFullYear(), month - 1, day);
+        const startOfDay = new Date(
+          targetDate.getFullYear(),
+          targetDate.getMonth(),
+          targetDate.getDate(),
+          0,
+          0,
+          0,
+          0
+        );
+        const endOfDay = new Date(
+          targetDate.getFullYear(),
+          targetDate.getMonth(),
+          targetDate.getDate(),
+          23,
+          59,
+          59,
+          999
+        );
+
+        orders = await Order.find({
+          createdAt: {
+            $gte: startOfDay,
+            $lte: endOfDay,
+          },
+        })
+          .populate("items.medicine_id")
+          .sort({ createdAt: -1 });
+      } else {
+        orders = await Order.find({
+          createdAt: {
+            $gte: new Date(new Date().getFullYear(), month - 1, 1),
+            $lt: new Date(new Date().getFullYear(), month, 1),
+          },
+        })
+          .populate("items.medicine_id")
+          .sort({ createdAt: -1 });
+      }
+
+      return res.status(200).json(orders);
+    } else {
+      const orders = await Order.find()
+        .populate("items.medicine_id")
+        .sort({ createdAt: -1 });
+      res.status(200).json(orders);
+    }
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 export {
   createOrder,
   getMyOrders,
   cancelOrder,
   createOrderCreditCard,
   stripeWebhook,
+  getAllOrders,
 };
