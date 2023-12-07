@@ -1,10 +1,10 @@
-import { Button, Modal, message, Card } from "antd";
+import { Button, Modal, message, Card, Flex } from "antd";
 import { useState } from "react";
 const { Meta } = Card;
 
 import { useLocation } from "react-router-dom";
 
-const MedicineView = ({ medicine }) => {
+const MedicineView = ({ medicine, alternatives }) => {
   const [isLoading, setIsLoading] = useState();
   const location = useLocation();
   const [medicineDetails, setMedicineDetails] = useState(medicine.details);
@@ -27,6 +27,10 @@ const MedicineView = ({ medicine }) => {
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  console.log(medicine.name, alternatives);
+
+  const alternativesLength = alternatives?.length || 0;
 
   const handleOk = () => {
     fetch(`http://localhost:10000/medicine/${medicine._id}`, {
@@ -182,6 +186,22 @@ const MedicineView = ({ medicine }) => {
           </label>
         </Modal>
       )}
+      {location.pathname.startsWith("/patient") && (
+        <Modal
+          title="Alternative Medicines"
+          open={isModalOpen}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          {alternativesLength > 0 ? (
+            alternatives.map((alternative) => (
+              <MedicineView key={alternative._id} medicine={alternative} />
+            ))
+          ) : (
+            <p>No alternatives found</p>
+          )}
+        </Modal>
+      )}
       <div
         style={{
           display: "flex",
@@ -255,14 +275,23 @@ const MedicineView = ({ medicine }) => {
               </Button>
             )}
             {disableButton() === 1 && (
-              <Button
-                disabled
-                type="primary"
-                onClick={addToCart}
-                loading={isLoading}
-              >
-                Out of stock!
-              </Button>
+              <Flex gap={5}>
+                <Button
+                  disabled
+                  type="primary"
+                  onClick={addToCart}
+                  loading={isLoading}
+                >
+                  Out of stock!
+                </Button>
+                <Button
+                  style={{ width: "150px" }}
+                  type="primary"
+                  onClick={showModal}
+                >
+                  Show Alternatives
+                </Button>
+              </Flex>
             )}
             {location.pathname.startsWith("/pharmacist") && (
               <>

@@ -70,7 +70,13 @@ function MedicineList() {
       </div>
       <Flex wrap="wrap" justify="center" align="end" gap={10}>
         {filteredMedicine.map((medicine) => (
-          <MedicineView key={medicine._id} medicine={medicine} />
+          <MedicineView
+            key={medicine._id}
+            medicine={medicine}
+            alternatives={medicines.filter(
+              (m) => m.details === medicine.details && m._id !== medicine._id
+            )}
+          />
         ))}
       </Flex>
     </>
