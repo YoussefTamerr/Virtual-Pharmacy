@@ -17,7 +17,7 @@ import ChangePassword from "./components/ChangePassword";
 import ForgotPassword from "./components/ForgotPassword";
 import Notification from "./components/Notification";
 import ChatPage from "./components/chat/ChatPage";
-
+import SalesReport from "./components/SalesReport";
 
 function App() {
   return (
@@ -52,8 +52,8 @@ function App() {
             <Route path="medicines" element={<MedicineList />} />
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="notifications" element={<Notification />} />
+            <Route path="sales" element={<SalesReport />} />
             <Route path="chat" element={<ChatPage />} />
-            
           </Route>
           <Route path="/admin">
             <Route index element={<Navigate to={"/admin/add"} />} />

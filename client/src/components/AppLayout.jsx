@@ -7,7 +7,7 @@ const { Sider, Content } = Layout;
 
 import { MedicineBoxOutlined } from "@ant-design/icons";
 
-import backIcn from "../../assets/icons/back.svg"
+import backIcn from "../../assets/icons/back.svg";
 
 const BackIcon = () => (
   <img
@@ -23,8 +23,7 @@ const BackIcon = () => (
       window.history.back();
     }}
   />
-)
-
+);
 
 const AppLayout = () => {
   return (
@@ -44,9 +43,10 @@ const AppLayout = () => {
       <Content>
         <Flex
           vertical
-          justify="space-evenly"
+          justify="start"
+          gap={10}
           align="center"
-          style={{ minHeight: "100vh" }}
+          style={{ minHeight: "90vh", marginTop: "10px" }}
         >
           <Wallet />
           <Outlet />

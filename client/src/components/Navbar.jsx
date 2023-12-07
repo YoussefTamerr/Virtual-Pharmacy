@@ -123,6 +123,11 @@ const Navbar = () => {
         key: "notifications",
       },
       {
+        label: <NavLink to="/pharmacist/sales">Sales Report</NavLink>,
+        icon: <SolutionOutlined />,
+        key: "sales",
+      },
+      {
         label: <NavLink to="/pharmacist/chat">Chat</NavLink>,
         icon: <ExperimentOutlined />,
         key: "chat",
