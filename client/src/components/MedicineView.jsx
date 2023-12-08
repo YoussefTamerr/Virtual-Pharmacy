@@ -28,8 +28,6 @@ const MedicineView = ({ medicine, alternatives }) => {
     setIsModalOpen(true);
   };
 
-  console.log(medicine.name, alternatives);
-
   const alternativesLength = alternatives?.length || 0;
 
   const handleOk = () => {

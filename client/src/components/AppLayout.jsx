@@ -1,57 +1,79 @@
+import { useState } from "react";
 import { Flex, Layout, Space } from "antd";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Wallet from "./Wallet";
 
-const { Sider, Content } = Layout;
+const { Sider, Content, Header } = Layout;
 
-import { MedicineBoxOutlined } from "@ant-design/icons";
+import { MenuOutlined } from "@ant-design/icons";
 
-import backIcn from "../../assets/icons/back.svg";
-
-const BackIcon = () => (
-  <img
-    src={backIcn}
-    style={{
-      width: "24px",
-      height: "24px",
-      cursor: "pointer",
-      borderRadius: "50%",
-      marginLeft: "10px",
-    }}
-    onClick={() => {
-      window.history.back();
-    }}
-  />
-);
+import AppHeader from "./AppHeader";
 
 const AppLayout = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <Layout style={{ minHeight: "100vh", background: "white" }}>
-      <Sider breakpoint="lg" collapsedWidth="0" style={{ padding: "5px" }}>
+    <Layout>
+      <Header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+          padding: "0 20px",
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+        }}
+      >
         <Space
           style={{
             display: "flex",
             color: "white",
           }}
         >
-          <BackIcon />
+          <MenuOutlined
+            style={{
+              fontSize: "20px",
+              cursor: "pointer",
+              display: "block",
+            }}
+            onClick={() => {
+              setCollapsed(!collapsed);
+            }}
+          />
           <h1>Pharmacy</h1>
         </Space>
-        <Navbar />
-      </Sider>
-      <Content>
-        <Flex
-          vertical
-          justify="start"
-          gap={10}
-          align="center"
-          style={{ minHeight: "90vh", marginTop: "10px" }}
-        >
+        <Space>
+          <AppHeader />
           <Wallet />
-          <Outlet />
-        </Flex>
-      </Content>
+        </Space>
+      </Header>
+      <Layout style={{ minHeight: "100vh", background: "white" }}>
+        <Sider
+          breakpoint="lg"
+          collapsible
+          collapsedWidth={0}
+          collapsed={collapsed}
+          trigger={null}
+        >
+          <Navbar />
+        </Sider>
+        <Content>
+          <Flex
+            vertical
+            justify="start"
+            gap={10}
+            align="center"
+            style={{
+              minHeight: "90vh",
+              marginTop: "10px",
+            }}
+          >
+            <Outlet />
+          </Flex>
+        </Content>
+      </Layout>
     </Layout>
   );
 };

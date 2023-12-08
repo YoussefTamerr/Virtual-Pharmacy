@@ -22,9 +22,7 @@ const Wallet = () => {
 
   return (
     user && (
-      <div
-        style={{ position: "fixed", top: "5%", right: "2%", fontSize: "20px" }}
-      >
+      <div style={{ fontSize: "20px", color: "white" }}>
         <WalletFilled /> <span>${user?.wallet?.toFixed(0)}</span>
       </div>
     )

@@ -1,33 +1,17 @@
 import { Menu } from "antd";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   UserOutlined,
   PlusCircleOutlined,
   UserAddOutlined,
   MedicineBoxOutlined,
   SolutionOutlined,
-  LogoutOutlined,
   KeyOutlined,
-  ShoppingCartOutlined,
   ExperimentOutlined,
-  NotificationOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [notifications, setNotifications] = useState(0);
-
-  const handleLogout = async () => {
-    const response = await fetch("http://localhost:10000/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-    if (response.ok) {
-      navigate("/login");
-    }
-  };
 
   let items;
 
@@ -67,41 +51,17 @@ const Navbar = () => {
         key: "orders",
       },
       {
-        label: <NavLink to="/patient/cart">Cart</NavLink>,
-        icon: <ShoppingCartOutlined />,
-        key: "cart",
-      },
-      {
         label: <NavLink to="/patient/prescriptions">Prescriptions</NavLink>,
         icon: <ExperimentOutlined />,
         key: "prescriptions",
       },
       {
         label: <NavLink to="/patient/chat">Chat</NavLink>,
-        icon: <ExperimentOutlined />, // di antd design 3'ayrha ba3din
+        icon: <ExperimentOutlined />,
         key: "chat",
       },
     ];
   } else if (location.pathname.startsWith("/pharmacist")) {
-    useEffect(() => {
-      async function handleNotification() {
-        let count = 0;
-        const response = await fetch("http://localhost:10000/medicine", {
-          method: "GET",
-          credentials: "include",
-        });
-        const data = await response.json();
-        if (response.ok) {
-          data.forEach((medicine) => {
-            if (medicine.availableQuantity === 0) {
-              count++;
-            }
-          });
-          setNotifications(count);
-        }
-      }
-      handleNotification();
-    }, []);
     items = [
       {
         label: <NavLink to="/pharmacist/add">Add Medicine</NavLink>,
@@ -112,15 +72,6 @@ const Navbar = () => {
         label: <NavLink to="/pharmacist/medicines">Medicines</NavLink>,
         icon: <MedicineBoxOutlined />,
         key: "medicines",
-      },
-      {
-        label: (
-          <NavLink to="/pharmacist/notifications">
-            Notifications: {notifications}
-          </NavLink>
-        ),
-        icon: <NotificationOutlined />,
-        key: "notifications",
       },
       {
         label: <NavLink to="/pharmacist/sales">Sales Report</NavLink>,
@@ -145,18 +96,16 @@ const Navbar = () => {
       icon: <KeyOutlined />,
       key: "reset",
     },
-    {
-      label: <NavLink onClick={handleLogout}>Logout</NavLink>,
-      icon: <LogoutOutlined />,
-      key: "logout",
-    },
   ]);
 
   return (
     <Menu
       mode="inline"
-      theme="dark"
-      style={{ border: "none" }}
+      style={{
+        minHeight: "100%",
+        padding: "5px",
+        backgroundColor: "#fafafa",
+      }}
       items={items}
       selectedKeys={["" + location.pathname.split("/")[2]]}
       forceSubMenuRender={true}
