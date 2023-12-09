@@ -83,16 +83,43 @@ const ChatPage = () => {
     <>
       <h3>Chat</h3>
       <div className="chat-header">
-        <Button type="primary" onClick={() => setContactsOpen(true)}>
-          New chat
-        </Button>
+        
       </div>
-      <div className="chat-container">
-        <OldChats
-          selectedChat={selectedChat}
-          setSelectedChat={setSelectedChat}
-          chats={oldChats}
-        />
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        height: "100%",
+        width: "70%",
+        borderRadius: "0.5rem",
+        overflow: "hidden",
+        boxShadow: "0 0 0.5rem rgba(0,0,0,0.5)",
+
+      }}>
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          width: "40%",
+          height: "100%",
+          overflowY: "auto",
+          overflowX: "hidden",
+          padding: "10px 0px",
+          gap: "1rem",
+
+        }}>
+          <Button style={{
+            marginTop: "2rem",
+          }} type="primary" onClick={() => setContactsOpen(true)}>
+            New chat
+          </Button>
+          <OldChats
+            selectedChat={selectedChat}
+            setSelectedChat={setSelectedChat}
+            chats={oldChats}
+          />
+        </div>
+        
         <ChatBox selectedChat={selectedChat} user={user} />
       </div>
       <Contacts

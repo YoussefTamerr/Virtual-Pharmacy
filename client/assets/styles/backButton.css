@@ -1,0 +1,9 @@
+.backButton {
+    border-radius: 50%;
+    margin-left: 5px;
+    margin-top: 5px;
+    padding: 5px;
+    &:hover {
+        background-color: #ccc;
+    }
+}

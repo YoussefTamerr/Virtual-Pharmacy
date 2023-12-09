@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { message, Modal, Button, Select } from "antd";
+import { message, Modal, Button, Select, Input } from "antd";
 const { Option } = Select;
 
 function DeliveryAddress() {
@@ -161,33 +161,36 @@ function DeliveryAddress() {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <label>
-          Street Address:
-          <input
+        <div style={{
+          width: "70%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "10px",
+        }}>
+          <Input
+          placeholder="Street Address"
             type="text"
             onChange={(e) => {
               setDeliveryAddressStreet(e.target.value);
             }}
           />
-        </label>
-        <label>
-          City:
-          <input
+          <Input
+            placeholder="City"
             type="text"
             onChange={(e) => {
               setDeliveryAddressCity(e.target.value);
             }}
           />
-        </label>
-        <label>
-          Governate:
-          <input
+          <Input
+            placeholder="Governate"
             type="text"
             onChange={(e) => {
               setDeliveryAddressGovernate(e.target.value);
             }}
           />
-        </label>
+        </div>
       </Modal>
     </div>
   );

@@ -4,6 +4,7 @@ import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import { io } from "socket.io-client";
 import { format } from 'timeago.js'
+import "./chat.css";
 
 const { TextArea } = Input;
 
@@ -71,24 +72,75 @@ const ChatBox = ({ selectedChat, user }) => {
       });
   };
   return (
-    <div className="chat-box">
-      <div className="chat-header">
-        <h3>{selectedChat?.receiverName}</h3>
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      height: "100%",
+      width: "100%",
+    }}>
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "0.5rem",
+        margin: "0.5rem",
+        padding: "0.5rem",
+        borderRadius: "0.5rem",
+        boxShadow: "0 0 0.5rem rgba(0,0,0,0.5)",
+      }}>
+        <h3>{selectedChat ? selectedChat?.receiverName : ('Select a Chat')}</h3>
       </div>
-      <div className="chat-body">
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.5rem",
+        height: "300px",
+        padding: "0.5rem",
+        border: "1px solid #ccc",
+        borderRadius: "0.5rem",
+        overflow: "auto",
+        margin: "0.5rem",
+        scrollBehavior: "smooth",
+        scrollSnapType: "y mandatory",
+        scrollPadding: "0.5rem", 
+      }}>
         {messages?.map((message, index) => (
-          <div
-            key={index}
-            style={{
-              textAlign: message?.sender == user?._id ? "right" : "left",
-            }}
-          >
-            <p>{message.text}</p>
-          <span style={{fontSize:"0.65rem",color:"#ccc"}} >{format(message.createdAt)}</span>
-          </div>
+          <>
+            <div
+              key={index}
+              style={{
+                alignSelf: message?.sender == user?._id ? "flex-end" : "flex-start",
+                padding: "1rem",
+                borderRadius: "0.5rem",
+                backgroundColor:
+                  message?.sender == user?._id ? "#1890ff" : "#ccc",
+                color: message?.sender == user?._id ? "#fff" : "#000",
+                width: "fit-content",
+                maxWidth: "70%",
+                height: "fit-content",
+              }}
+            >
+              <div>{message.text}</div>
+              
+            </div>
+            <span style={{
+              fontSize:"0.65rem",
+              color:"#000",
+              alignSelf: message?.sender == user?._id ? "flex-end" : "flex-start",
+              }} >
+                {format(message.createdAt)}
+              </span>
+          </>
         ))}
       </div>
-      <div className="chat-area">
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: "0.5rem",
+        padding: "0.5rem",
+      }}>
         <TextArea
           placeholder={"Type a message..."}
           autoSize={{ minRows: 1, maxRows: 4 }}

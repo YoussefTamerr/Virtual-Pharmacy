@@ -9,11 +9,23 @@ import {
   KeyOutlined,
   ExperimentOutlined,
 } from "@ant-design/icons";
+import backIcon from "../../assets/icons/back.svg";
+import "../../assets/styles/backButton.css"
+
+const BackIcon = () => <img className="backButton" style={{
+  width: "40px",
+  height: "40px",
+  cursor: "pointer",
+}} onClick={
+  () => window.history.back()
+} src={backIcon} alt="back" />;
 
 const Navbar = () => {
   const location = useLocation();
 
   let items;
+
+  
 
   if (location.pathname.startsWith("/admin")) {
     items = [
@@ -99,7 +111,13 @@ const Navbar = () => {
   ]);
 
   return (
-    <Menu
+    <div style={{
+      minHeight: "100%",
+      padding: "5px",
+      backgroundColor: "#fafafa",
+    }}>
+      <BackIcon />
+      <Menu
       mode="inline"
       style={{
         minHeight: "100%",
@@ -110,6 +128,7 @@ const Navbar = () => {
       selectedKeys={["" + location.pathname.split("/")[2]]}
       forceSubMenuRender={true}
     />
+  </div>
   );
 };
 

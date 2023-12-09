@@ -54,7 +54,7 @@ const Contacts = ({ open, onCancel, createNewChat ,currUser, role}) => {
                 style={{ marginBottom: '16px' }}
             />
             <div className='new-chat-contacts'>
-                {filteredContacts.map((contact, index) => (
+                {(filteredContacts.length > 0)?filteredContacts.map((contact, index) => (
                     <Card
                         className='new-chat-contact-card'
                         key={index}
@@ -64,7 +64,9 @@ const Contacts = ({ open, onCancel, createNewChat ,currUser, role}) => {
                         }}>
                         {role == 'doctor' ? '' : 'Dr.'} {contact.name}
                     </Card>
-                ))}
+                )): (
+                    <div>You have initiated a chat with all available individuals.</div>
+                )}
             </div>
         </Modal>
     )
