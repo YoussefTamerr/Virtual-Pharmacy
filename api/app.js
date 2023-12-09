@@ -54,7 +54,7 @@ app.all("*", (req, res) => {
 const checkMedicineStock = async () => {
   console.log("Checking Medicine Stock");
   const medicines = await Medicine.find({ availableQuantity: 0 });
-  return medicines.map(medicine => medicine.name);
+  return medicines;
 };
 
 mongoose

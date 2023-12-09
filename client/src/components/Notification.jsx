@@ -1,44 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { List, Table } from "antd";
 import Spinner from "./Spinner";
+import { io } from "socket.io-client";
 
 const Notification = () => {
-  const [meds, setMeds] = useState(null);
 
-  // useEffect(() => {
-  //     const socket = io('http://localhost:10000', { transports: ['websocket'] });
+  const [medicine, setMedicine] = useState(null);
+  const socketRef = useRef(null);
 
-  //     socket.on("outOfStockMedicines", (data) => {
-  //       // setMeds(data && data.map(item => item.name));
-  //       setMeds(data);
-  //     });
-
-  //     return () => {
-  //       if (socket.readyState === 1) {
-  //           socket.close();
-  //       }
-  //   }
-  //   }, []);
   useEffect(() => {
-    async function handleNotification() {
-      let count = [];
-      const response = await fetch("http://localhost:10000/medicine", {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        data.forEach((medicine) => {
-          if (medicine.availableQuantity === 0) {
-            medicine.name += " is out of stock";
-            count.push(medicine);
-          }
-        });
-        setMeds(count);
-      }
+    if (socketRef.current) {
+      socketRef.current.disconnect();
     }
-    handleNotification();
-  }, []);
+
+    socketRef.current = io("http://localhost:8900");
+
+    const handleOutOfStockNotification = (receivedMedicine) => {
+      console.log(receivedMedicine);
+      receivedMedicine.medicineNames.forEach((medicine) => {
+        medicine.name += " is out of stock";
+      });
+      setMedicine(receivedMedicine);
+    };
+
+    socketRef.current.on("outOfStockNotification", handleOutOfStockNotification);
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off("outOfStockNotification", handleOutOfStockNotification);
+        socketRef.current.disconnect();
+      }
+    };
+  }, [socketRef]); 
 
   const columns = [
     {
@@ -57,9 +50,9 @@ const Notification = () => {
       >
         Notifications
       </h1>
-      {meds ? (
+      {medicine ? (
         <Table
-          dataSource={meds}
+          dataSource={medicine.medicineNames}
           columns={columns}
           style={{
             width: "50%",

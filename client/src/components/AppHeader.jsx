@@ -5,34 +5,58 @@ import {
   ShoppingCartOutlined,
   NotificationOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { io } from "socket.io-client";
 
 const AppHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState(0);
 
+  const socketRef = useRef(null);
+
   useEffect(() => {
-    async function handleNotification() {
-      let count = 0;
-      const response = await fetch("http://localhost:10000/medicine", {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        data.forEach((medicine) => {
-          if (medicine.availableQuantity === 0) {
-            count++;
-          }
-        });
-        setNotifications(count);
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+    }
+
+    socketRef.current = io("http://localhost:8900");
+
+    const handleOutOfStockNotification = (receivedMedicine) => {
+      setNotifications(receivedMedicine.medicineNames.length);
+    };
+
+    socketRef.current.on("outOfStockNotification", handleOutOfStockNotification);
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off("outOfStockNotification", handleOutOfStockNotification);
+        socketRef.current.disconnect();
       }
-    }
-    if (location.pathname.startsWith("/pharmacist")) {
-      handleNotification();
-    }
-  }, [location.pathname]);
+    };
+  }, [socketRef]); 
+
+  // useEffect(() => {
+  //   async function handleNotification() {
+  //     let count = 0;
+  //     const response = await fetch("http://localhost:10000/medicine", {
+  //       method: "GET",
+  //       credentials: "include",
+  //     });
+  //     const data = await response.json();
+  //     if (response.ok) {
+  //       data.forEach((medicine) => {
+  //         if (medicine.availableQuantity === 0) {
+  //           count++;
+  //         }
+  //       });
+  //       setNotifications(count);
+  //     }
+  //   }
+  //   if (location.pathname.startsWith("/pharmacist")) {
+  //     handleNotification();
+  //   }
+  // }, [location.pathname]);
 
   const handleLogout = async () => {
     const response = await fetch("http://localhost:10000/auth/logout", {
