@@ -1,4 +1,4 @@
-import { Button, Modal, message, Card, Flex } from "antd";
+import { Button, Modal, message, Card, Flex, Input } from "antd";
 import { useState } from "react";
 const { Meta } = Card;
 
@@ -154,7 +154,7 @@ const MedicineView = ({ medicine, alternatives }) => {
         >
           <label>
             Details:
-            <input
+            <Input
               value={medicineDetailsInter}
               type="text"
               onChange={(e) => {
@@ -164,7 +164,7 @@ const MedicineView = ({ medicine, alternatives }) => {
           </label>
           <label>
             Price:
-            <input
+            <Input
               value={medicinePriceInter}
               type="text"
               onChange={(e) => {
@@ -174,7 +174,7 @@ const MedicineView = ({ medicine, alternatives }) => {
           </label>
           <label>
             Available Quantity:
-            <input
+            <Input
               value={medicineQuantityInter}
               type="number"
               onChange={(e) => {
@@ -200,124 +200,121 @@ const MedicineView = ({ medicine, alternatives }) => {
           )}
         </Modal>
       )}
-      <div
+      <Card
         style={{
+          height: "300px",
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
+          padding: "0 20px",
+          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
         }}
-      >
-        <Card
-          style={{
-            marginTop: 16,
-            marginBottom: 16,
-            gap: "small",
-            display: "flex",
-            flexDirection: "column",
-            border: "2px solid grey",
-          }}
-          cover={
-            <img
-              alt="example"
-              src={`http://localhost:10000/${medicine.image}`}
-            />
-          }
-        >
-          <Meta
-            title={medicine.name}
-            description={
-              <>
-                {location.pathname.startsWith("/pharmacist") && (
-                  <>
-                    <p>
-                      <strong>Available Quantity: </strong>
-                      {medicineQuantity}
-                    </p>
-                    <p>
-                      <strong>Sales: </strong>${medicine.sales}
-                    </p>
-                  </>
-                )}
-                <p>
-                  <strong>Price: </strong>${medicinePrice}
-                </p>
-                <p>
-                  <strong>Details: </strong>
-                  {medicineDetails}
-                </p>
-              </>
-            }
+        cover={
+          <img
+            alt="example"
+            src={`http://localhost:10000/${medicine.image}`}
+            style={{ height: "250px", aspectRatio: "1/1" }}
           />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "10px",
-            }}
-          >
-            {disableButton() === 0 && (
+        }
+      >
+        <Meta
+          title={medicine.name}
+          description={
+            <>
+              {location.pathname.startsWith("/pharmacist") && (
+                <>
+                  <p>
+                    <strong>Available Quantity: </strong>
+                    {medicineQuantity}
+                  </p>
+                  <p>
+                    <strong>Sales: </strong>${medicine.sales}
+                  </p>
+                </>
+              )}
+              <p>
+                <strong>Price: </strong>${medicinePrice}
+              </p>
+              <p>
+                <strong>Details: </strong>
+                {medicineDetails}
+              </p>
+            </>
+          }
+        ></Meta>
+        <Flex gap={10} vertical>
+          {disableButton() === 0 && (
+            <Button
+              disabled
+              type="primary"
+              onClick={addToCart}
+              loading={isLoading}
+              style={{ width: "150px" }}
+            >
+              Prescription needed
+            </Button>
+          )}
+          {disableButton() === 2 && (
+            <Button
+              type="primary"
+              onClick={addToCart}
+              loading={isLoading}
+              style={{ width: "150px" }}
+            >
+              Add to cart
+            </Button>
+          )}
+          {disableButton() === 1 && (
+            <>
               <Button
                 disabled
                 type="primary"
                 onClick={addToCart}
                 loading={isLoading}
+                style={{ width: "150px" }}
               >
-                Prescription needed
+                Out of stock!
               </Button>
-            )}
-            {disableButton() === 2 && (
-              <Button type="primary" onClick={addToCart} loading={isLoading}>
-                Add to cart
+              <Button
+                type="primary"
+                onClick={showModal}
+                style={{ width: "150px" }}
+              >
+                Show Alternatives
               </Button>
-            )}
-            {disableButton() === 1 && (
-              <Flex gap={5}>
+            </>
+          )}
+          {location.pathname.startsWith("/pharmacist") && (
+            <>
+              <Button
+                type="primary"
+                onClick={showModal}
+                style={{ width: "150px" }}
+              >
+                Edit Medicine
+              </Button>
+              {medicineArchived ? (
                 <Button
-                  disabled
                   type="primary"
-                  onClick={addToCart}
-                  loading={isLoading}
-                >
-                  Out of stock!
-                </Button>
-                <Button
+                  onClick={unarchiveMed}
                   style={{ width: "150px" }}
-                  type="primary"
-                  onClick={showModal}
                 >
-                  Show Alternatives
+                  Unarchive Medicine
                 </Button>
-              </Flex>
-            )}
-            {location.pathname.startsWith("/pharmacist") && (
-              <>
+              ) : (
                 <Button
-                  style={{ width: "150px" }}
                   type="primary"
-                  onClick={showModal}
+                  onClick={archiveMed}
+                  style={{ width: "150px" }}
                 >
-                  Edit Medicine
+                  Archive Medicine
                 </Button>
-                {medicineArchived ? (
-                  <Button type="primary" onClick={unarchiveMed}>
-                    Unarchive Medicine
-                  </Button>
-                ) : (
-                  <Button
-                    style={{ width: "150px" }}
-                    type="primary"
-                    onClick={archiveMed}
-                  >
-                    Archive Medicine
-                  </Button>
-                )}
-              </>
-            )}
-          </div>
-        </Card>
-      </div>
+              )}
+            </>
+          )}
+        </Flex>
+      </Card>
     </div>
   );
 };

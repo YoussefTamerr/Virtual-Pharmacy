@@ -151,7 +151,11 @@ function SalesReport() {
                   sum + medicine.units_sold * medicine.price_per_unit,
                 0
               );
-              return <div>Total Month Sales: ${totalSales}</div>;
+              return (
+                <div>
+                  Total {day ? "Day" : "Month"} Sales: ${totalSales}
+                </div>
+              );
             }}
           />
         </>

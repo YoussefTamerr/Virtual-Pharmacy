@@ -56,6 +56,7 @@ const AppLayout = () => {
           collapsedWidth={0}
           collapsed={collapsed}
           trigger={null}
+          width={250}
         >
           <Navbar />
         </Sider>

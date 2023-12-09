@@ -34,10 +34,10 @@ const PatientView = ({ patient, onRemove }) => {
       headStyle={{
         fontSize: "20px",
         textAlign: "center",
-        backgroundColor: "#ccc",
+        backgroundColor: "#ebebeb",
       }}
       bodyStyle={{
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#fafafa",
       }}
     >
       <div
@@ -84,6 +84,7 @@ const PatientView = ({ patient, onRemove }) => {
           style={{ alignSelf: "center" }}
           loading={isLoading}
           type="primary"
+          danger
           onClick={removePatient}
         >
           Remove Patient

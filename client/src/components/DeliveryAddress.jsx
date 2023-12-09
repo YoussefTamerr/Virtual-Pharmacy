@@ -117,7 +117,6 @@ function DeliveryAddress() {
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
@@ -161,16 +160,18 @@ function DeliveryAddress() {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <div style={{
-          width: "70%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "10px",
-        }}>
+        <div
+          style={{
+            width: "70%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+          }}
+        >
           <Input
-          placeholder="Street Address"
+            placeholder="Street Address"
             type="text"
             onChange={(e) => {
               setDeliveryAddressStreet(e.target.value);

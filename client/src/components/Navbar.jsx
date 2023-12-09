@@ -8,24 +8,30 @@ import {
   SolutionOutlined,
   KeyOutlined,
   ExperimentOutlined,
+  ShoppingOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
 import backIcon from "../../assets/icons/back.svg";
-import "../../assets/styles/backButton.css"
+import "../../assets/styles/backButton.css";
 
-const BackIcon = () => <img className="backButton" style={{
-  width: "40px",
-  height: "40px",
-  cursor: "pointer",
-}} onClick={
-  () => window.history.back()
-} src={backIcon} alt="back" />;
+const BackIcon = () => (
+  <img
+    className="backButton"
+    style={{
+      width: "40px",
+      height: "40px",
+      cursor: "pointer",
+    }}
+    onClick={() => window.history.back()}
+    src={backIcon}
+    alt="back"
+  />
+);
 
 const Navbar = () => {
   const location = useLocation();
 
   let items;
-
-  
 
   if (location.pathname.startsWith("/admin")) {
     items = [
@@ -46,7 +52,7 @@ const Navbar = () => {
       },
       {
         label: <NavLink to="/admin/medicines">View Medicines</NavLink>,
-        icon: <MedicineBoxOutlined />,
+        icon: <MessageOutlined />,
         key: "medicines",
       },
     ];
@@ -59,17 +65,17 @@ const Navbar = () => {
       },
       {
         label: <NavLink to="/patient/orders">Orders</NavLink>,
-        icon: <SolutionOutlined />,
+        icon: <ShoppingOutlined />,
         key: "orders",
       },
       {
         label: <NavLink to="/patient/prescriptions">Prescriptions</NavLink>,
-        icon: <ExperimentOutlined />,
+        icon: <SolutionOutlined />,
         key: "prescriptions",
       },
       {
         label: <NavLink to="/patient/chat">Chat</NavLink>,
-        icon: <ExperimentOutlined />,
+        icon: <MessageOutlined />,
         key: "chat",
       },
     ];
@@ -92,7 +98,7 @@ const Navbar = () => {
       },
       {
         label: <NavLink to="/pharmacist/chat">Chat</NavLink>,
-        icon: <ExperimentOutlined />,
+        icon: <MessageOutlined />,
         key: "chat",
       },
     ];
@@ -111,24 +117,26 @@ const Navbar = () => {
   ]);
 
   return (
-    <div style={{
-      minHeight: "100%",
-      padding: "5px",
-      backgroundColor: "#fafafa",
-    }}>
-      <BackIcon />
-      <Menu
-      mode="inline"
+    <div
       style={{
         minHeight: "100%",
         padding: "5px",
         backgroundColor: "#fafafa",
       }}
-      items={items}
-      selectedKeys={["" + location.pathname.split("/")[2]]}
-      forceSubMenuRender={true}
-    />
-  </div>
+    >
+      <BackIcon />
+      <Menu
+        mode="inline"
+        style={{
+          minHeight: "100%",
+          padding: "5px",
+          backgroundColor: "#fafafa",
+        }}
+        items={items}
+        selectedKeys={["" + location.pathname.split("/")[2]]}
+        forceSubMenuRender={true}
+      />
+    </div>
   );
 };
 

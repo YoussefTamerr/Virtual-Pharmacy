@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import MedicineView from "./MedicineView";
-import Search from "./Search";
 import Spinner from "./Spinner";
-import { Flex } from "antd";
+import { Flex, Select, Input } from "antd";
 import { useLocation } from "react-router-dom";
+
+const { Option } = Select;
+const { Search } = Input;
 
 function MedicineList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,7 +28,7 @@ function MedicineList() {
   }, []);
 
   const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
+    setSelectedCategory(event);
   };
 
   const filteredMedicine = medicines.filter((medicine) => {
@@ -49,26 +51,40 @@ function MedicineList() {
     return <Spinner />;
   }
 
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+  };
+
   return (
     <>
       <h2>Medicines</h2>
-      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <div>
-        <label htmlFor="category">Filter medicines by category:</label>
-        <select
-          id="category"
+      <Flex gap={10}>
+        <Search
+          placeholder="Search by medicine name"
+          allowClear
+          onSearch={handleSearch}
+          style={{ width: "20%", marginBottom: "20px", flexGrow: 1 }}
+        />
+        <Select
           value={selectedCategory}
           onChange={handleCategoryChange}
+          style={{ marginBottom: "20px", width: "130px" }}
         >
-          <option value="">All</option>
+          <Option value="">All Categories</Option>
           {Array.from(new Set(categories)).map((category) => (
-            <option key={category} value={category}>
+            <Option key={category} value={category}>
               {category}
-            </option>
+            </Option>
           ))}
-        </select>
-      </div>
-      <Flex wrap="wrap" justify="center" align="end" gap={10}>
+        </Select>
+      </Flex>
+      <Flex
+        wrap="wrap"
+        justify="start"
+        align="center"
+        gap={20}
+        style={{ padding: "20px" }}
+      >
         {filteredMedicine.map((medicine) => (
           <MedicineView
             key={medicine._id}

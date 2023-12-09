@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Radio, message, Card } from "antd";
+import { Button, Radio, message, Card, Flex } from "antd";
 import axios from "axios";
 import DeliveryAddress from "./DeliveryAddress";
 import Spinner from "./Spinner";
@@ -8,8 +8,6 @@ const CartView = () => {
   const [cartState, setCartState] = useState(null);
   const [methodState, setMethodState] = useState("");
   const [loadingState, setLoadingState] = useState(false);
-  const numberOfColumns =
-    cartState && cartState.length <= 1 ? "1fr" : "repeat(2, 1fr)";
 
   const paymentOptions = [
     {
@@ -197,18 +195,10 @@ const CartView = () => {
             <p style={{ fontSize: "20px" }}>Cart is empty</p>
           )}
           {cartState?.length !== 0 && (
-            <div
-              style={{
-                border: "1px solid grey",
-                borderRadius: "10px",
-                height: "300px",
-                minWidth: "300px",
-                overflow: "auto",
-                display: "grid",
-                gridTemplateColumns: numberOfColumns,
-                gap: "10px",
-                padding: "10px",
-              }}
+            <Flex
+              gap={20}
+              wrap="wrap"
+              style={{ padding: "5px", width: "80%", marginBottom: "50px" }}
             >
               {cartState?.map((medicine, index) => {
                 return (
@@ -272,7 +262,7 @@ const CartView = () => {
                   </div>
                 );
               })}
-            </div>
+            </Flex>
           )}
           <Radio.Group
             options={paymentOptions}

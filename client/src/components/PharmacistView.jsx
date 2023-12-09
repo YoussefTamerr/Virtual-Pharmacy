@@ -52,10 +52,10 @@ const PharmacistView = ({ pharmacist, onRemove, onUpdatePharmacist }) => {
       headStyle={{
         fontSize: "20px",
         textAlign: "center",
-        backgroundColor: "#ccc",
+        backgroundColor: "#ebebeb",
       }}
       bodyStyle={{
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#fafafa",
       }}
     >
       <div
