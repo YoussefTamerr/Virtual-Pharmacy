@@ -92,7 +92,7 @@ git clone <repository_url>
 cd balabizo-pharmacy
 ```
 
-- **Navigate to the api directory and install dependencies and start the server**
+- **Navigate to the api directory, install dependencies and start the server**
 
 ```bash
 cd api
@@ -100,7 +100,7 @@ npm install
 npm start
 ```
 
-- **Navigate to the client directory and install dependencies and start the client**
+- **Navigate to the client directory, install dependencies and start the client**
 
 ```bash
 cd client
@@ -108,7 +108,7 @@ npm install
 npm run dev
 ```
 
-- **Navigate to the socket directory and install dependencies and start the socket server**
+- **Navigate to the socket directory, install dependencies and start the socket server**
 
 ```bash
 cd socket
@@ -123,6 +123,34 @@ npm start
 ---
 
 ## Tests
+
+**Testing Process Used with Postman**
+
+During the development phase of this project, I conducted various tests using Postman to ensure functionality and reliability.
+
+- **Endpoint Validation:**
+
+Employed Postman to test each API endpoint individually, verifying their functionalities by sending distinct requests (GET, POST, PUT, DELETE, etc.) to specific routes.
+
+Checked the response data against expected outcomes, ensuring proper functionality.
+
+- **Authentication and Authorization:**
+
+Tested the authentication mechanism, validating correct authentication and handling of invalid credentials.
+
+Ensured proper authorization by attempting access to restricted routes and verifying the response for unauthorized access.
+
+- **Data Integrity and Error Handling:**
+
+Conducted tests with different sets of data to validate input validation and response integrity.
+
+Simulated error scenarios by intentionally sending incorrect requests, ensuring the API provided accurate error messages and appropriate HTTP status codes.
+
+- **Cross-Functional Testing:**
+
+Tested the integration between different functionalities to ensure seamless operation across various parts of the system.
+
+These tests allowed for thorough validation and verification of the project's functionalities during the development phase. They helped in identifying and rectifying issues, ensuring the robustness and reliability of the API endpoints.
 
 ---
 
@@ -183,7 +211,7 @@ Their dedication to sharing knowledge and expertise has been an essential resour
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under both the MIT License and the Apache License 2.0.
 
 
 
