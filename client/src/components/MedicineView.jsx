@@ -207,7 +207,7 @@ const MedicineView = ({ medicine, alternatives }) => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-          padding: "0 20px",
+          padding: "0 10px",
           boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
         }}
         cover={

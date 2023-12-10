@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   UserOutlined,
   PlusCircleOutlined,
@@ -7,29 +7,15 @@ import {
   MedicineBoxOutlined,
   SolutionOutlined,
   KeyOutlined,
-  ExperimentOutlined,
+  ArrowLeftOutlined,
   ShoppingOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
-import backIcon from "../../assets/icons/back.svg";
 import "../../assets/styles/backButton.css";
-
-const BackIcon = () => (
-  <img
-    className="backButton"
-    style={{
-      width: "40px",
-      height: "40px",
-      cursor: "pointer",
-    }}
-    onClick={() => window.history.back()}
-    src={backIcon}
-    alt="back"
-  />
-);
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   let items;
 
@@ -116,6 +102,12 @@ const Navbar = () => {
     },
   ]);
 
+  items.unshift({
+    label: <NavLink to={-1}>Back</NavLink>,
+    icon: <ArrowLeftOutlined />,
+    key: "back",
+  });
+
   return (
     <div
       style={{
@@ -124,13 +116,13 @@ const Navbar = () => {
         backgroundColor: "#fafafa",
       }}
     >
-      <BackIcon />
       <Menu
         mode="inline"
         style={{
           minHeight: "100%",
           padding: "5px",
           backgroundColor: "#fafafa",
+          borderRight: "none",
         }}
         items={items}
         selectedKeys={["" + location.pathname.split("/")[2]]}

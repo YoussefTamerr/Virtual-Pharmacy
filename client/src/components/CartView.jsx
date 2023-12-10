@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Radio, message, Card, Flex } from "antd";
+import { Button, Radio, message, Card, List, Flex } from "antd";
 import axios from "axios";
 import DeliveryAddress from "./DeliveryAddress";
 import Spinner from "./Spinner";
@@ -195,74 +195,72 @@ const CartView = () => {
             <p style={{ fontSize: "20px" }}>Cart is empty</p>
           )}
           {cartState?.length !== 0 && (
-            <Flex
-              gap={20}
-              wrap="wrap"
-              style={{ padding: "5px", width: "80%", marginBottom: "50px" }}
-            >
-              {cartState?.map((medicine, index) => {
-                return (
-                  <div key={medicine.medicine_id._id}>
-                    <Card
-                      style={{
-                        width: 300,
-                        marginTop: 16,
-                        gap: "small",
-                        display: "flex",
-                        flexDirection: "column",
-                        boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-                      }}
-                      loading={loadingState}
-                      title={medicine.medicine_id.name}
+            <List
+              style={{
+                height: "300px",
+                overflow: "auto",
+                width: "60%",
+                border: "2px solid #e8e8e8",
+                borderRadius: "10px",
+              }}
+              dataSource={cartState}
+              renderItem={(medicine, index) => (
+                <List.Item
+                  key={medicine.medicine_id._id}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    borderBottom: "1px solid #e8e8e8",
+                    padding: "0 20px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: "16px",
+                    }}
+                  >
+                    {medicine.medicine_id.name}
+                  </p>
+                  <Flex gap={10}>
+                    <p>Price: ${medicine.medicine_id.price}</p>
+                    <p>Details: {medicine.medicine_id.details}</p>
+                  </Flex>
+                  <Flex gap={"small"} alignItems={"center"}>
+                    <Button
+                      type="primary"
+                      onClick={() => handleDecrement(index, medicine.quantity)}
                     >
-                      <div>
-                        <strong>Price: ${medicine.medicine_id.price}</strong>{" "}
-                        <br />
-                        <strong>
-                          Details: {medicine.medicine_id.details}
-                        </strong>{" "}
-                        <br />
-                        <strong>Quantity: {medicine.quantity} </strong> <br />
-                      </div>
-
-                      <br />
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Button
-                          type="primary"
-                          onClick={() =>
-                            handleIncrement(index, medicine.quantity)
-                          }
-                        >
-                          +
-                        </Button>
-                        <Button
-                          type="primary"
-                          onClick={() =>
-                            handleDecrement(index, medicine.quantity)
-                          }
-                        >
-                          -
-                        </Button>
-                        <Button
-                          type="primary"
-                          loading={loadingState}
-                          danger
-                          onClick={() => handleRemove(index)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    </Card>
-                  </div>
-                );
-              })}
-            </Flex>
+                      -
+                    </Button>
+                    <p
+                      style={{
+                        fontSize: "20px",
+                        margin: "0 4px",
+                      }}
+                    >
+                      {medicine.quantity}
+                    </p>
+                    <Button
+                      type="primary"
+                      onClick={() => handleIncrement(index, medicine.quantity)}
+                    >
+                      +
+                    </Button>
+                    <Button
+                      type="primary"
+                      loading={loadingState}
+                      danger
+                      onClick={() => handleRemove(index)}
+                      style={{
+                        marginLeft: "20px",
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  </Flex>
+                </List.Item>
+              )}
+            />
           )}
           <Radio.Group
             options={paymentOptions}
