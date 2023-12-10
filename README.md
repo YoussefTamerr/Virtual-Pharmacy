@@ -82,49 +82,39 @@ To run the project locally, follow these steps:
 
 - **Clone this repository.**
 
-<pre>
 ```bash
 git clone <repository_url>
 ```
-</pre>
 
 - **Navigate to the project directory.**
 
-<pre>
 ```bash
 cd balabizo-pharmacy
 ```
-</pre>
 
 - **Navigate to the api directory and install dependencies and start the server**
 
-<pre>
 ```bash
 cd api
 npm install
 npm start
 ```
-</pre>
 
 - **Navigate to the client directory and install dependencies and start the client**
 
-<pre>
 ```bash
 cd client
 npm install
 npm run dev
 ```
-</pre>
 
 - **Navigate to the socket directory and install dependencies and start the socket server**
 
-<pre>
 ```bash
 cd socket
 npm install
 npm start
 ```
-</pre>
 
 ---
 
