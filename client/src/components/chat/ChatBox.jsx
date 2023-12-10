@@ -4,7 +4,6 @@ import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import { io } from "socket.io-client";
 import { format } from "timeago.js";
-import "./chat.css";
 
 const { TextArea } = Input;
 
@@ -77,8 +76,7 @@ const ChatBox = ({ selectedChat, user }) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "100%",
-        width: "100%",
+        flexGrow: "1",
       }}
     >
       <div
@@ -87,10 +85,11 @@ const ChatBox = ({ selectedChat, user }) => {
           justifyContent: "center",
           alignItems: "center",
           gap: "0.5rem",
-          margin: "0.5rem",
+          margin: "0 0.5rem 0 0.5rem",
           padding: "0.5rem",
           borderRadius: "0.5rem",
-          border: "1px solid #ccc",
+          backgroundColor: "#fff",
+          boxShadow: "0px 2px 0px 0px rgba(204,204,204,0.25)",
         }}
       >
         <h3>{selectedChat ? selectedChat?.receiverName : "Select a Chat"}</h3>
@@ -100,15 +99,17 @@ const ChatBox = ({ selectedChat, user }) => {
           display: "flex",
           flexDirection: "column",
           gap: "0.5rem",
+          flexGrow: "1",
           height: "300px",
-          padding: "0.5rem",
-          border: "1px solid #ccc",
+          padding: "1rem",
           borderRadius: "0.5rem",
           overflow: "auto",
           margin: "0.5rem",
           scrollBehavior: "smooth",
           scrollSnapType: "y mandatory",
           scrollPadding: "0.5rem",
+          backgroundColor: "#fff",
+          boxShadow: "0px 2px 0px 0px rgba(204,204,204,0.25)",
         }}
       >
         {messages?.map((message, index) => (
@@ -118,10 +119,10 @@ const ChatBox = ({ selectedChat, user }) => {
               style={{
                 alignSelf:
                   message?.sender == user?._id ? "flex-end" : "flex-start",
-                padding: "1rem",
+                padding: "0.8rem",
                 borderRadius: "0.5rem",
                 backgroundColor:
-                  message?.sender == user?._id ? "#1890ff" : "#ccc",
+                  message?.sender == user?._id ? "#1890ff" : "#ebebeb",
                 color: message?.sender == user?._id ? "#fff" : "#000",
                 width: "fit-content",
                 maxWidth: "70%",
@@ -149,7 +150,7 @@ const ChatBox = ({ selectedChat, user }) => {
           justifyContent: "space-between",
           alignItems: "center",
           gap: "0.5rem",
-          padding: "0.5rem",
+          padding: "0 0.5rem",
         }}
       >
         <TextArea
@@ -157,6 +158,11 @@ const ChatBox = ({ selectedChat, user }) => {
           autoSize={{ minRows: 1, maxRows: 4 }}
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
+          style={{
+            border: "none",
+            backgroundColor: "#fff",
+            boxShadow: "0px 2px 0px 0px rgba(204,204,204,0.25)",
+          }}
         />
         <Button
           className="send-button"

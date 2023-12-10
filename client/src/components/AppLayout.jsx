@@ -66,10 +66,7 @@ const AppLayout = () => {
             justify="start"
             gap={10}
             align="center"
-            style={{
-              minHeight: "90vh",
-              marginTop: "10px",
-            }}
+            style={{ height: "75vh" }}
           >
             <Outlet />
           </Flex>

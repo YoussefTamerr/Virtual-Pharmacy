@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ChatBox from "./ChatBox";
 import Contacts from "./Contacts";
 import OldChats from "./OldChats";
 import axios from "axios";
-import "./chat.css";
-import { Button } from "antd";
+import { Button, Flex } from "antd";
 
 const ChatPage = () => {
   const [user, setUser] = useState(null);
@@ -81,51 +80,31 @@ const ChatPage = () => {
 
   return (
     <>
-      <h3>Chat</h3>
-      <div className="chat-header"></div>
-      <div
+      <h1>Chat</h1>
+      <Flex
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          height: "100%",
-          width: "70%",
-          borderRadius: "0.5rem",
-          overflow: "hidden",
-          boxShadow: "0 0 0.5rem rgba(0,0,0,0.5)",
+          width: "80%",
+          minHeight: "60vh",
+          backgroundColor: "#fafafa",
+          padding: "20px",
+          borderRadius: "10px",
+          border: "1px solid #dfdfdf",
         }}
+        gap={30}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            width: "40%",
-            height: "100%",
-            overflowY: "auto",
-            overflowX: "hidden",
-            padding: "10px 0px",
-            gap: "1rem",
-          }}
-        >
-          <Button
-            style={{
-              marginTop: "2rem",
-            }}
-            type="primary"
-            onClick={() => setContactsOpen(true)}
-          >
-            New chat
-          </Button>
+        <Flex vertical>
           <OldChats
             selectedChat={selectedChat}
             setSelectedChat={setSelectedChat}
             chats={oldChats}
           />
-        </div>
+          <Button type="primary" onClick={() => setContactsOpen(true)}>
+            New chat
+          </Button>
+        </Flex>
 
         <ChatBox selectedChat={selectedChat} user={user} />
-      </div>
+      </Flex>
       <Contacts
         open={contactsOpen}
         onCancel={() => setContactsOpen(false)}
