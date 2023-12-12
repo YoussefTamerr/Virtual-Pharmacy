@@ -1,4 +1,4 @@
-### About the Project:
+## About the Project
 
 Welcome to the Pharmacy Website project! This web application is designed to provide patients with a convenient platform to purchase medicines, monitor their orders, engage in live chat with pharmacists, and obtain prescription-based medications uploaded from our affiliated website, V-Clinic. Pharmacists can register online, manage their profiles, and add medicines available for patients to purchase.
 
@@ -55,6 +55,54 @@ These technologies and APIs collectively form the foundation of the project, ena
 
 ## Screenshots
 
+- #### Sign in using username and password.
+
+<img width="1000" alt="login" src="./screenshots/login.png">
+
+- #### Viewing Medicines.
+
+<img width="1000" alt="medicines" src="./screenshots/medicines.png">
+
+- #### Viewing cart.
+
+<img width="1000" alt="cart" src="./screenshots/cart.png">
+
+- #### Viewing prescriptions.
+
+<img width="1000" alt="prescriptions" src="./screenshots/prescriptions.png">
+
+- #### Viewing orders.
+
+<img width="1000" alt="orders" src="./screenshots/orders.png">
+
+- #### Chatting with a pharmacist.
+
+<img width="1000" alt="chat" src="./screenshots/chat.png">
+
+- #### Adding a new medicine as a pharmacist.
+
+<img width="1000" alt="addMedicine" src="./screenshots/addMedicine.png">
+
+- #### getting notifications for out of stock medicines.
+
+<img width="1000" alt="notifications" src="./screenshots/notifications.png">
+
+- #### Viewing monthly sales as a pharmacist.
+
+<img width="1000" alt="sales" src="./screenshots/sales.png">
+
+- #### Adding another Admin as an Admin.
+
+<img width="1000" alt="addAdmin" src="./screenshots/addAdmin.png">
+
+- #### Viewing All Patients on the System as an Admin.
+
+<img width="1000" alt="patients" src="./screenshots/patients.png">
+
+- #### Viewing All Pharmacists on the System as an Admin.
+
+<img width="1000" alt="pharmacists" src="./screenshots/pharmacists.png">
+
 ---
 
 ## Features
@@ -72,6 +120,118 @@ These technologies and APIs collectively form the foundation of the project, ena
 ---
 
 ## Code Examples
+
+- **Displaying Notifications in the frontend:**
+
+```javascript
+const Notification = () => {
+  const [medicine, setMedicine] = useState(null);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+    }
+
+    socketRef.current = io("http://localhost:8900");
+
+    const handleOutOfStockNotification = (receivedMedicine) => {
+      console.log(receivedMedicine);
+      receivedMedicine.medicineNames.forEach((medicine) => {
+        medicine.name += " is out of stock";
+      });
+      setMedicine(receivedMedicine);
+    };
+
+    socketRef.current.on(
+      "outOfStockNotification",
+      handleOutOfStockNotification
+    );
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off(
+          "outOfStockNotification",
+          handleOutOfStockNotification
+        );
+        socketRef.current.disconnect();
+      }
+    };
+  }, [socketRef]);
+
+  const columns = [
+    {
+      title: "Out Of Stock Medicines",
+      dataIndex: "name",
+      key: "name",
+    },
+  ];
+
+  return (
+    <>
+      <h1
+        style={{
+          marginTop: "70px",
+        }}
+      >
+        Notifications
+      </h1>
+      {medicine ? (
+        <Table
+          dataSource={medicine.medicineNames}
+          columns={columns}
+          style={{
+            width: "50%",
+            marginTop: "180px",
+            marginBottom: "auto",
+            marginLeft: "auto",
+            marginRight: "auto",
+            boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+            backgroundColor: "#f5f5f5",
+          }}
+        />
+      ) : (
+        <Spinner />
+      )}
+    </>
+  );
+};
+
+export default Notification;
+```
+
+- **Adding an Item to the cart in the Backend:**
+
+```javascript
+const addToCart = async (req, res) => {
+  const patientId = req.user._id;
+  const { medicine_id, quantity } = req.body;
+
+  try {
+    let cart = await Cart.findOne({ patient_id: patientId });
+
+    if (!cart) {
+      cart = new Cart({ patient_id: patientId, items: [] });
+    }
+
+    const existingItem = cart.items.find(
+      (item) => item.medicine_id.toString() === medicine_id
+    );
+
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      cart.items.push({ medicine_id: medicine_id, quantity: quantity });
+    }
+
+    await cart.save();
+
+    res.status(200).json({ message: "Item added to the cart" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+```
 
 ---
 
@@ -583,12 +743,6 @@ GET /prescription
 
 ---
 
-## Contributing
-
-If you'd like to contribute, please fork the repository and create a pull request. Feel free to raise issues or suggest improvements.
-
----
-
 ## Tests
 
 **Testing Process Used with Postman**
@@ -681,6 +835,4 @@ Their dedication to sharing knowledge and expertise has been an essential resour
 
 This project is licensed under both the MIT License and the Apache License 2.0.
 
-```
-
-```
+---
