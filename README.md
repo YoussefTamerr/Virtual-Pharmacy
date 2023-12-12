@@ -581,15 +581,12 @@ PATCH /pharmacist/:id
 GET /prescription
 ```
 
+---
+
 ## Contributing
 
 If you'd like to contribute, please fork the repository and create a pull request. Feel free to raise issues or suggest improvements.
 
-## License
-
-This project is licensed under the [Your License Name] - see the [LICENSE.md](LICENSE.md) file for details.
-
-```
 ---
 
 ## Tests
@@ -683,4 +680,7 @@ Their dedication to sharing knowledge and expertise has been an essential resour
 ## License
 
 This project is licensed under both the MIT License and the Apache License 2.0.
+
+```
+
 ```
