@@ -1,10 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import { List, Table } from "antd";
+import { Table } from "antd";
 import Spinner from "./Spinner";
 import { io } from "socket.io-client";
 
 const Notification = () => {
-
   const [medicine, setMedicine] = useState(null);
   const socketRef = useRef(null);
 
@@ -23,15 +22,21 @@ const Notification = () => {
       setMedicine(receivedMedicine);
     };
 
-    socketRef.current.on("outOfStockNotification", handleOutOfStockNotification);
+    socketRef.current.on(
+      "outOfStockNotification",
+      handleOutOfStockNotification
+    );
 
     return () => {
       if (socketRef.current) {
-        socketRef.current.off("outOfStockNotification", handleOutOfStockNotification);
+        socketRef.current.off(
+          "outOfStockNotification",
+          handleOutOfStockNotification
+        );
         socketRef.current.disconnect();
       }
     };
-  }, [socketRef]); 
+  }, [socketRef]);
 
   const columns = [
     {

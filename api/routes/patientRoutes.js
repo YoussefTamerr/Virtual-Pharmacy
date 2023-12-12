@@ -8,7 +8,6 @@ import {
   addDeliveryAddress,
   chooseDefaultAddress,
   getDeliveryAddress,
-  getLoggedInPatient,
 } from "../controllers/patientController.js";
 
 import {
@@ -37,7 +36,5 @@ router.get("/delivery/delivery-address", getDeliveryAddress);
 router.post("/delivery/delivery-address", addDeliveryAddress);
 
 router.patch("/delivery/delivery-address", chooseDefaultAddress);
-
-router.get("/loggedin/patient", getLoggedInPatient);
 
 export default router;

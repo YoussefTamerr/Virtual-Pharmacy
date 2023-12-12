@@ -14,8 +14,7 @@ import authRouter from "./routes/authRoutes.js";
 import prescriptionRouter from "./routes/prescriptionsRoutes.js";
 import cookieParser from "cookie-parser";
 import { stripeWebhook } from "./controllers/orderController.js";
-import chatRoutes from "./routes/chatRoutes.js";
-import currUserRoutes from "./routes/currUserRoutes.js";
+import chatRouter from "./routes/chatRoutes.js";
 
 import Medicine from "./models/medicineModel.js";
 
@@ -42,8 +41,7 @@ app.use("/cart", cartRouter);
 app.use("/order", orderRouter);
 app.use("/auth", authRouter);
 app.use("/prescription", prescriptionRouter);
-app.use("/chat", chatRoutes);
-app.use("/currUser", currUserRoutes); 
+app.use("/chat", chatRouter);
 
 app.all("*", (req, res) => {
   res
@@ -72,6 +70,6 @@ mongoose
     console.error(error);
   });
 
-export { checkMedicineStock }
+export { checkMedicineStock };
 
 export default app;

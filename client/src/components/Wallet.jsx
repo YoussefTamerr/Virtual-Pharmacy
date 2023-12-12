@@ -6,7 +6,7 @@ const Wallet = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
     const fetch = async () => {
-      const response = await axios.get("http://localhost:10000/currUser", {
+      const response = await axios.get("http://localhost:10000/auth/me", {
         withCredentials: true,
       });
       if (response.data) {

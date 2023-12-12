@@ -41,7 +41,7 @@ const ChatBox = ({ selectedChat, user }) => {
   useEffect(() => {
     if (!selectedChat) return;
     axios
-      .get("http://localhost:10000/chat/get-messages/" + selectedChat?._id)
+      .get("http://localhost:10000/chat/messages/" + selectedChat?._id)
       .then((response) => {
         setMessages([...response.data]);
       });
@@ -60,7 +60,7 @@ const ChatBox = ({ selectedChat, user }) => {
     });
 
     axios
-      .post("http://localhost:10000/chat/send-message", {
+      .post("http://localhost:10000/chat/messages", {
         conversationId: selectedChat._id,
         sender: user._id,
         text: messageText,

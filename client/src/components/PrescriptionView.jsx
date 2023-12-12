@@ -1,14 +1,9 @@
-import { Flex, Card, Button, message } from "antd";
+import { Card, Button, message } from "antd";
 import { useState } from "react";
 import moment from "moment";
-const { Meta } = Card;
-
-import { useLocation } from "react-router-dom";
-import MedicineView from "./MedicineView";
 
 const PrescriptionView = ({ prescription }) => {
   const [isLoading, setIsLoading] = useState();
-  const location = useLocation();
 
   const addToCart = async (medicineid) => {
     setIsLoading(true);
@@ -36,7 +31,7 @@ const PrescriptionView = ({ prescription }) => {
   };
 
   return (
-    <div style={{marginBottom:'26px',}}>
+    <div style={{ marginBottom: "26px" }}>
       <Card
         headStyle={{
           fontSize: "20px",
@@ -84,9 +79,12 @@ const PrescriptionView = ({ prescription }) => {
           }}
         >
           {prescription.medications.map((medication, index) => (
-            <div style={{
-              height: 'fit-content',
-            }} key={index}>
+            <div
+              style={{
+                height: "fit-content",
+              }}
+              key={index}
+            >
               <Card
                 title={medication.medicine_id.name}
                 headStyle={{
@@ -101,12 +99,12 @@ const PrescriptionView = ({ prescription }) => {
                   overflow: "auto",
                 }}
                 bodyStyle={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                  gap: '3px',
-                }}  
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  gap: "3px",
+                }}
               >
                 <div>
                   <strong>Price: </strong>${medication.medicine_id.price}
@@ -124,8 +122,13 @@ const PrescriptionView = ({ prescription }) => {
                   {medication.duration}
                 </div>
                 {prescription.status === "unfilled" ? (
-                  <Button onClick={() => addToCart(medication.medicine_id._id)} type="primary">Add to Cart</Button>
-                ): (
+                  <Button
+                    onClick={() => addToCart(medication.medicine_id._id)}
+                    type="primary"
+                  >
+                    Add to Cart
+                  </Button>
+                ) : (
                   <Button disabled>Prescription Filled</Button>
                 )}
               </Card>

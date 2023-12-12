@@ -14,7 +14,7 @@ const ChatPage = () => {
 
   const createNewChat = (contact) => {
     axios
-      .post("http://localhost:10000/chat/new-chat", {
+      .post("http://localhost:10000/chat/", {
         senderId: user._id,
         receiverId: contact._id,
         senderName: user.name,
@@ -38,32 +38,30 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (!user) return;
-    axios
-      .get("http://localhost:10000/chat/get-chats/" + user?._id)
-      .then((response) => {
-        response.data?.map((chat) => {
-          chat.senderId = user._id;
-          chat.senderName = user.name;
-          let receiverId = chat.members[0];
-          if (receiverId === user._id) {
-            receiverId = chat.members[1];
-          }
-          let receiverName = chat.membersInfo[0];
-          if (receiverName === user.name) {
-            receiverName = chat.membersInfo[1];
-          }
-          chat.receiverId = receiverId;
-          chat.receiverName = receiverName;
-          return chat;
-        });
-        setOldChats([...response.data]);
-        console.log(response.data);
+    axios.get("http://localhost:10000/chat/" + user?._id).then((response) => {
+      response.data?.map((chat) => {
+        chat.senderId = user._id;
+        chat.senderName = user.name;
+        let receiverId = chat.members[0];
+        if (receiverId === user._id) {
+          receiverId = chat.members[1];
+        }
+        let receiverName = chat.membersInfo[0];
+        if (receiverName === user.name) {
+          receiverName = chat.membersInfo[1];
+        }
+        chat.receiverId = receiverId;
+        chat.receiverName = receiverName;
+        return chat;
       });
+      setOldChats([...response.data]);
+      console.log(response.data);
+    });
   }, [user]);
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await axios.get("http://localhost:10000/currUser", {
+      const response = await axios.get("http://localhost:10000/auth/me", {
         withCredentials: true,
       });
       if (response.data) {

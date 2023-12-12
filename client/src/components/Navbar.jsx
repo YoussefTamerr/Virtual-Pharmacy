@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   UserOutlined,
   PlusCircleOutlined,
@@ -15,7 +15,6 @@ import "../../assets/styles/backButton.css";
 
 const Navbar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   let items;
 

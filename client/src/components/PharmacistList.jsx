@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import PharmacistView from "./PharmacistView";
 import Spinner from "./Spinner";
-import { Divider } from "antd";
 
 function PharmacistList() {
   const [pharmacists, setPharmacists] = useState(null);
