@@ -15,7 +15,7 @@ This pharmacy website project is driven by the ambition to redefine healthcare a
 - The project is currently in active development.
 - **Deployment Plan:** Scheduled deployment through AWS Services or similar platforms in the near future.
 - **Initiating End-to-End Testing:** Commencing efforts to enhance End-to-End (E2E) tests, aiming for more comprehensive coverage.
-- **Current Build Update:** The latest build of the project has undergone meticulous review and improvements. 
+- **Current Build Update:** The latest build of the project has undergone meticulous review and improvements.
 
 Sprint 3 evaluation and feedback sessions helped in correcting minor tweaks. The system now stands refined, addressing reviews, progress updates, and discounts. Additionally, the system boasts several advanced features beyond the core functionalities.
 
@@ -71,7 +71,6 @@ These technologies and APIs collectively form the foundation of the project, ena
 
 ---
 
-
 ## Code Examples
 
 ---
@@ -120,6 +119,477 @@ npm start
 
 ## API Reference
 
+### Admin Routes
+
+#### Log in as an admin user
+
+```http
+POST /admin/login
+Content-Type: application/json
+```
+
+| Body     | Type   | Description      |
+| -------- | ------ | ---------------- |
+| email    | string | Admin's email    |
+| password | string | Admin's password |
+
+#### Create a new admin user
+
+```http
+POST /admin
+Content-Type: application/json
+```
+
+| Body     | Type   | Description      |
+| -------- | ------ | ---------------- |
+| name     | string | Admin's name     |
+| email    | string | Admin's email    |
+| password | string | Admin's password |
+
+#### Update approval status of a specific admin
+
+```http
+PATCH /admin/:id
+```
+
+| Parameter | Type   | Description          |
+| --------- | ------ | -------------------- |
+| id        | string | ID of the admin user |
+
+### Authentication Routes
+
+#### Request a password reset
+
+```http
+POST /auth/reset-password
+Content-Type: application/json
+```
+
+| Body  | Type   | Description  |
+| ----- | ------ | ------------ |
+| email | string | User's email |
+
+#### Change the password after a reset
+
+```http
+POST /auth/change-password/:id/:token
+```
+
+| Parameter | Type   | Description |
+| --------- | ------ | ----------- |
+| id        | string | User ID     |
+| token     | string | Reset token |
+
+#### Get information about the currently logged-in user
+
+```http
+GET /auth/me
+```
+
+#### Change the password of the currently logged-in user
+
+```http
+POST /auth/change-password
+Content-Type: application/json
+```
+
+| Body            | Type   | Description      |
+| --------------- | ------ | ---------------- |
+| currentPassword | string | Current password |
+| newPassword     | string | New password     |
+
+#### Log out the currently logged-in user
+
+```http
+POST /auth/logout
+```
+
+### Cart Routes
+
+#### Add a medicine to the cart
+
+```http
+POST /cart
+Content-Type: application/json
+```
+
+| Body        | Type   | Description          |
+| ----------- | ------ | -------------------- |
+| medicine_id | string | ID of the medicine   |
+| quantity    | number | Quantity of medicine |
+
+#### Retrieve the items in the cart
+
+```http
+GET /cart
+```
+
+#### Remove a medicine from the cart
+
+```http
+DELETE /cart/:medicine_id
+```
+
+| Parameter   | Type   | Description        |
+| ----------- | ------ | ------------------ |
+| medicine_id | string | ID of the medicine |
+
+#### Update the quantity of a medicine in the cart
+
+```http
+PATCH /cart
+Content-Type: application/json
+```
+
+| Body        | Type   | Description        |
+| ----------- | ------ | ------------------ |
+| medicine_id | string | ID of the medicine |
+| quantity    | number | New quantity       |
+
+### Chat Routes
+
+#### Start a new chat
+
+```http
+POST /chat
+Content-Type: application/json
+```
+
+| Body        | Type   | Description               |
+| ----------- | ------ | ------------------------- |
+| userId      | string | ID of the initiating user |
+| recipientId | string | ID of the recipient user  |
+
+#### Retrieve all chats for a user
+
+```http
+GET /chat/:userId
+```
+
+| Parameter | Type   | Description    |
+| --------- | ------ | -------------- |
+| userId    | string | ID of the user |
+
+#### Send a new message
+
+```http
+POST /chat/messages
+Content-Type: application/json
+```
+
+| Body           | Type   | Description                        |
+| -------------- | ------ | ---------------------------------- |
+| conversationId | string | ID of the conversation             |
+| senderId       | string | ID of the user sending the message |
+| text           | string | Text of the message                |
+
+#### Retrieve all messages for a conversation
+
+```http
+GET /chat/messages/:conversationId
+```
+
+| Parameter      | Type   | Description            |
+| -------------- | ------ | ---------------------- |
+| conversationId | string | ID of the conversation |
+
+#### Retrieve contacts for a patient
+
+```http
+GET /chat/patient-contacts/:userId
+```
+
+| Parameter | Type   | Description            |
+| --------- | ------ | ---------------------- |
+| userId    | string | ID of the patient user |
+
+#### Retrieve contacts for a pharmacist
+
+```http
+GET /chat/pharmacist-contacts/:userId
+```
+
+| Parameter | Type   | Description               |
+| --------- | ------ | ------------------------- |
+| userId    | string | ID of the pharmacist user |
+
+### Medicine Routes
+
+#### Get all medicines
+
+```http
+GET /medicine
+```
+
+#### Create a new medicine
+
+```http
+POST /medicine
+Content-Type: application/json
+```
+
+| Body        | Type   | Description                 |
+| ----------- | ------ | --------------------------- |
+| name        | string | Name of the medicine        |
+| description | string | Description of the medicine |
+| price       | number | Price of the medicine       |
+| image       | string | Path to the medicine image  |
+| ...         | ...    | Add other necessary fields  |
+
+#### Get details of a specific medicine
+
+```http
+GET /medicine/:id
+```
+
+| Parameter | Type   | Description        |
+| --------- | ------ | ------------------ |
+| id        | string | ID of the medicine |
+
+#### Update details of a specific medicine
+
+```http
+PATCH /medicine/:id
+Content-Type: application/json
+```
+
+| Parameter | Type   | Description        |
+| --------- | ------ | ------------------ |
+| id        | string | ID of the medicine |
+
+#### Archive a specific medicine
+
+```http
+PATCH /medicine/archive/:id
+```
+
+| Parameter | Type   | Description        |
+| --------- | ------ | ------------------ |
+| id        | string | ID of the medicine |
+
+#### Unarchive a specific medicine
+
+```http
+PATCH /medicine/unarchive/:id
+```
+
+| Parameter | Type   | Description        |
+| --------- | ------ | ------------------ |
+| id        | string | ID of the medicine |
+
+### Order Routes
+
+#### Create a new order
+
+```http
+POST /order
+Content-Type: application/json
+```
+
+| Body  | Type   | Description                    |
+| ----- | ------ | ------------------------------ |
+| items | array  | Array of medicine and quantity |
+| total | number | Total cost of the order        |
+| ...   | ...    | Add other necessary fields     |
+
+#### Create a new order using credit card payment
+
+```http
+POST /order/cc
+Authorization: Bearer YOUR_ACCESS_TOKEN
+Content-Type: application/json
+```
+
+| Body         | Type   | Description                    |
+| ------------ | ------ | ------------------------------ |
+| items        | array  | Array of medicine and quantity |
+| total        | number | Total cost of the order        |
+| paymentToken | string | Payment token for credit card  |
+| ...          | ...    | Add other necessary fields     |
+
+#### Get orders for the current user
+
+```http
+GET /order/me
+```
+
+#### Cancel a specific order
+
+```http
+PATCH /order/:id
+```
+
+| Parameter | Type   | Description     |
+| --------- | ------ | --------------- |
+| id        | string | ID of the order |
+
+### Patient Routes
+
+####
+
+Create a new patient
+
+```http
+POST /patient
+Content-Type: application/json
+```
+
+| Body     | Type   | Description                |
+| -------- | ------ | -------------------------- |
+| name     | string | Patient's name             |
+| email    | string | Patient's email            |
+| password | string | Patient's password         |
+| ...      | ...    | Add other necessary fields |
+
+#### Log in as a patient
+
+```http
+POST /patient/login
+Content-Type: application/json
+```
+
+| Body     | Type   | Description        |
+| -------- | ------ | ------------------ |
+| email    | string | Patient's email    |
+| password | string | Patient's password |
+
+#### Get all patients
+
+```http
+GET /patient
+```
+
+#### Delete a specific patient
+
+```http
+DELETE /patient/:id
+```
+
+| Parameter | Type   | Description       |
+| --------- | ------ | ----------------- |
+| id        | string | ID of the patient |
+
+#### Get details of a specific patient
+
+```http
+GET /patient/:id
+```
+
+| Parameter | Type   | Description       |
+| --------- | ------ | ----------------- |
+| id        | string | ID of the patient |
+
+#### Get delivery addresses for the patient
+
+```http
+GET /patient/delivery/delivery-address
+```
+
+#### Add a delivery address for the patient
+
+```http
+POST /patient/delivery/delivery-address
+Content-Type: application/json
+```
+
+| Body    | Type   | Description                |
+| ------- | ------ | -------------------------- |
+| address | string | Patient's delivery address |
+
+#### Choose a default delivery address for the patient
+
+```http
+PATCH /patient/delivery/delivery-address
+Content-Type: application/json
+```
+
+| Body      | Type   | Description              |
+| --------- | ------ | ------------------------ |
+| addressId | string | ID of the chosen address |
+
+### Pharmacist Routes
+
+#### Log in as a pharmacist
+
+```http
+POST /pharmacist/login
+Content-Type: application/json
+```
+
+| Body     | Type   | Description           |
+| -------- | ------ | --------------------- |
+| email    | string | Pharmacist's email    |
+| password | string | Pharmacist's password |
+
+#### Create a new pharmacist
+
+```http
+POST /pharmacist
+Content-Type: multipart/form-data
+```
+
+| Body      | Type   | Description                |
+| --------- | ------ | -------------------------- |
+| name      | string | Pharmacist's name          |
+| email     | string | Pharmacist's email         |
+| password  | string | Pharmacist's password      |
+| license   | string | Pharmacist's license       |
+| documents | file[] | Array of document files    |
+| ...       | ...    | Add other necessary fields |
+
+#### Get all pharmacists
+
+```http
+GET /pharmacist
+```
+
+#### Delete a specific pharmacist
+
+```http
+DELETE /pharmacist/:id
+```
+
+| Parameter | Type   | Description          |
+| --------- | ------ | -------------------- |
+| id        | string | ID of the pharmacist |
+
+#### Get details of a specific pharmacist
+
+```http
+GET /pharmacist/:id
+```
+
+| Parameter | Type   | Description          |
+| --------- | ------ | -------------------- |
+| id        | string | ID of the pharmacist |
+
+#### Update approval status of a specific pharmacist
+
+```http
+PATCH /pharmacist/:id
+```
+
+| Parameter | Type   | Description          |
+| --------- | ------ | -------------------- |
+| id        | string | ID of the pharmacist |
+
+### Prescriptions Routes
+
+#### Get all prescriptions for the authenticated user
+
+```http
+GET /prescription
+```
+
+## Contributing
+
+If you'd like to contribute, please fork the repository and create a pull request. Feel free to raise issues or suggest improvements.
+
+## License
+
+This project is licensed under the [Your License Name] - see the [LICENSE.md](LICENSE.md) file for details.
+
+```
 ---
 
 ## Tests
@@ -157,6 +627,7 @@ These tests allowed for thorough validation and verification of the project's fu
 ## How to Use?
 
 ### For Pharmacists:
+
 - **Sign Up and Profile Update:**
 
 Navigate to the registration page and create an account by providing the necessary information.
@@ -189,7 +660,7 @@ Explore the various features available, such as browsing and purchasing medicine
 
 ## Contribute
 
-We encourage and value contributions from the community! If you're interested in contributing to this project feel free to reach out to us via email at yousseftamer1990@gmail.com. We look forward to collaborating with you! 
+We encourage and value contributions from the community! If you're interested in contributing to this project feel free to reach out to us via email at yousseftamer1990@gmail.com. We look forward to collaborating with you!
 
 Your contributions, whether it's in the form of code, suggestions, or bug fixes, are highly appreciated and vital to the project's growth and improvement.
 
@@ -212,9 +683,4 @@ Their dedication to sharing knowledge and expertise has been an essential resour
 ## License
 
 This project is licensed under both the MIT License and the Apache License 2.0.
-
-
-
-
-
-
+```
