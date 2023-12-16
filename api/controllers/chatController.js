@@ -80,7 +80,7 @@ const getPatientContacts = async (req, res) => {
         const chats = await ConversationModel.find({
             members: { $in: [userId] },
         })
-        let contacts = await Doctor.find();
+        let contacts = await Doctor.find({contract_acceptance:"Accepted"});
         //output who are not in chats
         contacts = contacts.filter(item => {return !chats.some((chat) =>
             chat.members.includes(item._id)
