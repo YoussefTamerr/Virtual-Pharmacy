@@ -275,6 +275,20 @@ npm install
 npm start
 ```
 
+#### Before running the project, make sure you have the following environment variables set:
+
+- `PORT`:[Port number where the server will run]
+- `MONGO_URI`: [Your MongoDB Connection String]
+- `JWT_SECRET`: [Your JWT Secret Key]
+- `STRIPE_PRIVATE_KEY`: [Your Stripe Private Key]
+- `CLIENT_URL`: [Your Client URL]
+- `STRIPE_ENDPOINT_SECRET`: [Your stripe endpoint secret]
+- `EMAIL_HOST`: [Your mailtrap host]
+- `EMAIL_PORT`: [Your mailtrap port]
+- `EMAIL_USERNAME`: [Your mailtrap username]
+- `EMAIL_PASSWORD`: [Your mailtrap password]
+- `EMAIL_FROM`: [Your mailtrap sender email]
+
 ---
 
 ## API Reference
