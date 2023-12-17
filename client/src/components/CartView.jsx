@@ -8,6 +8,15 @@ const CartView = () => {
   const [cartState, setCartState] = useState(null);
   const [methodState, setMethodState] = useState("");
   const [loadingState, setLoadingState] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const updateTotalPrice = () => {
+    let p = 0
+    cartState?.forEach((medicine) => {
+      p += (medicine.medicine_id.price * medicine.quantity)
+    })
+    setTotalPrice(p)
+  }
 
   const paymentOptions = [
     {
@@ -46,6 +55,10 @@ const CartView = () => {
     };
     fetchData();
   }, []);
+
+  useEffect( () => {
+    updateTotalPrice();
+  }, [cartState])
 
   const handleIncrement = (index, currentCounter) => {
     const updatedCart = [...cartState];
@@ -192,9 +205,10 @@ const CartView = () => {
             <DeliveryAddress />
           </div>
           {cartState?.length === 0 && (
-            <p style={{ fontSize: "20px" }}>Cart is empty</p>
+            <p style={{ fontSize: "20px", marginTop:'100px', marginBottom:'100px' }}>Cart is empty</p>
           )}
           {cartState?.length !== 0 && (
+            <>
             <List
               style={{
                 height: "300px",
@@ -261,6 +275,8 @@ const CartView = () => {
                 </List.Item>
               )}
             />
+            <h2>Total Price: ${totalPrice}</h2>
+            </>
           )}
           <Radio.Group
             options={paymentOptions}
